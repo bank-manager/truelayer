@@ -40,7 +40,7 @@ library
       OverloadedStrings
 
     build-depends:
-        base ^>=4.14.3.0
+        base >=4 && <5
       , hoauth2
       , uri-bytestring
       , aeson
