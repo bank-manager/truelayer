@@ -13,28 +13,14 @@ module Bank.TrueLayer.Internal
   , AccessToken(..)
   ) where
 
-import Control.Lens
-  ( (&)
-  , (^.)
-  , (?~)
-  , (.~)
-  )
-import Data.Aeson (FromJSON, ToJSON(..))
-import Data.String (fromString)
-import Data.Text.Encoding (encodeUtf8)
-import Network.Wreq
-  ( asJSON
-  , getWith
-  , postWith
-  , oauth2Bearer
-  , defaults
-  , auth
-  , responseBody
-  , Options
-  , header
-  )
-import Network.OAuth.OAuth2 (AccessToken(..))
-import System.FilePath ((</>))
+import           Control.Lens         ((&), (.~), (?~), (^.))
+import           Data.Aeson           (FromJSON, ToJSON (..))
+import           Data.String          (fromString)
+import           Data.Text.Encoding   (encodeUtf8)
+import           Network.OAuth.OAuth2 (AccessToken (..))
+import           Network.Wreq
+    (Options, asJSON, auth, defaults, getWith, header, oauth2Bearer, postWith, responseBody)
+import           System.FilePath      ((</>))
 
 newtype Endpoint = Endpoint String
 

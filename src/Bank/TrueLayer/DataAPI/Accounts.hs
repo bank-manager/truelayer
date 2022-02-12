@@ -2,19 +2,9 @@ module Bank.TrueLayer.DataAPI.Accounts
   ( accounts
   ) where
 
-import Bank.TrueLayer.Internal
-  ( Endpoint
-  , AccessToken
-  , getWithAuthAndOptions
-  , defaults
-  , header
-  , fromString
-  , (&)
-  , (.~)
-  )
-import Bank.TrueLayer.DataAPI.Schema
-  ( Accounts
-  )
+import           Bank.TrueLayer.DataAPI.Schema (Accounts)
+import           Bank.TrueLayer.Internal
+    (AccessToken, Endpoint, defaults, fromString, getWithAuthAndOptions, header, (&), (.~))
 
 
 accounts :: String -> Endpoint -> AccessToken -> IO (Maybe Accounts)

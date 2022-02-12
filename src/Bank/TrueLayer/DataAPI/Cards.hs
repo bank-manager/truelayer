@@ -3,23 +3,10 @@ module Bank.TrueLayer.DataAPI.Cards
   , cardBalance
   ) where
 
-import Bank.TrueLayer.Internal
-  ( Endpoint
-  , AccessToken
-  , getWithAuthAndOptions
-  , defaults
-  , header
-  , fromString
-  , (&)
-  , (.~)
-  , (</>)
-  )
+import           Bank.TrueLayer.Internal
+    (AccessToken, Endpoint, defaults, fromString, getWithAuthAndOptions, header, (&), (.~), (</>))
 
-import Bank.TrueLayer.DataAPI.Schema
-  ( Cards
-  , CardBalances
-  , AccountId(..)
-  )
+import           Bank.TrueLayer.DataAPI.Schema (AccountId (..), CardBalances, Cards)
 
 cards :: String -> Endpoint -> AccessToken -> IO (Maybe Cards)
 cards ip = do

@@ -1,12 +1,14 @@
-{-# LANGUAGE OverloadedStrings, QuasiQuotes #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes       #-}
 module Bank.TrueLayer.Auth
   ( genAccessToken
   ) where
 
-import Network.OAuth.OAuth2 (OAuth2(..), RefreshToken, ExchangeToken, OAuth2Token, refreshAccessToken)
-import URI.ByteString.QQ (uri)
-import Network.HTTP.Client (newManager)
-import Network.HTTP.Client.TLS (tlsManagerSettings)
+import           Network.HTTP.Client     (newManager)
+import           Network.HTTP.Client.TLS (tlsManagerSettings)
+import           Network.OAuth.OAuth2
+    (ExchangeToken, OAuth2 (..), OAuth2Token, RefreshToken, refreshAccessToken)
+import           URI.ByteString.QQ       (uri)
 
 oauthSettings :: OAuth2
 oauthSettings = OAuth2
@@ -23,6 +25,6 @@ genAccessToken refreshToken = do
   token <- refreshAccessToken manager oauthSettings refreshToken
   return (
     case token of
-      Left err -> Nothing
+      Left err    -> Nothing
       Right token -> Just token
     )
