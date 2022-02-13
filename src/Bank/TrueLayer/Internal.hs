@@ -4,6 +4,7 @@ module Bank.TrueLayer.Internal
   , postWithAuth
   , defaults
   , header
+  , param
   , fromString
   , (.~)
   , (&)
@@ -19,7 +20,7 @@ import           Data.String          (fromString)
 import           Data.Text.Encoding   (encodeUtf8)
 import           Network.OAuth.OAuth2 (AccessToken (..))
 import           Network.Wreq
-    (Options, asJSON, auth, defaults, getWith, header, oauth2Bearer, postWith, responseBody)
+    (Options, asJSON, auth, defaults, getWith, header, oauth2Bearer, param, postWith, responseBody)
 import           System.FilePath      ((</>))
 
 newtype Endpoint = Endpoint String
