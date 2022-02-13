@@ -34,9 +34,9 @@ data Account = Account
 
 data AccountBalance = AccountBalance
                         { currency         :: String
-                        , available        :: Int
-                        , current          :: Int
-                        , overdraft        :: Maybe Int
+                        , available        :: Double
+                        , current          :: Double
+                        , overdraft        :: Maybe Double
                         , update_timestamp :: Maybe String
                         }
   deriving (FromJSON, Generic, Show, ToJSON)
@@ -101,7 +101,7 @@ data DirectDebit = DirectDebit
                      , name                       :: String
                      , status                     :: String
                      , previous_payment_timestamp :: Maybe String
-                     , previous_payment_amount    :: Maybe Int
+                     , previous_payment_amount    :: Maybe Double
                      , currency                   :: Maybe String
                      , meta                       :: Maybe DirectDebitMeta
                      }
@@ -127,7 +127,7 @@ newtype ProviderId = ProviderId String
   deriving (FromJSON, Generic, Show, ToJSON)
 
 data RunningBalance = RunningBalance
-                        { amoung   :: Int
+                        { amoung   :: Double
                         , currency :: String
                         }
   deriving (FromJSON, Generic, Show, ToJSON)
@@ -139,11 +139,11 @@ data StandingOrder = StandingOrder
                        , currency             :: Maybe String
                        , meta                 :: Maybe StandingOrderMeta
                        , next_payment_date    :: Maybe String
-                       , next_payment_amount  :: Maybe String
+                       , next_payment_amount  :: Maybe Double
                        , first_payment_date   :: Maybe String
-                       , first_payment_amount :: Maybe String
+                       , first_payment_amount :: Maybe Double
                        , final_payment_date   :: Maybe String
-                       , final_payment_amount :: Maybe String
+                       , final_payment_amount :: Maybe Double
                        , payee                :: Maybe String
                        , reference            :: Maybe String
                        }
@@ -158,17 +158,16 @@ data StandingOrders = StandingOrders
                         }
   deriving (FromJSON, Generic, Show, ToJSON)
 
-
 data Transaction = Transaction
-                     { transaction_id                     :: TransactionId -- May change ??
-                     , normalised_provider_transaction_id :: Maybe TransactionId -- Won't change :)
-                     , provider_transaction_id            :: Maybe TransactionId -- format varies depending on provider :/
-                     , timestamp                          :: String -- Specialise ??
+                     { transaction_id                     :: TransactionId
+                     , normalised_provider_transaction_id :: Maybe TransactionId
+                     , provider_transaction_id            :: Maybe TransactionId
+                     , timestamp                          :: ZonedTime
                      , description                        :: String
-                     , amount                             :: Int -- Is this pennies or pounds?
-                     , currency                           :: String -- Enum?
-                     , transaction_type                   :: String -- enum?
-                     , transaction_category               :: String -- enum?
+                     , amount                             :: Double -- pounds
+                     , currency                           :: String
+                     , transaction_type                   :: String
+                     , transaction_category               :: String
                      , transaction_classification         :: [String]
                      , merchant_name                      :: Maybe String
                      , running_balance                    :: Maybe RunningBalance
