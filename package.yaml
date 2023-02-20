@@ -1,0 +1,43 @@
+name:                truelayer
+version:             0.1.0.0
+github:              "bank-manager/truelayer"
+license:             BSD3
+author:              "Riley Evans"
+maintainer:          "haskell@rly.rocks"
+copyright:           "2022 Riley Evans"
+
+extra-source-files:
+- README.md
+- CHANGELOG.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/bank-manager/bank-auth-service#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+
+ghc-options:
+  -Wall
+  -Werror
+
+library:
+  dependencies:
+    - hoauth2
+    - uri-bytestring
+    - aeson
+    - wreq
+    - lens
+    - time
+    - filepath
+    - http-client
+    - http-client-tls
+    - text
+  source-dirs: src
+  default-extensions:
+    - OverloadedStrings

@@ -13,26 +13,26 @@ import           URI.ByteString.QQ       (uri)
 
 oauthSettings :: OAuth2
 oauthSettings = OAuth2
-  { oauth2ClientId = "bankmanager-772883"
-  , oauth2ClientSecret = Just ""
-  , oauth2AuthorizeEndpoint = [uri|https://auth.truelayer.com/connect/token|]
-  , oauth2TokenEndpoint = [uri|https://auth.truelayer.com/connect/token|]
-  , oauth2RedirectUri = Just [uri|https://console.truelayer.com/redirect-page|]
+  { oauthClientId = "bankmanager-772883"
+  , oauthClientSecret = Just ""
+  , oauthOAuthorizeEndpoint = [uri|https://auth.truelayer.com/connect/token|]
+  , oauthAccessTokenEndpoint = [uri|https://auth.truelayer.com/connect/token|]
+  , oauthCallback = Just [uri|https://console.truelayer.com/redirect-page|]
   }
 
 genAccessToken :: RefreshToken -> IO (Maybe OAuth2Token)
 genAccessToken refreshToken = do
   manager <- newManager tlsManagerSettings
-  token <- refreshAccessToken manager oauthSettings refreshToken
-  return $ case token of
-    Left err    -> Nothing
+  eToken <- refreshAccessToken manager oauthSettings refreshToken
+  return $ case eToken of
+    Left _    -> Nothing
     Right token -> Just token
 
 
 swapCode :: ExchangeToken -> IO (Maybe OAuth2Token)
 swapCode code = do
   manager <- newManager tlsManagerSettings
-  token <- fetchAccessToken manager  oauthSettings code
-  return $ case token of
-    Left err    -> Nothing
+  eToken <- fetchAccessToken manager  oauthSettings code
+  return $ case eToken of
+    Left _    -> Nothing
     Right token -> Just token

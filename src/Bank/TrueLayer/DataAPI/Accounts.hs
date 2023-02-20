@@ -1,5 +1,11 @@
 module Bank.TrueLayer.DataAPI.Accounts
   ( accounts
+  , account
+  , accountBalance
+  , transactions
+  , pendingTransactions
+  , standingOrders
+  , directDebits
   ) where
 
 import           Bank.TrueLayer.DataAPI.Schema

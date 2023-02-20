@@ -5,13 +5,11 @@
 module Bank.TrueLayer.DataAPI.Schema where
 
 import           Data.Aeson              (FromJSON (..), ToJSON (..))
-import           Data.String             (IsString)
 import           Data.Time.Calendar      (Day)
 import           Data.Time.LocalTime     (ZonedTime)
 import           GHC.Generics            (Generic)
 
 import           Bank.TrueLayer.Internal (Options, fromString, param, (&), (.~))
-import           Text.Read.Lex           (Number)
 
 newtype Ip = Ip String
   deriving (Show)
@@ -206,11 +204,11 @@ data TransactionParams = TransactionParams
   deriving (Show)
 
 addTransactionParams :: Maybe TransactionParams -> Options -> IO Options
-addTransactionParams (Just TransactionParams{..}) opts = do
-  opts <- case to of
+addTransactionParams (Just TransactionParams{from=mFrom, to=mTo}) opts = do
+  opts' <- case mTo of
     Just to -> return $ opts & param "to" .~ [fromString to]
     Nothing -> return opts
-  case from of
-    Just from -> return $ opts & param "from" .~ [fromString from]
-    Nothing   -> return opts
+  case mFrom of
+    Just from -> return $ opts' & param "from" .~ [fromString from]
+    Nothing   -> return opts'
 addTransactionParams Nothing       opts                = return opts

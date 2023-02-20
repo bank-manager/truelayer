@@ -2,17 +2,17 @@ module Bank.TrueLayer.DataAPI.Cards
   ( cards
   , card
   , cardBalance
+  , transactions
+  , pendingTransactions
   ) where
 
 import           Bank.TrueLayer.Internal
     ( AccessToken
     , Endpoint
-    , Options
     , defaults
     , fromString
     , getWithAuthAndOptions
     , header
-    , param
     , (&)
     , (.~)
     , (</>)
@@ -20,7 +20,6 @@ import           Bank.TrueLayer.Internal
 
 import           Bank.TrueLayer.DataAPI.Schema
     ( AccountId (..)
-    , Card
     , CardBalances
     , Cards
     , Ip (..)
