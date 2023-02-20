@@ -25,7 +25,7 @@ genAccessToken refreshToken = do
   manager <- newManager tlsManagerSettings
   eToken <- refreshAccessToken manager oauthSettings refreshToken
   return $ case eToken of
-    Left _    -> Nothing
+    Left _      -> Nothing
     Right token -> Just token
 
 
@@ -34,5 +34,5 @@ swapCode code = do
   manager <- newManager tlsManagerSettings
   eToken <- fetchAccessToken manager  oauthSettings code
   return $ case eToken of
-    Left _    -> Nothing
+    Left _      -> Nothing
     Right token -> Just token

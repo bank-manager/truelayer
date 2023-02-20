@@ -2,5 +2,5 @@ repos:
 -   repo: https://github.com/RileyEv/haskell-pre-commit-hooks
     rev: 0.3.0
     hooks:
-      - id: hlint-docker
-      - id: stylish-haskell-docker
+      - id: hlint
+      - id: stylish-haskell

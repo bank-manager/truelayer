@@ -7,50 +7,43 @@ on:
     branches: [ main ]
 
 jobs:
+
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v2
-    - name: Verify pre-commit
-      uses: pre-commit/action@v2.0.3
-    - uses: haskell/actions/setup@v1
-      with:
-        ghc-version: '8.10.4'
-        cabal-version: '3.2'
+      - name: 'GitHub actions env workaround'
+        run: 'echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV'
 
-    - name: Cache
-      uses: actions/cache@v1
-      env:
-        cache-name: cache-cabal
-      with:
-        path: ~/.cabal
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-    - name: Install dependencies
-      run: |
-        cabal update
-        cabal build --only-dependencies --enable-tests --enable-benchmarks
-    - name: Build
-      run: cabal build --enable-tests --enable-benchmarks all
-    - name: Run tests
-      run: cabal test all
-    - name: Build Docs
-      run: |
-        FILEPATH=$(cabal haddock | tail -1)
-        echo $FILEPATH
-        FOLDERPATH=$(dirname $FILEPATH)
-        echo $FOLDERPATH
-        cp -a $FOLDERPATH ./html
-        echo "truelayer.bank.rly.rocks" > ./html/CNAME
-    - name: Publish Docs
-      if: github.event_name == 'push'
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./html
-        enable_jekyll: true
+      - uses: actions/checkout@v2
+
+      - name: Verify pre-commit
+        uses: pre-commit/action@v2.0.3
+
+      - name: Install Dependencies
+        run: |
+          stack --no-terminal --install-ghc install --bench --only-dependencies
+
+      - name: Build
+        id: build
+        run: |
+          stack --no-terminal build --bench --test --no-run-tests --haddock --no-run-benchmarks --no-haddock-deps
+
+      - name: Test
+        id: test
+        run: |
+          stack --no-terminal test
+      - name: Build Docs
+        run: |
+          FILEPATH=$(cabal haddock | tail -1)
+          echo $FILEPATH
+          FOLDERPATH=$(dirname $FILEPATH)
+          echo $FOLDERPATH
+          cp -a $FOLDERPATH ./html
+          echo "truelayer.bank.rly.rocks" > ./html/CNAME
+      - name: Publish Docs
+        if: github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./html
+          enable_jekyll: true

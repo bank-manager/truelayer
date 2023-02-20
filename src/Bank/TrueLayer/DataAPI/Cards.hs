@@ -7,16 +7,7 @@ module Bank.TrueLayer.DataAPI.Cards
   ) where
 
 import           Bank.TrueLayer.Internal
-    ( AccessToken
-    , Endpoint
-    , defaults
-    , fromString
-    , getWithAuthAndOptions
-    , header
-    , (&)
-    , (.~)
-    , (</>)
-    )
+    (AccessToken, Endpoint, defaults, fromString, getWithAuthAndOptions, header, (&), (.~), (</>))
 
 import           Bank.TrueLayer.DataAPI.Schema
     ( AccountId (..)
