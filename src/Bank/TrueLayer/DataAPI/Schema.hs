@@ -207,9 +207,9 @@ addTransactionParams :: Maybe TransactionParams -> Options -> IO Options
 addTransactionParams (Just TransactionParams { from = mFrom, to = mTo }) opts =
     do
         opts' <- case mTo of
-            Just to -> return $ opts & param "to" .~ [fromString to]
-            Nothing -> return opts
+            Just to' -> return $ opts & param "to" .~ [fromString to']
+            Nothing  -> return opts
         case mFrom of
-            Just from -> return $ opts' & param "from" .~ [fromString from]
-            Nothing   -> return opts'
+            Just from' -> return $ opts' & param "from" .~ [fromString from']
+            Nothing    -> return opts'
 addTransactionParams Nothing opts = return opts
