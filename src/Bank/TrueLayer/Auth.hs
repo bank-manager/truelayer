@@ -3,36 +3,82 @@
 module Bank.TrueLayer.Auth
   ( genAccessToken
   , swapCode
+  , buildOAuth2
+  , getAuthorizationUrl
+  , RefreshToken(..)
+  , AccessToken(..)
+  , OAuth2Token(..)
+  , OAuth2
+  , ExchangeToken
+  , Env(..)
   ) where
 
-import           Network.HTTP.Client     (newManager)
-import           Network.HTTP.Client.TLS (tlsManagerSettings)
-import           Network.OAuth.OAuth2
-    (ExchangeToken, OAuth2 (..), OAuth2Token, RefreshToken, fetchAccessToken, refreshAccessToken)
-import           URI.ByteString.QQ       (uri)
+import           Data.Bifunctor                 ( bimap )
+import           Data.Text                      ( Text )
+import           Data.Text.Encoding             ( encodeUtf8 )
+import           Network.HTTP.Client            ( newManager )
+import           Network.HTTP.Client.TLS        ( tlsManagerSettings )
+import           Network.OAuth.OAuth2           ( AccessToken(..)
+                                                , ExchangeToken
+                                                , OAuth2(..)
+                                                , OAuth2Token(..)
+                                                , RefreshToken(..)
+                                                , appendQueryParams
+                                                , authorizationUrl
+                                                , fetchAccessToken
+                                                , refreshAccessToken
+                                                )
+import           URI.ByteString                 ( URI )
+import           URI.ByteString.QQ              ( uri )
 
-oauthSettings :: OAuth2
-oauthSettings = OAuth2
-  { oauthClientId = "bankmanager-772883"
-  , oauthClientSecret = Just ""
-  , oauthOAuthorizeEndpoint = [uri|https://auth.truelayer.com/connect/token|]
-  , oauthAccessTokenEndpoint = [uri|https://auth.truelayer.com/connect/token|]
-  , oauthCallback = Just [uri|https://console.truelayer.com/redirect-page|]
-  }
 
-genAccessToken :: RefreshToken -> IO (Maybe OAuth2Token)
-genAccessToken refreshToken = do
+newtype ClientId = ClientId Text deriving Show
+newtype ClientSecret = ClientSecret Text deriving Show
+
+data Env = Sandbox | Prod
+
+
+buildOAuth2 :: Env -> ClientId -> ClientSecret -> URI -> OAuth2
+buildOAuth2 env (ClientId clientId) (ClientSecret clientSecret) callback =
+  OAuth2 { oauthClientId            = clientId
+         , oauthClientSecret        = Just clientSecret
+         , oauthOAuthorizeEndpoint  = getAuthorizeEndpoint env
+         , oauthAccessTokenEndpoint = getAccessTokenEndpoint env
+         , oauthCallback            = Just callback
+         }
+
+
+getAuthorizeEndpoint :: Env -> URI
+getAuthorizeEndpoint Prod    = [uri|https://auth.truelayer.com|]
+getAuthorizeEndpoint Sandbox = [uri|https://auth-sandbox.truelayer.com|]
+
+
+getAccessTokenEndpoint :: Env -> URI
+getAccessTokenEndpoint Prod = [uri|https://auth.truelayer.com/connect/token|]
+getAccessTokenEndpoint Sandbox =
+  [uri|https://auth-sandbox.truelayer.com/connect/token|]
+
+
+getAuthorizationUrl :: OAuth2 -> [(Text, Text)] -> URI
+getAuthorizationUrl oauth2Settings params = appendQueryParams
+  bytestringParams
+  (authorizationUrl oauth2Settings)
+  where bytestringParams = map (bimap encodeUtf8 encodeUtf8) params
+
+
+genAccessToken :: OAuth2 -> RefreshToken -> IO (Maybe OAuth2Token)
+genAccessToken oauthSettings token = do
   manager <- newManager tlsManagerSettings
-  eToken <- refreshAccessToken manager oauthSettings refreshToken
+  eToken  <- refreshAccessToken manager oauthSettings token
   return $ case eToken of
-    Left _      -> Nothing
-    Right token -> Just token
+    Left  _ -> Nothing
+    Right t -> Just t
 
 
-swapCode :: ExchangeToken -> IO (Maybe OAuth2Token)
-swapCode code = do
+swapCode :: OAuth2 -> ExchangeToken -> IO (Maybe OAuth2Token)
+swapCode oauthSettings code = do
   manager <- newManager tlsManagerSettings
-  eToken <- fetchAccessToken manager  oauthSettings code
+  eToken  <- fetchAccessToken manager oauthSettings code
   return $ case eToken of
-    Left _      -> Nothing
+    Left  _     -> Nothing
     Right token -> Just token
