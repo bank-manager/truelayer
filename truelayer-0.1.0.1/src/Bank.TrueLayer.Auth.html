@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE OverloadedStrings #-}</span><span>
+</span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE QuasiQuotes       #-}</span><span>
+</span><span id="line-3"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Bank.TrueLayer.Auth</span><span>
+</span><span id="line-4"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#genAccessToken"><span class="hs-identifier">genAccessToken</span></a></span><span>
+</span><span id="line-5"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#swapCode"><span class="hs-identifier">swapCode</span></a></span><span>
+</span><span id="line-6"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-7"></span><span>
+</span><span id="line-8"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Network.HTTP.Client</span></span><span>     </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">newManager</span></span><span class="hs-special">)</span><span>
+</span><span id="line-9"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Network.HTTP.Client.TLS</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">tlsManagerSettings</span></span><span class="hs-special">)</span><span>
+</span><span id="line-10"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Network.OAuth.OAuth2</span></span><span>
+</span><span id="line-11"></span><span>    </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">ExchangeToken</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">OAuth2</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">OAuth2Token</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">RefreshToken</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">fetchAccessToken</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">refreshAccessToken</span></span><span class="hs-special">)</span><span>
+</span><span id="line-12"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">URI.ByteString.QQ</span></span><span>       </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">uri</span></span><span class="hs-special">)</span><span>
+</span><span id="line-13"></span><span>
+</span><span id="line-14"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#oauthSettings"><span class="hs-identifier hs-type">oauthSettings</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">OAuth2</span></span><span>
+</span><span id="line-15"></span><span id="oauthSettings"><span class="annot"><span class="annottext">oauthSettings :: OAuth2
+</span><a href="Bank.TrueLayer.Auth.html#oauthSettings"><span class="hs-identifier hs-var hs-var">oauthSettings</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">OAuth2 :: Text -&gt; Maybe Text -&gt; URI -&gt; URI -&gt; Maybe URI -&gt; OAuth2
+</span><span class="hs-identifier hs-type">OAuth2</span></span><span>
+</span><span id="line-16"></span><span>  </span><span class="hs-special">{</span><span> </span><span class="annot"><span class="annottext">oauthClientId :: Text
+</span><span class="hs-identifier hs-var">oauthClientId</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text
+</span><span class="hs-string">&quot;bankmanager-772883&quot;</span></span><span>
+</span><span id="line-17"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">oauthClientSecret :: Maybe Text
+</span><span class="hs-identifier hs-var">oauthClientSecret</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text -&gt; Maybe Text
+forall a. a -&gt; Maybe a
+</span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">Text
+</span><span class="hs-string">&quot;&quot;</span></span><span>
+</span><span id="line-18"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">oauthOAuthorizeEndpoint :: URI
+</span><span class="hs-identifier hs-var">oauthOAuthorizeEndpoint</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="">[uri|https://auth.truelayer.com/connect/token|]</span></span><span>
+</span><span id="line-19"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">oauthAccessTokenEndpoint :: URI
+</span><span class="hs-identifier hs-var">oauthAccessTokenEndpoint</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="">[uri|https://auth.truelayer.com/connect/token|]</span></span><span>
+</span><span id="line-20"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">oauthCallback :: Maybe URI
+</span><a href="#local-6989586621679134854"><span class="hs-identifier hs-var">oauthCallback</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">URI -&gt; Maybe URI
+forall a. a -&gt; Maybe a
+</span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="">[uri|https://console.truelayer.com/redirect-page|]</span></span><span>
+</span><span id="line-21"></span><span>  </span><span class="hs-special">}</span><span>
+</span><span id="line-22"></span><span>
+</span><span id="line-23"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#genAccessToken"><span class="hs-identifier hs-type">genAccessToken</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">RefreshToken</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">OAuth2Token</span></span><span class="hs-special">)</span><span>
+</span><span id="line-24"></span><span id="genAccessToken"><span class="annot"><span class="annottext">genAccessToken :: RefreshToken -&gt; IO (Maybe OAuth2Token)
+</span><a href="Bank.TrueLayer.Auth.html#genAccessToken"><span class="hs-identifier hs-var hs-var">genAccessToken</span></a></span></span><span> </span><span id="local-6989586621679134853"><span class="annot"><span class="annottext">RefreshToken
+</span><a href="#local-6989586621679134853"><span class="hs-identifier hs-var">refreshToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-25"></span><span>  </span><span id="local-6989586621679134852"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679134852"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">ManagerSettings -&gt; IO Manager
+</span><span class="hs-identifier hs-var">newManager</span></span><span> </span><span class="annot"><span class="annottext">ManagerSettings
+</span><span class="hs-identifier hs-var">tlsManagerSettings</span></span><span>
+</span><span id="line-26"></span><span>  </span><span id="local-6989586621679134851"><span class="annot"><span class="annottext">OAuth2Result Errors OAuth2Token
+</span><a href="#local-6989586621679134851"><span class="hs-identifier hs-var">eToken</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Manager
+-&gt; OAuth2 -&gt; RefreshToken -&gt; IO (OAuth2Result Errors OAuth2Token)
+</span><span class="hs-identifier hs-var">refreshAccessToken</span></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679134852"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">OAuth2
+</span><a href="Bank.TrueLayer.Auth.html#oauthSettings"><span class="hs-identifier hs-var">oauthSettings</span></a></span><span> </span><span class="annot"><span class="annottext">RefreshToken
+</span><a href="#local-6989586621679134853"><span class="hs-identifier hs-var">refreshToken</span></a></span><span>
+</span><span id="line-27"></span><span>  </span><span class="annot"><span class="annottext">Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token)
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">(Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token))
+-&gt; Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token)
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">OAuth2Result Errors OAuth2Token
+</span><a href="#local-6989586621679134851"><span class="hs-identifier hs-var">eToken</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-28"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Left</span></span><span> </span><span class="annot"><span class="annottext">OAuth2Error Errors
+</span><span class="hs-identifier">_</span></span><span>      </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Maybe OAuth2Token
+forall a. Maybe a
+</span><span class="hs-identifier hs-var">Nothing</span></span><span>
+</span><span id="line-29"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span id="local-6989586621679134850"><span class="annot"><span class="annottext">OAuth2Token
+</span><a href="#local-6989586621679134850"><span class="hs-identifier hs-var">token</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">OAuth2Token -&gt; Maybe OAuth2Token
+forall a. a -&gt; Maybe a
+</span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">OAuth2Token
+</span><a href="#local-6989586621679134850"><span class="hs-identifier hs-var">token</span></a></span><span>
+</span><span id="line-30"></span><span>
+</span><span id="line-31"></span><span>
+</span><span id="line-32"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#swapCode"><span class="hs-identifier hs-type">swapCode</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ExchangeToken</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">OAuth2Token</span></span><span class="hs-special">)</span><span>
+</span><span id="line-33"></span><span id="swapCode"><span class="annot"><span class="annottext">swapCode :: ExchangeToken -&gt; IO (Maybe OAuth2Token)
+</span><a href="Bank.TrueLayer.Auth.html#swapCode"><span class="hs-identifier hs-var hs-var">swapCode</span></a></span></span><span> </span><span id="local-6989586621679134849"><span class="annot"><span class="annottext">ExchangeToken
+</span><a href="#local-6989586621679134849"><span class="hs-identifier hs-var">code</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-34"></span><span>  </span><span id="local-6989586621679134848"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679134848"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">ManagerSettings -&gt; IO Manager
+</span><span class="hs-identifier hs-var">newManager</span></span><span> </span><span class="annot"><span class="annottext">ManagerSettings
+</span><span class="hs-identifier hs-var">tlsManagerSettings</span></span><span>
+</span><span id="line-35"></span><span>  </span><span id="local-6989586621679134847"><span class="annot"><span class="annottext">OAuth2Result Errors OAuth2Token
+</span><a href="#local-6989586621679134847"><span class="hs-identifier hs-var">eToken</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Manager
+-&gt; OAuth2 -&gt; ExchangeToken -&gt; IO (OAuth2Result Errors OAuth2Token)
+</span><span class="hs-identifier hs-var">fetchAccessToken</span></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679134848"><span class="hs-identifier hs-var">manager</span></a></span><span>  </span><span class="annot"><span class="annottext">OAuth2
+</span><a href="Bank.TrueLayer.Auth.html#oauthSettings"><span class="hs-identifier hs-var">oauthSettings</span></a></span><span> </span><span class="annot"><span class="annottext">ExchangeToken
+</span><a href="#local-6989586621679134849"><span class="hs-identifier hs-var">code</span></a></span><span>
+</span><span id="line-36"></span><span>  </span><span class="annot"><span class="annottext">Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token)
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">(Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token))
+-&gt; Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token)
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">OAuth2Result Errors OAuth2Token
+</span><a href="#local-6989586621679134847"><span class="hs-identifier hs-var">eToken</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-37"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Left</span></span><span> </span><span class="annot"><span class="annottext">OAuth2Error Errors
+</span><span class="hs-identifier">_</span></span><span>      </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Maybe OAuth2Token
+forall a. Maybe a
+</span><span class="hs-identifier hs-var">Nothing</span></span><span>
+</span><span id="line-38"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span id="local-6989586621679134846"><span class="annot"><span class="annottext">OAuth2Token
+</span><a href="#local-6989586621679134846"><span class="hs-identifier hs-var">token</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">OAuth2Token -&gt; Maybe OAuth2Token
+forall a. a -&gt; Maybe a
+</span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">OAuth2Token
+</span><a href="#local-6989586621679134846"><span class="hs-identifier hs-var">token</span></a></span><span>
+</span><span id="line-39"></span></pre></body></html>
