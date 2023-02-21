@@ -5,7 +5,7 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           truelayer
-version:        0.1.0.1
+version:        0.1.1.0
 description:    Please see the README on GitHub at <https://github.com/bank-manager/bank-auth-service#readme>
 homepage:       https://github.com/bank-manager/truelayer#readme
 bug-reports:    https://github.com/bank-manager/truelayer/issues
@@ -17,7 +17,6 @@ license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
-    CHANGELOG.md
 
 source-repository head
   type: git
