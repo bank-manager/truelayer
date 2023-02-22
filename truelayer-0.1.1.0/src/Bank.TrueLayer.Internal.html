@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Bank.TrueLayer.Internal</span><span>
+</span><span id="line-2"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Internal.html#getWithAuth"><span class="hs-identifier">getWithAuth</span></a></span><span>
+</span><span id="line-3"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Internal.html#getWithAuthAndOptions"><span class="hs-identifier">getWithAuthAndOptions</span></a></span><span>
+</span><span id="line-4"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Internal.html#postWithAuth"><span class="hs-identifier">postWithAuth</span></a></span><span>
+</span><span id="line-5"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">defaults</span></span><span>
+</span><span id="line-6"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">header</span></span><span>
+</span><span id="line-7"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">param</span></span><span>
+</span><span id="line-8"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">fromString</span></span><span>
+</span><span id="line-9"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-operator">(.~)</span></span><span>
+</span><span id="line-10"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-operator">(&amp;)</span></span><span>
+</span><span id="line-11"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-operator">(&lt;/&gt;)</span></span><span>
+</span><span id="line-12"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">Options</span></span><span>
+</span><span id="line-13"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Internal.html#Endpoint"><span class="hs-identifier">Endpoint</span></a></span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-14"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">AccessToken</span></span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-15"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-16"></span><span>
+</span><span id="line-17"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Control.Lens</span></span><span>         </span><span class="hs-special">(</span><span class="annot"><span class="hs-operator">(&amp;)</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-operator">(.~)</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-operator">(?~)</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-operator">(^.)</span></span><span class="hs-special">)</span><span>
+</span><span id="line-18"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Data.Aeson</span></span><span>           </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">FromJSON</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">ToJSON</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-19"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Data.String</span></span><span>          </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">fromString</span></span><span class="hs-special">)</span><span>
+</span><span id="line-20"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Data.Text.Encoding</span></span><span>   </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">encodeUtf8</span></span><span class="hs-special">)</span><span>
+</span><span id="line-21"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Network.OAuth.OAuth2</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">AccessToken</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-22"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Network.Wreq</span></span><span>
+</span><span id="line-23"></span><span>    </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Options</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">asJSON</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">auth</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">defaults</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">getWith</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">header</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">oauth2Bearer</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">param</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">postWith</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">responseBody</span></span><span class="hs-special">)</span><span>
+</span><span id="line-24"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">System.FilePath</span></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="hs-operator">(&lt;/&gt;)</span></span><span class="hs-special">)</span><span>
+</span><span id="line-25"></span><span>
+</span><span id="line-26"></span><span class="hs-keyword">newtype</span><span> </span><span id="Endpoint"><span class="annot"><a href="Bank.TrueLayer.Internal.html#Endpoint"><span class="hs-identifier hs-var">Endpoint</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Endpoint"><span class="annot"><a href="Bank.TrueLayer.Internal.html#Endpoint"><span class="hs-identifier hs-var">Endpoint</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-27"></span><span>
+</span><span id="line-28"></span><span id="local-6989586621679136166"><span class="annot"><a href="Bank.TrueLayer.Internal.html#getWithAuth"><span class="hs-identifier hs-type">getWithAuth</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="#local-6989586621679136166"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Internal.html#Endpoint"><span class="hs-identifier hs-type">Endpoint</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">AccessToken</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679136166"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span><span>
+</span><span id="line-29"></span><span id="getWithAuth"><span class="annot"><span class="annottext">getWithAuth :: String -&gt; Endpoint -&gt; AccessToken -&gt; IO (Maybe a)
+</span><a href="Bank.TrueLayer.Internal.html#getWithAuth"><span class="hs-identifier hs-var hs-var">getWithAuth</span></a></span></span><span> </span><span id="local-6989586621679136165"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136165"><span class="hs-identifier hs-var">uri</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Bank.TrueLayer.Internal.html#Endpoint"><span class="hs-identifier hs-type">Endpoint</span></a></span><span> </span><span id="local-6989586621679136164"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136164"><span class="hs-identifier hs-var">endpoint</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">AccessToken</span></span><span> </span><span id="local-6989586621679136162"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679136162"><span class="hs-identifier hs-var">accessToken</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-30"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679136161"><span class="annot"><span class="annottext">opts :: Options
+</span><a href="#local-6989586621679136161"><span class="hs-identifier hs-var hs-var">opts</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Options
+</span><span class="hs-identifier hs-var">defaults</span></span><span> </span><span class="annot"><span class="annottext">Options -&gt; (Options -&gt; Options) -&gt; Options
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><span class="hs-operator hs-var">&amp;</span></span><span> </span><span class="annot"><span class="annottext">(Maybe Auth -&gt; Identity (Maybe Auth))
+-&gt; Options -&gt; Identity Options
+Lens' Options (Maybe Auth)
+</span><span class="hs-identifier hs-var">auth</span></span><span> </span><span class="annot"><span class="annottext">((Maybe Auth -&gt; Identity (Maybe Auth))
+ -&gt; Options -&gt; Identity Options)
+-&gt; Auth -&gt; Options -&gt; Options
+forall s t a b. ASetter s t a (Maybe b) -&gt; b -&gt; s -&gt; t
+</span><span class="hs-operator hs-var">?~</span></span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; Auth
+</span><span class="hs-identifier hs-var">oauth2Bearer</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Text -&gt; ByteString
+</span><span class="hs-identifier hs-var">encodeUtf8</span></span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679136162"><span class="hs-identifier hs-var">accessToken</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-31"></span><span>  </span><span id="local-6989586621679136160"><span class="annot"><span class="annottext">Response (Maybe a)
+</span><a href="#local-6989586621679136160"><span class="hs-identifier hs-var">r</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Response ByteString -&gt; IO (Response (Maybe a))
+forall (m :: * -&gt; *) a.
+(MonadThrow m, FromJSON a) =&gt;
+Response ByteString -&gt; m (Response a)
+</span><span class="hs-identifier hs-var">asJSON</span></span><span> </span><span class="annot"><span class="annottext">(Response ByteString -&gt; IO (Response (Maybe a)))
+-&gt; IO (Response ByteString) -&gt; IO (Response (Maybe a))
+forall (m :: * -&gt; *) a b. Monad m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b
+</span><span class="hs-operator hs-var">=&lt;&lt;</span></span><span> </span><span class="annot"><span class="annottext">Options -&gt; String -&gt; IO (Response ByteString)
+</span><span class="hs-identifier hs-var">getWith</span></span><span> </span><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679136161"><span class="hs-identifier hs-var">opts</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136164"><span class="hs-identifier hs-var">endpoint</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136165"><span class="hs-identifier hs-var">uri</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-32"></span><span>  </span><span class="annot"><span class="annottext">Maybe a -&gt; IO (Maybe a)
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Response (Maybe a)
+</span><a href="#local-6989586621679136160"><span class="hs-identifier hs-var">r</span></a></span><span> </span><span class="annot"><span class="annottext">Response (Maybe a)
+-&gt; Getting (Maybe a) (Response (Maybe a)) (Maybe a) -&gt; Maybe a
+forall s a. s -&gt; Getting a s a -&gt; a
+</span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting (Maybe a) (Response (Maybe a)) (Maybe a)
+forall body0 body1.
+Lens (Response body0) (Response body1) body0 body1
+</span><span class="hs-identifier hs-var">responseBody</span></span><span class="hs-special">)</span><span>
+</span><span id="line-33"></span><span>
+</span><span id="line-34"></span><span id="local-6989586621679136158"><span class="annot"><a href="Bank.TrueLayer.Internal.html#getWithAuthAndOptions"><span class="hs-identifier hs-type">getWithAuthAndOptions</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="#local-6989586621679136158"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Options</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Internal.html#Endpoint"><span class="hs-identifier hs-type">Endpoint</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">AccessToken</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679136158"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span><span>
+</span><span id="line-35"></span><span id="getWithAuthAndOptions"><span class="annot"><span class="annottext">getWithAuthAndOptions :: Options -&gt; String -&gt; Endpoint -&gt; AccessToken -&gt; IO (Maybe a)
+</span><a href="Bank.TrueLayer.Internal.html#getWithAuthAndOptions"><span class="hs-identifier hs-var hs-var">getWithAuthAndOptions</span></a></span></span><span> </span><span id="local-6989586621679136157"><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679136157"><span class="hs-identifier hs-var">options</span></a></span></span><span> </span><span id="local-6989586621679136156"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136156"><span class="hs-identifier hs-var">uri</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Bank.TrueLayer.Internal.html#Endpoint"><span class="hs-identifier hs-type">Endpoint</span></a></span><span> </span><span id="local-6989586621679136155"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136155"><span class="hs-identifier hs-var">endpoint</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">AccessToken</span></span><span> </span><span id="local-6989586621679136154"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679136154"><span class="hs-identifier hs-var">accessToken</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-36"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679136153"><span class="annot"><span class="annottext">opts :: Options
+</span><a href="#local-6989586621679136153"><span class="hs-identifier hs-var hs-var">opts</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679136157"><span class="hs-identifier hs-var">options</span></a></span><span> </span><span class="annot"><span class="annottext">Options -&gt; (Options -&gt; Options) -&gt; Options
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><span class="hs-operator hs-var">&amp;</span></span><span> </span><span class="annot"><span class="annottext">(Maybe Auth -&gt; Identity (Maybe Auth))
+-&gt; Options -&gt; Identity Options
+Lens' Options (Maybe Auth)
+</span><span class="hs-identifier hs-var">auth</span></span><span> </span><span class="annot"><span class="annottext">((Maybe Auth -&gt; Identity (Maybe Auth))
+ -&gt; Options -&gt; Identity Options)
+-&gt; Auth -&gt; Options -&gt; Options
+forall s t a b. ASetter s t a (Maybe b) -&gt; b -&gt; s -&gt; t
+</span><span class="hs-operator hs-var">?~</span></span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; Auth
+</span><span class="hs-identifier hs-var">oauth2Bearer</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Text -&gt; ByteString
+</span><span class="hs-identifier hs-var">encodeUtf8</span></span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679136154"><span class="hs-identifier hs-var">accessToken</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-37"></span><span>  </span><span id="local-6989586621679136152"><span class="annot"><span class="annottext">Response (Maybe a)
+</span><a href="#local-6989586621679136152"><span class="hs-identifier hs-var">r</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Response ByteString -&gt; IO (Response (Maybe a))
+forall (m :: * -&gt; *) a.
+(MonadThrow m, FromJSON a) =&gt;
+Response ByteString -&gt; m (Response a)
+</span><span class="hs-identifier hs-var">asJSON</span></span><span> </span><span class="annot"><span class="annottext">(Response ByteString -&gt; IO (Response (Maybe a)))
+-&gt; IO (Response ByteString) -&gt; IO (Response (Maybe a))
+forall (m :: * -&gt; *) a b. Monad m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b
+</span><span class="hs-operator hs-var">=&lt;&lt;</span></span><span> </span><span class="annot"><span class="annottext">Options -&gt; String -&gt; IO (Response ByteString)
+</span><span class="hs-identifier hs-var">getWith</span></span><span> </span><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679136153"><span class="hs-identifier hs-var">opts</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136155"><span class="hs-identifier hs-var">endpoint</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136156"><span class="hs-identifier hs-var">uri</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-38"></span><span>  </span><span class="annot"><span class="annottext">Maybe a -&gt; IO (Maybe a)
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Response (Maybe a)
+</span><a href="#local-6989586621679136152"><span class="hs-identifier hs-var">r</span></a></span><span> </span><span class="annot"><span class="annottext">Response (Maybe a)
+-&gt; Getting (Maybe a) (Response (Maybe a)) (Maybe a) -&gt; Maybe a
+forall s a. s -&gt; Getting a s a -&gt; a
+</span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting (Maybe a) (Response (Maybe a)) (Maybe a)
+forall body0 body1.
+Lens (Response body0) (Response body1) body0 body1
+</span><span class="hs-identifier hs-var">responseBody</span></span><span class="hs-special">)</span><span>
+</span><span id="line-39"></span><span>
+</span><span id="line-40"></span><span id="local-6989586621679136150"><span id="local-6989586621679136151"><span class="annot"><a href="Bank.TrueLayer.Internal.html#postWithAuth"><span class="hs-identifier hs-type">postWithAuth</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">ToJSON</span></span><span> </span><span class="annot"><a href="#local-6989586621679136151"><span class="hs-identifier hs-type">body</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="#local-6989586621679136150"><span class="hs-identifier hs-type">res</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679136151"><span class="hs-identifier hs-type">body</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Internal.html#Endpoint"><span class="hs-identifier hs-type">Endpoint</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">AccessToken</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679136150"><span class="hs-identifier hs-type">res</span></a></span><span class="hs-special">)</span></span></span><span>
+</span><span id="line-41"></span><span id="postWithAuth"><span class="annot"><span class="annottext">postWithAuth :: String -&gt; body -&gt; Endpoint -&gt; AccessToken -&gt; IO (Maybe res)
+</span><a href="Bank.TrueLayer.Internal.html#postWithAuth"><span class="hs-identifier hs-var hs-var">postWithAuth</span></a></span></span><span> </span><span id="local-6989586621679136149"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136149"><span class="hs-identifier hs-var">uri</span></a></span></span><span> </span><span id="local-6989586621679136148"><span class="annot"><span class="annottext">body
+</span><a href="#local-6989586621679136148"><span class="hs-identifier hs-var">body</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Bank.TrueLayer.Internal.html#Endpoint"><span class="hs-identifier hs-type">Endpoint</span></a></span><span> </span><span id="local-6989586621679136147"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136147"><span class="hs-identifier hs-var">endpoint</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">AccessToken</span></span><span> </span><span id="local-6989586621679136146"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679136146"><span class="hs-identifier hs-var">accessToken</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-42"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679136145"><span class="annot"><span class="annottext">opts :: Options
+</span><a href="#local-6989586621679136145"><span class="hs-identifier hs-var hs-var">opts</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Options
+</span><span class="hs-identifier hs-var">defaults</span></span><span> </span><span class="annot"><span class="annottext">Options -&gt; (Options -&gt; Options) -&gt; Options
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><span class="hs-operator hs-var">&amp;</span></span><span> </span><span class="annot"><span class="annottext">(Maybe Auth -&gt; Identity (Maybe Auth))
+-&gt; Options -&gt; Identity Options
+Lens' Options (Maybe Auth)
+</span><span class="hs-identifier hs-var">auth</span></span><span> </span><span class="annot"><span class="annottext">((Maybe Auth -&gt; Identity (Maybe Auth))
+ -&gt; Options -&gt; Identity Options)
+-&gt; Auth -&gt; Options -&gt; Options
+forall s t a b. ASetter s t a (Maybe b) -&gt; b -&gt; s -&gt; t
+</span><span class="hs-operator hs-var">?~</span></span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; Auth
+</span><span class="hs-identifier hs-var">oauth2Bearer</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Text -&gt; ByteString
+</span><span class="hs-identifier hs-var">encodeUtf8</span></span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679136146"><span class="hs-identifier hs-var">accessToken</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-43"></span><span>  </span><span id="local-6989586621679136144"><span class="annot"><span class="annottext">Response (Maybe res)
+</span><a href="#local-6989586621679136144"><span class="hs-identifier hs-var">r</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Response ByteString -&gt; IO (Response (Maybe res))
+forall (m :: * -&gt; *) a.
+(MonadThrow m, FromJSON a) =&gt;
+Response ByteString -&gt; m (Response a)
+</span><span class="hs-identifier hs-var">asJSON</span></span><span> </span><span class="annot"><span class="annottext">(Response ByteString -&gt; IO (Response (Maybe res)))
+-&gt; IO (Response ByteString) -&gt; IO (Response (Maybe res))
+forall (m :: * -&gt; *) a b. Monad m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b
+</span><span class="hs-operator hs-var">=&lt;&lt;</span></span><span> </span><span class="annot"><span class="annottext">Options -&gt; String -&gt; Value -&gt; IO (Response ByteString)
+forall a.
+Postable a =&gt;
+Options -&gt; String -&gt; a -&gt; IO (Response ByteString)
+</span><span class="hs-identifier hs-var">postWith</span></span><span> </span><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679136145"><span class="hs-identifier hs-var">opts</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136147"><span class="hs-identifier hs-var">endpoint</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
+forall a. [a] -&gt; [a] -&gt; [a]
+</span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679136149"><span class="hs-identifier hs-var">uri</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">body -&gt; Value
+forall a. ToJSON a =&gt; a -&gt; Value
+</span><span class="hs-identifier hs-var">toJSON</span></span><span> </span><span class="annot"><span class="annottext">body
+</span><a href="#local-6989586621679136148"><span class="hs-identifier hs-var">body</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-44"></span><span>  </span><span class="annot"><span class="annottext">Maybe res -&gt; IO (Maybe res)
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Response (Maybe res)
+</span><a href="#local-6989586621679136144"><span class="hs-identifier hs-var">r</span></a></span><span> </span><span class="annot"><span class="annottext">Response (Maybe res)
+-&gt; Getting (Maybe res) (Response (Maybe res)) (Maybe res)
+-&gt; Maybe res
+forall s a. s -&gt; Getting a s a -&gt; a
+</span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting (Maybe res) (Response (Maybe res)) (Maybe res)
+forall body0 body1.
+Lens (Response body0) (Response body1) body0 body1
+</span><span class="hs-identifier hs-var">responseBody</span></span><span class="hs-special">)</span><span>
+</span><span id="line-45"></span></pre></body></html>
