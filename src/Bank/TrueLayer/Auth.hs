@@ -11,6 +11,8 @@ module Bank.TrueLayer.Auth
   , OAuth2
   , ExchangeToken
   , Env(..)
+  , ClientId(..)
+  , ClientSecret(..)
   ) where
 
 import           Data.Bifunctor                 ( bimap )
