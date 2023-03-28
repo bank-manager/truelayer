@@ -1,0 +1,19 @@
+name: On Release
+
+on:
+  release:
+    types: [published]
+
+
+jobs:
+  release-lts-18-28:
+    name: Release into LTS 18.28
+    runs-on: self-hosted
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          repository: bank-manager/stack-snapshots
+          token: ${{ secrets.SNAPSHOT_RELEASE_TOKEN }}
+          event-type: bump-snapshot-package
+          client-payload: '{"lts_release": "18/28", "repo": "${{ github.repository }}", "git_hash": "${{ github.sha }}"}'
