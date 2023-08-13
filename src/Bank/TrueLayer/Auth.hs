@@ -52,13 +52,13 @@ buildOAuth2 env (ClientId clientId) (ClientSecret clientSecret) callback =
 
 getAuthorizeEndpoint :: Env -> URI
 getAuthorizeEndpoint Prod    = [uri|https://auth.truelayer.com|]
-getAuthorizeEndpoint Sandbox = [uri|https://auth-sandbox.truelayer.com|]
+getAuthorizeEndpoint Sandbox = [uri|https://auth.truelayer-sandbox.com|]
 
 
 getAccessTokenEndpoint :: Env -> URI
 getAccessTokenEndpoint Prod = [uri|https://auth.truelayer.com/connect/token|]
 getAccessTokenEndpoint Sandbox =
-  [uri|https://auth-sandbox.truelayer.com/connect/token|]
+  [uri|https://auth.truelayer-sandbox.com/connect/token|]
 
 
 getAuthorizationUrl :: OAuth2 -> [(Text, Text)] -> URI
