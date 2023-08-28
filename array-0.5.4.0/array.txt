@@ -25,7 +25,7 @@ module Data.Array
 
 -- | The type of immutable non-strict (boxed) arrays with indices in
 --   <tt>i</tt> and elements in <tt>e</tt>.
-data Array i e
+data () => Array i e
 
 -- | Construct an array with the specified bounds and containing values for
 --   given indices within these bounds.
@@ -153,7 +153,7 @@ class IArray a e
 
 -- | The type of immutable non-strict (boxed) arrays with indices in
 --   <tt>i</tt> and elements in <tt>e</tt>.
-data Array i e
+data () => Array i e
 
 -- | Constructs an immutable array from a pair of bounds and a list of
 --   initial associations.
@@ -347,7 +347,7 @@ module Data.Array.IO
 --   <a>Ix</a>)</li>
 --   <li><tt>e</tt>: the element type of the array.</li>
 --   </ul>
-data IOArray i e
+data () => IOArray i e
 
 -- | Mutable, unboxed, strict arrays in the <a>IO</a> monad. The type
 --   arguments are as follows:
@@ -451,7 +451,7 @@ module Data.Array.IO.Safe
 --   <a>Ix</a>)</li>
 --   <li><tt>e</tt>: the element type of the array.</li>
 --   </ul>
-data IOArray i e
+data () => IOArray i e
 
 -- | Mutable, unboxed, strict arrays in the <a>IO</a> monad. The type
 --   arguments are as follows:
@@ -486,7 +486,7 @@ module Data.Array.ST
 --   <a>Ix</a>)</li>
 --   <li><tt>e</tt>: the element type of the array.</li>
 --   </ul>
-data STArray s i e
+data () => STArray s i e
 
 -- | A safe way to create and work with a mutable array before returning an
 --   immutable array for later perusal. This function avoids copying the
@@ -535,7 +535,7 @@ module Data.Array.ST.Safe
 --   <a>Ix</a>)</li>
 --   <li><tt>e</tt>: the element type of the array.</li>
 --   </ul>
-data STArray s i e
+data () => STArray s i e
 
 -- | A safe way to create and work with a mutable array before returning an
 --   immutable array for later perusal. This function avoids copying the

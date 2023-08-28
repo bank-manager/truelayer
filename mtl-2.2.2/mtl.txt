@@ -100,7 +100,7 @@ module Control.Monad.Error.Class
 -- | An exception to be thrown.
 --   
 --   Minimal complete definition: <a>noMsg</a> or <a>strMsg</a>.
-class Error a
+class () => Error a
 
 -- | Creates an exception without a message. The default implementation is
 --   <tt><a>strMsg</a> ""</tt>.
@@ -422,7 +422,7 @@ withState :: (s -> s) -> State s a -> State s a
 --   The <a>return</a> function leaves the state unchanged, while
 --   <tt>&gt;&gt;=</tt> uses the final state of the first computation as
 --   the initial state of the second.
-newtype StateT s (m :: Type -> Type) a
+newtype () => StateT s (m :: Type -> Type) a
 StateT :: (s -> m (a, s)) -> StateT s (m :: Type -> Type) a
 runStateT :: StateT s m a -> s -> m (a, s)
 
@@ -562,7 +562,7 @@ withState :: (s -> s) -> State s a -> State s a
 --   The <a>return</a> function leaves the state unchanged, while
 --   <tt>&gt;&gt;=</tt> uses the final state of the first computation as
 --   the initial state of the second.
-newtype StateT s (m :: Type -> Type) a
+newtype () => StateT s (m :: Type -> Type) a
 StateT :: (s -> m (a, s)) -> StateT s (m :: Type -> Type) a
 runStateT :: StateT s m a -> s -> m (a, s)
 
@@ -690,7 +690,7 @@ withReader :: (r' -> r) -> Reader r a -> Reader r' a
 --   The <a>return</a> function ignores the environment, while
 --   <tt>&gt;&gt;=</tt> passes the inherited environment to both
 --   subcomputations.
-newtype ReaderT r (m :: Type -> Type) a
+newtype () => ReaderT r (m :: Type -> Type) a
 ReaderT :: (r -> m a) -> ReaderT r (m :: Type -> Type) a
 runReaderT :: ReaderT r m a -> r -> m a
 
@@ -719,7 +719,7 @@ module Control.Monad.List
 --   
 --   <i>Note:</i> this does not yield a monad unless the argument monad is
 --   commutative.
-newtype ListT (m :: Type -> Type) a
+newtype () => ListT (m :: Type -> Type) a
 ListT :: m [a] -> ListT (m :: Type -> Type) a
 [runListT] :: ListT (m :: Type -> Type) a -> m [a]
 
@@ -801,7 +801,7 @@ liftEither :: MonadError e m => Either e a -> m a
 --   The <a>return</a> function yields a computation that produces the
 --   given value, while <tt>&gt;&gt;=</tt> sequences two subcomputations,
 --   exiting on the first exception.
-newtype ExceptT e (m :: Type -> Type) a
+newtype () => ExceptT e (m :: Type -> Type) a
 ExceptT :: m (Either e a) -> ExceptT e (m :: Type -> Type) a
 
 -- | The parameterizable exception monad.
@@ -901,7 +901,7 @@ catchError :: MonadError e m => m a -> (e -> m a) -> m a
 -- | An exception to be thrown.
 --   
 --   Minimal complete definition: <a>noMsg</a> or <a>strMsg</a>.
-class Error a
+class () => Error a
 
 -- | Creates an exception without a message. The default implementation is
 --   <tt><a>strMsg</a> ""</tt>.
@@ -924,7 +924,7 @@ strMsg :: Error a => String -> a
 --   The <a>return</a> function yields a successful computation, while
 --   <tt>&gt;&gt;=</tt> sequences two subcomputations, failing on the first
 --   error.
-newtype ErrorT e (m :: Type -> Type) a
+newtype () => ErrorT e (m :: Type -> Type) a
 ErrorT :: m (Either e a) -> ErrorT e (m :: Type -> Type) a
 runErrorT :: ErrorT e m a -> m (Either e a)
 
@@ -1033,7 +1033,7 @@ withCont :: ((b -> r) -> a -> r) -> Cont r a -> Cont r b
 --   
 --   <a>ContT</a> is not a functor on the category of monads, and many
 --   operations cannot be lifted through it.
-newtype ContT (r :: k) (m :: k -> Type) a
+newtype () => ContT (r :: k) (m :: k -> Type) a
 ContT :: ((a -> m r) -> m r) -> ContT (r :: k) (m :: k -> Type) a
 runContT :: ContT r m a -> (a -> m r) -> m r
 
@@ -1046,7 +1046,7 @@ runContT :: ContT r m a -> (a -> m r) -> m r
 --   <li><pre><a>runContT</a> (<a>mapContT</a> f m) = f . <a>runContT</a>
 --   m</pre></li>
 --   </ul>
-mapContT :: forall k m (r :: k) a. (m r -> m r) -> ContT r m a -> ContT r m a
+mapContT :: forall {k} m (r :: k) a. (m r -> m r) -> ContT r m a -> ContT r m a
 
 -- | Apply a function to transform the continuation passed to a CPS
 --   computation.
@@ -1055,7 +1055,7 @@ mapContT :: forall k m (r :: k) a. (m r -> m r) -> ContT r m a -> ContT r m a
 --   <li><pre><a>runContT</a> (<a>withContT</a> f m) = <a>runContT</a> m .
 --   f</pre></li>
 --   </ul>
-withContT :: forall k b m (r :: k) a. ((b -> m r) -> a -> m r) -> ContT r m a -> ContT r m b
+withContT :: forall {k} b m (r :: k) a. ((b -> m r) -> a -> m r) -> ContT r m a -> ContT r m b
 
 
 -- | The MonadWriter class.
@@ -1180,7 +1180,7 @@ withRWS :: (r' -> s -> (r, s)) -> RWS r w s a -> RWS r' w s a
 -- | A monad transformer adding reading an environment of type <tt>r</tt>,
 --   collecting an output of type <tt>w</tt> and updating a state of type
 --   <tt>s</tt> to an inner monad <tt>m</tt>.
-newtype RWST r w s (m :: Type -> Type) a
+newtype () => RWST r w s (m :: Type -> Type) a
 RWST :: (r -> s -> m (a, s, w)) -> RWST r w s (m :: Type -> Type) a
 runRWST :: RWST r w s m a -> r -> s -> m (a, s, w)
 
@@ -1258,7 +1258,7 @@ withRWS :: (r' -> s -> (r, s)) -> RWS r w s a -> RWS r' w s a
 -- | A monad transformer adding reading an environment of type <tt>r</tt>,
 --   collecting an output of type <tt>w</tt> and updating a state of type
 --   <tt>s</tt> to an inner monad <tt>m</tt>.
-newtype RWST r w s (m :: Type -> Type) a
+newtype () => RWST r w s (m :: Type -> Type) a
 RWST :: (r -> s -> m (a, s, w)) -> RWST r w s (m :: Type -> Type) a
 runRWST :: RWST r w s m a -> r -> s -> m (a, s, w)
 
@@ -1381,7 +1381,7 @@ mapWriter :: ((a, w) -> (b, w')) -> Writer w a -> Writer w' b
 --   The <a>return</a> function produces the output <a>mempty</a>, while
 --   <tt>&gt;&gt;=</tt> combines the outputs of the subcomputations using
 --   <a>mappend</a>.
-newtype WriterT w (m :: Type -> Type) a
+newtype () => WriterT w (m :: Type -> Type) a
 WriterT :: m (a, w) -> WriterT w (m :: Type -> Type) a
 runWriterT :: WriterT w m a -> m (a, w)
 
@@ -1496,7 +1496,7 @@ mapWriter :: ((a, w) -> (b, w')) -> Writer w a -> Writer w' b
 --   The <a>return</a> function produces the output <a>mempty</a>, while
 --   <tt>&gt;&gt;=</tt> combines the outputs of the subcomputations using
 --   <a>mappend</a>.
-newtype WriterT w (m :: Type -> Type) a
+newtype () => WriterT w (m :: Type -> Type) a
 WriterT :: m (a, w) -> WriterT w (m :: Type -> Type) a
 [runWriterT] :: WriterT w (m :: Type -> Type) a -> m (a, w)
 

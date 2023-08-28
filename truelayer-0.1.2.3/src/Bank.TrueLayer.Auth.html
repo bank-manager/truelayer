@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE OverloadedStrings #-}</span><span>
+</span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE QuasiQuotes       #-}</span><span>
+</span><span id="line-3"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Bank.TrueLayer.Auth</span><span>
+</span><span id="line-4"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#genAccessToken"><span class="hs-identifier">genAccessToken</span></a></span><span>
+</span><span id="line-5"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#swapCode"><span class="hs-identifier">swapCode</span></a></span><span>
+</span><span id="line-6"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#buildOAuth2"><span class="hs-identifier">buildOAuth2</span></a></span><span>
+</span><span id="line-7"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#getAuthorizationUrl"><span class="hs-identifier">getAuthorizationUrl</span></a></span><span>
+</span><span id="line-8"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">RefreshToken</span></span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-9"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">AccessToken</span></span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-10"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">OAuth2Token</span></span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-11"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">OAuth2</span></span><span>
+</span><span id="line-12"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">ExchangeToken</span></span><span>
+</span><span id="line-13"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#Env"><span class="hs-identifier">Env</span></a></span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-14"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#ClientId"><span class="hs-identifier">ClientId</span></a></span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-15"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#ClientSecret"><span class="hs-identifier">ClientSecret</span></a></span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-16"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-17"></span><span>
+</span><span id="line-18"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Control.Monad.Except</span></span><span>    </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">runExceptT</span></span><span class="hs-special">)</span><span>
+</span><span id="line-19"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Data.Bifunctor</span></span><span>          </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">bimap</span></span><span class="hs-special">)</span><span>
+</span><span id="line-20"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Data.Text</span></span><span>               </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Text</span></span><span class="hs-special">)</span><span>
+</span><span id="line-21"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Data.Text.Encoding</span></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">encodeUtf8</span></span><span class="hs-special">)</span><span>
+</span><span id="line-22"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Network.HTTP.Client</span></span><span>     </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">newManager</span></span><span class="hs-special">)</span><span>
+</span><span id="line-23"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Network.HTTP.Client.TLS</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">tlsManagerSettings</span></span><span class="hs-special">)</span><span>
+</span><span id="line-24"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Network.OAuth.OAuth2</span></span><span>
+</span><span id="line-25"></span><span>    </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">AccessToken</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-26"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">ExchangeToken</span></span><span>
+</span><span id="line-27"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">OAuth2</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-28"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">OAuth2Token</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-29"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">RefreshToken</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-30"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">appendQueryParams</span></span><span>
+</span><span id="line-31"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">authorizationUrl</span></span><span>
+</span><span id="line-32"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">fetchAccessToken</span></span><span>
+</span><span id="line-33"></span><span>    </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">refreshAccessToken</span></span><span>
+</span><span id="line-34"></span><span>    </span><span class="hs-special">)</span><span>
+</span><span id="line-35"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">URI.ByteString</span></span><span>          </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">URI</span></span><span class="hs-special">)</span><span>
+</span><span id="line-36"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">URI.ByteString.QQ</span></span><span>       </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">uri</span></span><span class="hs-special">)</span><span>
+</span><span id="line-37"></span><span>
+</span><span id="line-38"></span><span>
+</span><span id="line-39"></span><span class="hs-keyword">newtype</span><span> </span><span id="ClientId"><span class="annot"><a href="Bank.TrueLayer.Auth.html#ClientId"><span class="hs-identifier hs-var">ClientId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="ClientId"><span class="annot"><a href="Bank.TrueLayer.Auth.html#ClientId"><span class="hs-identifier hs-var">ClientId</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-40"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679145090"><span id="local-6989586621679145096"><span id="local-6989586621679145100"><span class="annot"><span class="annottext">Int -&gt; ClientId -&gt; ShowS
+[ClientId] -&gt; ShowS
+ClientId -&gt; String
+(Int -&gt; ClientId -&gt; ShowS)
+-&gt; (ClientId -&gt; String) -&gt; ([ClientId] -&gt; ShowS) -&gt; Show ClientId
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; ClientId -&gt; ShowS
+showsPrec :: Int -&gt; ClientId -&gt; ShowS
+$cshow :: ClientId -&gt; String
+show :: ClientId -&gt; String
+$cshowList :: [ClientId] -&gt; ShowS
+showList :: [ClientId] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-41"></span><span class="hs-keyword">newtype</span><span> </span><span id="ClientSecret"><span class="annot"><a href="Bank.TrueLayer.Auth.html#ClientSecret"><span class="hs-identifier hs-var">ClientSecret</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="ClientSecret"><span class="annot"><a href="Bank.TrueLayer.Auth.html#ClientSecret"><span class="hs-identifier hs-var">ClientSecret</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-42"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679145105"><span id="local-6989586621679145109"><span id="local-6989586621679145113"><span class="annot"><span class="annottext">Int -&gt; ClientSecret -&gt; ShowS
+[ClientSecret] -&gt; ShowS
+ClientSecret -&gt; String
+(Int -&gt; ClientSecret -&gt; ShowS)
+-&gt; (ClientSecret -&gt; String)
+-&gt; ([ClientSecret] -&gt; ShowS)
+-&gt; Show ClientSecret
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; ClientSecret -&gt; ShowS
+showsPrec :: Int -&gt; ClientSecret -&gt; ShowS
+$cshow :: ClientSecret -&gt; String
+show :: ClientSecret -&gt; String
+$cshowList :: [ClientSecret] -&gt; ShowS
+showList :: [ClientSecret] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-43"></span><span>
+</span><span id="line-44"></span><span class="hs-keyword">data</span><span> </span><span id="Env"><span class="annot"><a href="Bank.TrueLayer.Auth.html#Env"><span class="hs-identifier hs-var">Env</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Sandbox"><span class="annot"><a href="Bank.TrueLayer.Auth.html#Sandbox"><span class="hs-identifier hs-var">Sandbox</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="Prod"><span class="annot"><a href="Bank.TrueLayer.Auth.html#Prod"><span class="hs-identifier hs-var">Prod</span></a></span></span><span>
+</span><span id="line-45"></span><span>
+</span><span id="line-46"></span><span>
+</span><span id="line-47"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#buildOAuth2"><span class="hs-identifier hs-type">buildOAuth2</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#Env"><span class="hs-identifier hs-type">Env</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#ClientId"><span class="hs-identifier hs-type">ClientId</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#ClientSecret"><span class="hs-identifier hs-type">ClientSecret</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">URI</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">OAuth2</span></span><span>
+</span><span id="line-48"></span><span id="buildOAuth2"><span class="annot"><span class="annottext">buildOAuth2 :: Env -&gt; ClientId -&gt; ClientSecret -&gt; URI -&gt; OAuth2
+</span><a href="Bank.TrueLayer.Auth.html#buildOAuth2"><span class="hs-identifier hs-var hs-var">buildOAuth2</span></a></span></span><span> </span><span id="local-6989586621679145117"><span class="annot"><span class="annottext">Env
+</span><a href="#local-6989586621679145117"><span class="hs-identifier hs-var">env</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Bank.TrueLayer.Auth.html#ClientId"><span class="hs-identifier hs-type">ClientId</span></a></span><span> </span><span id="local-6989586621679145118"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679145118"><span class="hs-identifier hs-var">clientId</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Bank.TrueLayer.Auth.html#ClientSecret"><span class="hs-identifier hs-type">ClientSecret</span></a></span><span> </span><span id="local-6989586621679145119"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679145119"><span class="hs-identifier hs-var">clientSecret</span></a></span></span><span class="hs-special">)</span><span> </span><span id="local-6989586621679145120"><span class="annot"><span class="annottext">URI
+</span><a href="#local-6989586621679145120"><span class="hs-identifier hs-var">callback</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-49"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">OAuth2</span></span><span> </span><span class="hs-special">{</span><span> </span><span class="annot"><span class="annottext">oauth2ClientId :: Text
+</span><span class="hs-identifier hs-var">oauth2ClientId</span></span><span>          </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679145118"><span class="hs-identifier hs-var">clientId</span></a></span><span>
+</span><span id="line-50"></span><span>         </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">oauth2ClientSecret :: Text
+</span><span class="hs-identifier hs-var">oauth2ClientSecret</span></span><span>      </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679145119"><span class="hs-identifier hs-var">clientSecret</span></a></span><span>
+</span><span id="line-51"></span><span>         </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">oauth2AuthorizeEndpoint :: URI
+</span><span class="hs-identifier hs-var">oauth2AuthorizeEndpoint</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Env -&gt; URI
+</span><a href="Bank.TrueLayer.Auth.html#getAuthorizeEndpoint"><span class="hs-identifier hs-var">getAuthorizeEndpoint</span></a></span><span> </span><span class="annot"><span class="annottext">Env
+</span><a href="#local-6989586621679145117"><span class="hs-identifier hs-var">env</span></a></span><span>
+</span><span id="line-52"></span><span>         </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">oauth2TokenEndpoint :: URI
+</span><span class="hs-identifier hs-var">oauth2TokenEndpoint</span></span><span>     </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Env -&gt; URI
+</span><a href="Bank.TrueLayer.Auth.html#getAccessTokenEndpoint"><span class="hs-identifier hs-var">getAccessTokenEndpoint</span></a></span><span> </span><span class="annot"><span class="annottext">Env
+</span><a href="#local-6989586621679145117"><span class="hs-identifier hs-var">env</span></a></span><span>
+</span><span id="line-53"></span><span>         </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">oauth2RedirectUri :: URI
+</span><span class="hs-identifier hs-var">oauth2RedirectUri</span></span><span>       </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">URI
+</span><a href="#local-6989586621679145120"><span class="hs-identifier hs-var">callback</span></a></span><span>
+</span><span id="line-54"></span><span>         </span><span class="hs-special">}</span><span>
+</span><span id="line-55"></span><span>
+</span><span id="line-56"></span><span>
+</span><span id="line-57"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#getAuthorizeEndpoint"><span class="hs-identifier hs-type">getAuthorizeEndpoint</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#Env"><span class="hs-identifier hs-type">Env</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">URI</span></span><span>
+</span><span id="line-58"></span><span id="getAuthorizeEndpoint"><span class="annot"><span class="annottext">getAuthorizeEndpoint :: Env -&gt; URI
+</span><a href="Bank.TrueLayer.Auth.html#getAuthorizeEndpoint"><span class="hs-identifier hs-var hs-var">getAuthorizeEndpoint</span></a></span></span><span> </span><span class="annot"><span class="annottext">Env
+</span><a href="Bank.TrueLayer.Auth.html#Prod"><span class="hs-identifier hs-var">Prod</span></a></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="">[uri|https://auth.truelayer.com|]</span></span><span>
+</span><span id="line-59"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#getAuthorizeEndpoint"><span class="hs-identifier hs-var">getAuthorizeEndpoint</span></a></span><span> </span><span class="annot"><span class="annottext">Env
+</span><a href="Bank.TrueLayer.Auth.html#Sandbox"><span class="hs-identifier hs-var">Sandbox</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="">[uri|https://auth.truelayer-sandbox.com|]</span></span><span>
+</span><span id="line-60"></span><span>
+</span><span id="line-61"></span><span>
+</span><span id="line-62"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#getAccessTokenEndpoint"><span class="hs-identifier hs-type">getAccessTokenEndpoint</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Bank.TrueLayer.Auth.html#Env"><span class="hs-identifier hs-type">Env</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">URI</span></span><span>
+</span><span id="line-63"></span><span id="getAccessTokenEndpoint"><span class="annot"><span class="annottext">getAccessTokenEndpoint :: Env -&gt; URI
+</span><a href="Bank.TrueLayer.Auth.html#getAccessTokenEndpoint"><span class="hs-identifier hs-var hs-var">getAccessTokenEndpoint</span></a></span></span><span> </span><span class="annot"><span class="annottext">Env
+</span><a href="Bank.TrueLayer.Auth.html#Prod"><span class="hs-identifier hs-var">Prod</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="">[uri|https://auth.truelayer.com/connect/token|]</span></span><span>
+</span><span id="line-64"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#getAccessTokenEndpoint"><span class="hs-identifier hs-var">getAccessTokenEndpoint</span></a></span><span> </span><span class="annot"><span class="annottext">Env
+</span><a href="Bank.TrueLayer.Auth.html#Sandbox"><span class="hs-identifier hs-var">Sandbox</span></a></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-65"></span><span>  </span><span class="annot"><span class="">[uri|https://auth.truelayer-sandbox.com/connect/token|]</span></span><span>
+</span><span id="line-66"></span><span>
+</span><span id="line-67"></span><span>
+</span><span id="line-68"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#getAuthorizationUrl"><span class="hs-identifier hs-type">getAuthorizationUrl</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">OAuth2</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">URI</span></span><span>
+</span><span id="line-69"></span><span id="getAuthorizationUrl"><span class="annot"><span class="annottext">getAuthorizationUrl :: OAuth2 -&gt; [(Text, Text)] -&gt; URI
+</span><a href="Bank.TrueLayer.Auth.html#getAuthorizationUrl"><span class="hs-identifier hs-var hs-var">getAuthorizationUrl</span></a></span></span><span> </span><span id="local-6989586621679145135"><span class="annot"><span class="annottext">OAuth2
+</span><a href="#local-6989586621679145135"><span class="hs-identifier hs-var">oauth2Settings</span></a></span></span><span> </span><span id="local-6989586621679145136"><span class="annot"><span class="annottext">[(Text, Text)]
+</span><a href="#local-6989586621679145136"><span class="hs-identifier hs-var">params</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[(ByteString, ByteString)] -&gt; URI -&gt; URI
+forall a. [(ByteString, ByteString)] -&gt; URIRef a -&gt; URIRef a
+</span><span class="hs-identifier hs-var">appendQueryParams</span></span><span>
+</span><span id="line-70"></span><span>  </span><span class="annot"><span class="annottext">[(ByteString, ByteString)]
+</span><a href="#local-6989586621679145137"><span class="hs-identifier hs-var">bytestringParams</span></a></span><span>
+</span><span id="line-71"></span><span>  </span><span class="hs-special">(</span><span class="annot"><span class="annottext">OAuth2 -&gt; URI
+</span><span class="hs-identifier hs-var">authorizationUrl</span></span><span> </span><span class="annot"><span class="annottext">OAuth2
+</span><a href="#local-6989586621679145135"><span class="hs-identifier hs-var">oauth2Settings</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-72"></span><span>  </span><span class="hs-keyword">where</span><span> </span><span id="local-6989586621679145137"><span class="annot"><span class="annottext">bytestringParams :: [(ByteString, ByteString)]
+</span><a href="#local-6989586621679145137"><span class="hs-identifier hs-var hs-var">bytestringParams</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">((Text, Text) -&gt; (ByteString, ByteString))
+-&gt; [(Text, Text)] -&gt; [(ByteString, ByteString)]
+forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Text -&gt; ByteString)
+-&gt; (Text -&gt; ByteString) -&gt; (Text, Text) -&gt; (ByteString, ByteString)
+forall a b c d. (a -&gt; b) -&gt; (c -&gt; d) -&gt; (a, c) -&gt; (b, d)
+forall (p :: * -&gt; * -&gt; *) a b c d.
+Bifunctor p =&gt;
+(a -&gt; b) -&gt; (c -&gt; d) -&gt; p a c -&gt; p b d
+</span><span class="hs-identifier hs-var">bimap</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; ByteString
+</span><span class="hs-identifier hs-var">encodeUtf8</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; ByteString
+</span><span class="hs-identifier hs-var">encodeUtf8</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[(Text, Text)]
+</span><a href="#local-6989586621679145136"><span class="hs-identifier hs-var">params</span></a></span><span>
+</span><span id="line-73"></span><span>
+</span><span id="line-74"></span><span>
+</span><span id="line-75"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#genAccessToken"><span class="hs-identifier hs-type">genAccessToken</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">OAuth2</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">RefreshToken</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">OAuth2Token</span></span><span class="hs-special">)</span><span>
+</span><span id="line-76"></span><span id="genAccessToken"><span class="annot"><span class="annottext">genAccessToken :: OAuth2 -&gt; RefreshToken -&gt; IO (Maybe OAuth2Token)
+</span><a href="Bank.TrueLayer.Auth.html#genAccessToken"><span class="hs-identifier hs-var hs-var">genAccessToken</span></a></span></span><span> </span><span id="local-6989586621679145140"><span class="annot"><span class="annottext">OAuth2
+</span><a href="#local-6989586621679145140"><span class="hs-identifier hs-var">oauthSettings</span></a></span></span><span> </span><span id="local-6989586621679145141"><span class="annot"><span class="annottext">RefreshToken
+</span><a href="#local-6989586621679145141"><span class="hs-identifier hs-var">token</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-77"></span><span>  </span><span id="local-6989586621679145142"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679145142"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">ManagerSettings -&gt; IO Manager
+</span><span class="hs-identifier hs-var">newManager</span></span><span> </span><span class="annot"><span class="annottext">ManagerSettings
+</span><span class="hs-identifier hs-var">tlsManagerSettings</span></span><span>
+</span><span id="line-78"></span><span>  </span><span id="local-6989586621679145143"><span class="annot"><span class="annottext">Either TokenRequestError OAuth2Token
+</span><a href="#local-6989586621679145143"><span class="hs-identifier hs-var">eToken</span></a></span></span><span>  </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">ExceptT TokenRequestError IO OAuth2Token
+-&gt; IO (Either TokenRequestError OAuth2Token)
+forall e (m :: * -&gt; *) a. ExceptT e m a -&gt; m (Either e a)
+</span><span class="hs-identifier hs-var">runExceptT</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Manager
+-&gt; OAuth2
+-&gt; RefreshToken
+-&gt; ExceptT TokenRequestError IO OAuth2Token
+forall (m :: * -&gt; *).
+MonadIO m =&gt;
+Manager
+-&gt; OAuth2
+-&gt; RefreshToken
+-&gt; ExceptT TokenRequestError m OAuth2Token
+</span><span class="hs-identifier hs-var">refreshAccessToken</span></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679145142"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">OAuth2
+</span><a href="#local-6989586621679145140"><span class="hs-identifier hs-var">oauthSettings</span></a></span><span> </span><span class="annot"><span class="annottext">RefreshToken
+</span><a href="#local-6989586621679145141"><span class="hs-identifier hs-var">token</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-79"></span><span>  </span><span class="annot"><span class="annottext">Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token)
+forall a. a -&gt; IO a
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">(Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token))
+-&gt; Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token)
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Either TokenRequestError OAuth2Token
+</span><a href="#local-6989586621679145143"><span class="hs-identifier hs-var">eToken</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-80"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Left</span></span><span>  </span><span class="annot"><span class="annottext">TokenRequestError
+</span><span class="hs-identifier">_</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Maybe OAuth2Token
+forall a. Maybe a
+</span><span class="hs-identifier hs-var">Nothing</span></span><span>
+</span><span id="line-81"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span id="local-6989586621679145144"><span class="annot"><span class="annottext">OAuth2Token
+</span><a href="#local-6989586621679145144"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">OAuth2Token -&gt; Maybe OAuth2Token
+forall a. a -&gt; Maybe a
+</span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">OAuth2Token
+</span><a href="#local-6989586621679145144"><span class="hs-identifier hs-var">t</span></a></span><span>
+</span><span id="line-82"></span><span>
+</span><span id="line-83"></span><span>
+</span><span id="line-84"></span><span class="annot"><a href="Bank.TrueLayer.Auth.html#swapCode"><span class="hs-identifier hs-type">swapCode</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">OAuth2</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ExchangeToken</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">OAuth2Token</span></span><span class="hs-special">)</span><span>
+</span><span id="line-85"></span><span id="swapCode"><span class="annot"><span class="annottext">swapCode :: OAuth2 -&gt; ExchangeToken -&gt; IO (Maybe OAuth2Token)
+</span><a href="Bank.TrueLayer.Auth.html#swapCode"><span class="hs-identifier hs-var hs-var">swapCode</span></a></span></span><span> </span><span id="local-6989586621679145145"><span class="annot"><span class="annottext">OAuth2
+</span><a href="#local-6989586621679145145"><span class="hs-identifier hs-var">oauthSettings</span></a></span></span><span> </span><span id="local-6989586621679145146"><span class="annot"><span class="annottext">ExchangeToken
+</span><a href="#local-6989586621679145146"><span class="hs-identifier hs-var">code</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-86"></span><span>  </span><span id="local-6989586621679145147"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679145147"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">ManagerSettings -&gt; IO Manager
+</span><span class="hs-identifier hs-var">newManager</span></span><span> </span><span class="annot"><span class="annottext">ManagerSettings
+</span><span class="hs-identifier hs-var">tlsManagerSettings</span></span><span>
+</span><span id="line-87"></span><span>  </span><span id="local-6989586621679145148"><span class="annot"><span class="annottext">Either TokenRequestError OAuth2Token
+</span><a href="#local-6989586621679145148"><span class="hs-identifier hs-var">eToken</span></a></span></span><span>  </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">ExceptT TokenRequestError IO OAuth2Token
+-&gt; IO (Either TokenRequestError OAuth2Token)
+forall e (m :: * -&gt; *) a. ExceptT e m a -&gt; m (Either e a)
+</span><span class="hs-identifier hs-var">runExceptT</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Manager
+-&gt; OAuth2
+-&gt; ExchangeToken
+-&gt; ExceptT TokenRequestError IO OAuth2Token
+forall (m :: * -&gt; *).
+MonadIO m =&gt;
+Manager
+-&gt; OAuth2
+-&gt; ExchangeToken
+-&gt; ExceptT TokenRequestError m OAuth2Token
+</span><span class="hs-identifier hs-var">fetchAccessToken</span></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679145147"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">OAuth2
+</span><a href="#local-6989586621679145145"><span class="hs-identifier hs-var">oauthSettings</span></a></span><span> </span><span class="annot"><span class="annottext">ExchangeToken
+</span><a href="#local-6989586621679145146"><span class="hs-identifier hs-var">code</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-88"></span><span>  </span><span class="annot"><span class="annottext">Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token)
+forall a. a -&gt; IO a
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">(Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token))
+-&gt; Maybe OAuth2Token -&gt; IO (Maybe OAuth2Token)
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Either TokenRequestError OAuth2Token
+</span><a href="#local-6989586621679145148"><span class="hs-identifier hs-var">eToken</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-89"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Left</span></span><span>  </span><span class="annot"><span class="annottext">TokenRequestError
+</span><span class="hs-identifier">_</span></span><span>     </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Maybe OAuth2Token
+forall a. Maybe a
+</span><span class="hs-identifier hs-var">Nothing</span></span><span>
+</span><span id="line-90"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span id="local-6989586621679145149"><span class="annot"><span class="annottext">OAuth2Token
+</span><a href="#local-6989586621679145149"><span class="hs-identifier hs-var">token</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">OAuth2Token -&gt; Maybe OAuth2Token
+forall a. a -&gt; Maybe a
+</span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">OAuth2Token
+</span><a href="#local-6989586621679145149"><span class="hs-identifier hs-var">token</span></a></span><span>
+</span><span id="line-91"></span></pre></body></html>

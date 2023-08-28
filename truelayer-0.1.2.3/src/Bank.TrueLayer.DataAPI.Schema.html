@@ -1,0 +1,1746 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE DeriveAnyClass        #-}</span><span>
+</span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE DeriveGeneric         #-}</span><span>
+</span><span id="line-3"></span><span class="hs-pragma">{-# LANGUAGE DuplicateRecordFields #-}</span><span>
+</span><span id="line-4"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Bank.TrueLayer.DataAPI.Schema</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-5"></span><span>
+</span><span id="line-6"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Data.Aeson</span></span><span>              </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">FromJSON</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">ToJSON</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-7"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Data.Time.Calendar</span></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Day</span></span><span class="hs-special">)</span><span>
+</span><span id="line-8"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">Data.Time.LocalTime</span></span><span>     </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">ZonedTime</span></span><span class="hs-special">)</span><span>
+</span><span id="line-9"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><span class="hs-identifier">GHC.Generics</span></span><span>            </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Generic</span></span><span class="hs-special">)</span><span>
+</span><span id="line-10"></span><span>
+</span><span id="line-11"></span><span class="hs-keyword">import</span><span>           </span><span class="annot"><a href="Bank.TrueLayer.Internal.html"><span class="hs-identifier">Bank.TrueLayer.Internal</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Options</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">fromString</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">param</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-operator">(&amp;)</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-operator">(.~)</span></span><span class="hs-special">)</span><span>
+</span><span id="line-12"></span><span>
+</span><span id="line-13"></span><span class="hs-keyword">newtype</span><span> </span><span id="Ip"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Ip"><span class="hs-identifier hs-var">Ip</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Ip"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Ip"><span class="hs-identifier hs-var">Ip</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-14"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679145586"><span id="local-6989586621679145593"><span id="local-6989586621679145597"><span class="annot"><span class="annottext">Int -&gt; Ip -&gt; ShowS
+[Ip] -&gt; ShowS
+Ip -&gt; String
+(Int -&gt; Ip -&gt; ShowS)
+-&gt; (Ip -&gt; String) -&gt; ([Ip] -&gt; ShowS) -&gt; Show Ip
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; Ip -&gt; ShowS
+showsPrec :: Int -&gt; Ip -&gt; ShowS
+$cshow :: Ip -&gt; String
+show :: Ip -&gt; String
+$cshowList :: [Ip] -&gt; ShowS
+showList :: [Ip] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-15"></span><span>
+</span><span id="line-16"></span><span>
+</span><span id="line-17"></span><span>
+</span><span id="line-18"></span><span class="hs-keyword">newtype</span><span> </span><span id="Accounts"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Accounts"><span class="hs-identifier hs-var">Accounts</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Accounts"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Accounts"><span class="hs-identifier hs-var">Accounts</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aresults%3AAccounts"><span class="annot"><span class="annottext">Accounts -&gt; [Account]
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aresults%3AAccounts"><span class="hs-identifier hs-var hs-var">results</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Account"><span class="hs-identifier hs-type">Account</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-special">}</span><span>
+</span><span id="line-19"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679145604"><span id="local-6989586621679145612"><span class="annot"><span class="annottext">Value -&gt; Parser [Accounts]
+Value -&gt; Parser Accounts
+(Value -&gt; Parser Accounts)
+-&gt; (Value -&gt; Parser [Accounts]) -&gt; FromJSON Accounts
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser Accounts
+parseJSON :: Value -&gt; Parser Accounts
+$cparseJSONList :: Value -&gt; Parser [Accounts]
+parseJSONList :: Value -&gt; Parser [Accounts]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679145683"><span id="local-6989586621679145685"><span class="annot"><span class="annottext">(forall x. Accounts -&gt; Rep Accounts x)
+-&gt; (forall x. Rep Accounts x -&gt; Accounts) -&gt; Generic Accounts
+forall x. Rep Accounts x -&gt; Accounts
+forall x. Accounts -&gt; Rep Accounts x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. Accounts -&gt; Rep Accounts x
+from :: forall x. Accounts -&gt; Rep Accounts x
+$cto :: forall x. Rep Accounts x -&gt; Accounts
+to :: forall x. Rep Accounts x -&gt; Accounts
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679145688"><span id="local-6989586621679145693"><span id="local-6989586621679145697"><span class="annot"><span class="annottext">Int -&gt; Accounts -&gt; ShowS
+[Accounts] -&gt; ShowS
+Accounts -&gt; String
+(Int -&gt; Accounts -&gt; ShowS)
+-&gt; (Accounts -&gt; String) -&gt; ([Accounts] -&gt; ShowS) -&gt; Show Accounts
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; Accounts -&gt; ShowS
+showsPrec :: Int -&gt; Accounts -&gt; ShowS
+$cshow :: Accounts -&gt; String
+show :: Accounts -&gt; String
+$cshowList :: [Accounts] -&gt; ShowS
+showList :: [Accounts] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679145701"><span id="local-6989586621679145708"><span id="local-6989586621679145711"><span id="local-6989586621679145714"><span class="annot"><span class="annottext">[Accounts] -&gt; Value
+[Accounts] -&gt; Encoding
+Accounts -&gt; Value
+Accounts -&gt; Encoding
+(Accounts -&gt; Value)
+-&gt; (Accounts -&gt; Encoding)
+-&gt; ([Accounts] -&gt; Value)
+-&gt; ([Accounts] -&gt; Encoding)
+-&gt; ToJSON Accounts
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: Accounts -&gt; Value
+toJSON :: Accounts -&gt; Value
+$ctoEncoding :: Accounts -&gt; Encoding
+toEncoding :: Accounts -&gt; Encoding
+$ctoJSONList :: [Accounts] -&gt; Value
+toJSONList :: [Accounts] -&gt; Value
+$ctoEncodingList :: [Accounts] -&gt; Encoding
+toEncodingList :: [Accounts] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-20"></span><span>
+</span><span id="line-21"></span><span class="hs-keyword">data</span><span> </span><span id="Account"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Account"><span class="hs-identifier hs-var">Account</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Account"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Account"><span class="hs-identifier hs-var">Account</span></a></span></span><span>
+</span><span id="line-22"></span><span>                 </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aupdate_timestamp%3AAccount"><span class="annot"><span class="annottext">Account -&gt; ZonedTime
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aupdate_timestamp%3AAccount"><span class="hs-identifier hs-var hs-var">update_timestamp</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">ZonedTime</span></span><span>
+</span><span id="line-23"></span><span>                 </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aaccount_id%3AAccount"><span class="annot"><span class="annottext">Account -&gt; Maybe AccountId
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aaccount_id%3AAccount"><span class="hs-identifier hs-var hs-var">account_id</span></a></span></span><span>       </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountId"><span class="hs-identifier hs-type">AccountId</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-24"></span><span>                 </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aaccount_type%3AAccount"><span class="annot"><span class="annottext">Account -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aaccount_type%3AAccount"><span class="hs-identifier hs-var hs-var">account_type</span></a></span></span><span>     </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-25"></span><span>                 </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Adisplay_name%3AAccount"><span class="annot"><span class="annottext">Account -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Adisplay_name%3AAccount"><span class="hs-identifier hs-var hs-var">display_name</span></a></span></span><span>     </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-26"></span><span>                 </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acurrency%3AAccount"><span class="annot"><span class="annottext">Account -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acurrency%3AAccount"><span class="hs-identifier hs-var hs-var">currency</span></a></span></span><span>         </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-27"></span><span>                 </span><span class="hs-special">,</span><span> </span><span id="%24sel%3AaccountNumber%3AAccount"><span class="annot"><span class="annottext">Account -&gt; AccountNumber
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3AaccountNumber%3AAccount"><span class="hs-identifier hs-var hs-var">accountNumber</span></a></span></span><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountNumber"><span class="hs-identifier hs-type">AccountNumber</span></a></span><span>
+</span><span id="line-28"></span><span>                 </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprovider%3AAccount"><span class="annot"><span class="annottext">Account -&gt; Provider
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider%3AAccount"><span class="hs-identifier hs-var hs-var">provider</span></a></span></span><span>         </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Provider"><span class="hs-identifier hs-type">Provider</span></a></span><span>
+</span><span id="line-29"></span><span>                 </span><span class="hs-special">}</span><span>
+</span><span id="line-30"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679145785"><span id="local-6989586621679145792"><span class="annot"><span class="annottext">Value -&gt; Parser [Account]
+Value -&gt; Parser Account
+(Value -&gt; Parser Account)
+-&gt; (Value -&gt; Parser [Account]) -&gt; FromJSON Account
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser Account
+parseJSON :: Value -&gt; Parser Account
+$cparseJSONList :: Value -&gt; Parser [Account]
+parseJSONList :: Value -&gt; Parser [Account]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679145904"><span id="local-6989586621679145906"><span class="annot"><span class="annottext">(forall x. Account -&gt; Rep Account x)
+-&gt; (forall x. Rep Account x -&gt; Account) -&gt; Generic Account
+forall x. Rep Account x -&gt; Account
+forall x. Account -&gt; Rep Account x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. Account -&gt; Rep Account x
+from :: forall x. Account -&gt; Rep Account x
+$cto :: forall x. Rep Account x -&gt; Account
+to :: forall x. Rep Account x -&gt; Account
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679145908"><span id="local-6989586621679145924"><span id="local-6989586621679145927"><span class="annot"><span class="annottext">Int -&gt; Account -&gt; ShowS
+[Account] -&gt; ShowS
+Account -&gt; String
+(Int -&gt; Account -&gt; ShowS)
+-&gt; (Account -&gt; String) -&gt; ([Account] -&gt; ShowS) -&gt; Show Account
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; Account -&gt; ShowS
+showsPrec :: Int -&gt; Account -&gt; ShowS
+$cshow :: Account -&gt; String
+show :: Account -&gt; String
+$cshowList :: [Account] -&gt; ShowS
+showList :: [Account] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679145932"><span id="local-6989586621679145938"><span id="local-6989586621679145941"><span id="local-6989586621679145944"><span class="annot"><span class="annottext">[Account] -&gt; Value
+[Account] -&gt; Encoding
+Account -&gt; Value
+Account -&gt; Encoding
+(Account -&gt; Value)
+-&gt; (Account -&gt; Encoding)
+-&gt; ([Account] -&gt; Value)
+-&gt; ([Account] -&gt; Encoding)
+-&gt; ToJSON Account
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: Account -&gt; Value
+toJSON :: Account -&gt; Value
+$ctoEncoding :: Account -&gt; Encoding
+toEncoding :: Account -&gt; Encoding
+$ctoJSONList :: [Account] -&gt; Value
+toJSONList :: [Account] -&gt; Value
+$ctoEncodingList :: [Account] -&gt; Encoding
+toEncodingList :: [Account] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-31"></span><span>
+</span><span id="line-32"></span><span class="hs-keyword">data</span><span> </span><span id="AccountBalance"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountBalance"><span class="hs-identifier hs-var">AccountBalance</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="AccountBalance"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountBalance"><span class="hs-identifier hs-var">AccountBalance</span></a></span></span><span>
+</span><span id="line-33"></span><span>                        </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Acurrency%3AAccountBalance"><span class="annot"><span class="annottext">AccountBalance -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acurrency%3AAccountBalance"><span class="hs-identifier hs-var hs-var">currency</span></a></span></span><span>         </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-34"></span><span>                        </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aavailable%3AAccountBalance"><span class="annot"><span class="annottext">AccountBalance -&gt; Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aavailable%3AAccountBalance"><span class="hs-identifier hs-var hs-var">available</span></a></span></span><span>        </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span>
+</span><span id="line-35"></span><span>                        </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acurrent%3AAccountBalance"><span class="annot"><span class="annottext">AccountBalance -&gt; Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acurrent%3AAccountBalance"><span class="hs-identifier hs-var hs-var">current</span></a></span></span><span>          </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span>
+</span><span id="line-36"></span><span>                        </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aoverdraft%3AAccountBalance"><span class="annot"><span class="annottext">AccountBalance -&gt; Maybe Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aoverdraft%3AAccountBalance"><span class="hs-identifier hs-var hs-var">overdraft</span></a></span></span><span>        </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span class="hs-special">)</span><span>
+</span><span id="line-37"></span><span>                        </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aupdate_timestamp%3AAccountBalance"><span class="annot"><span class="annottext">AccountBalance -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aupdate_timestamp%3AAccountBalance"><span class="hs-identifier hs-var hs-var">update_timestamp</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-38"></span><span>                        </span><span class="hs-special">}</span><span>
+</span><span id="line-39"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679146103"><span id="local-6989586621679146111"><span class="annot"><span class="annottext">Value -&gt; Parser [AccountBalance]
+Value -&gt; Parser AccountBalance
+(Value -&gt; Parser AccountBalance)
+-&gt; (Value -&gt; Parser [AccountBalance]) -&gt; FromJSON AccountBalance
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser AccountBalance
+parseJSON :: Value -&gt; Parser AccountBalance
+$cparseJSONList :: Value -&gt; Parser [AccountBalance]
+parseJSONList :: Value -&gt; Parser [AccountBalance]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146190"><span id="local-6989586621679146192"><span class="annot"><span class="annottext">(forall x. AccountBalance -&gt; Rep AccountBalance x)
+-&gt; (forall x. Rep AccountBalance x -&gt; AccountBalance)
+-&gt; Generic AccountBalance
+forall x. Rep AccountBalance x -&gt; AccountBalance
+forall x. AccountBalance -&gt; Rep AccountBalance x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. AccountBalance -&gt; Rep AccountBalance x
+from :: forall x. AccountBalance -&gt; Rep AccountBalance x
+$cto :: forall x. Rep AccountBalance x -&gt; AccountBalance
+to :: forall x. Rep AccountBalance x -&gt; AccountBalance
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146194"><span id="local-6989586621679146204"><span id="local-6989586621679146208"><span class="annot"><span class="annottext">Int -&gt; AccountBalance -&gt; ShowS
+[AccountBalance] -&gt; ShowS
+AccountBalance -&gt; String
+(Int -&gt; AccountBalance -&gt; ShowS)
+-&gt; (AccountBalance -&gt; String)
+-&gt; ([AccountBalance] -&gt; ShowS)
+-&gt; Show AccountBalance
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; AccountBalance -&gt; ShowS
+showsPrec :: Int -&gt; AccountBalance -&gt; ShowS
+$cshow :: AccountBalance -&gt; String
+show :: AccountBalance -&gt; String
+$cshowList :: [AccountBalance] -&gt; ShowS
+showList :: [AccountBalance] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146211"><span id="local-6989586621679146218"><span id="local-6989586621679146221"><span id="local-6989586621679146224"><span class="annot"><span class="annottext">[AccountBalance] -&gt; Value
+[AccountBalance] -&gt; Encoding
+AccountBalance -&gt; Value
+AccountBalance -&gt; Encoding
+(AccountBalance -&gt; Value)
+-&gt; (AccountBalance -&gt; Encoding)
+-&gt; ([AccountBalance] -&gt; Value)
+-&gt; ([AccountBalance] -&gt; Encoding)
+-&gt; ToJSON AccountBalance
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: AccountBalance -&gt; Value
+toJSON :: AccountBalance -&gt; Value
+$ctoEncoding :: AccountBalance -&gt; Encoding
+toEncoding :: AccountBalance -&gt; Encoding
+$ctoJSONList :: [AccountBalance] -&gt; Value
+toJSONList :: [AccountBalance] -&gt; Value
+$ctoEncodingList :: [AccountBalance] -&gt; Encoding
+toEncodingList :: [AccountBalance] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-40"></span><span>
+</span><span id="line-41"></span><span class="hs-keyword">data</span><span> </span><span id="AccountBalances"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountBalances"><span class="hs-identifier hs-var">AccountBalances</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="AccountBalances"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountBalances"><span class="hs-identifier hs-var">AccountBalances</span></a></span></span><span>
+</span><span id="line-42"></span><span>                         </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aresults%3AAccountBalances"><span class="annot"><span class="annottext">AccountBalances -&gt; [AccountBalance]
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aresults%3AAccountBalances"><span class="hs-identifier hs-var hs-var">results</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">[</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountBalance"><span class="hs-identifier hs-type">AccountBalance</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-43"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Astatus%3AAccountBalances"><span class="annot"><span class="annottext">AccountBalances -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Astatus%3AAccountBalances"><span class="hs-identifier hs-var hs-var">status</span></a></span></span><span>  </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-44"></span><span>                         </span><span class="hs-special">}</span><span>
+</span><span id="line-45"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679146336"><span id="local-6989586621679146344"><span class="annot"><span class="annottext">Value -&gt; Parser [AccountBalances]
+Value -&gt; Parser AccountBalances
+(Value -&gt; Parser AccountBalances)
+-&gt; (Value -&gt; Parser [AccountBalances]) -&gt; FromJSON AccountBalances
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser AccountBalances
+parseJSON :: Value -&gt; Parser AccountBalances
+$cparseJSONList :: Value -&gt; Parser [AccountBalances]
+parseJSONList :: Value -&gt; Parser [AccountBalances]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146396"><span id="local-6989586621679146398"><span class="annot"><span class="annottext">(forall x. AccountBalances -&gt; Rep AccountBalances x)
+-&gt; (forall x. Rep AccountBalances x -&gt; AccountBalances)
+-&gt; Generic AccountBalances
+forall x. Rep AccountBalances x -&gt; AccountBalances
+forall x. AccountBalances -&gt; Rep AccountBalances x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. AccountBalances -&gt; Rep AccountBalances x
+from :: forall x. AccountBalances -&gt; Rep AccountBalances x
+$cto :: forall x. Rep AccountBalances x -&gt; AccountBalances
+to :: forall x. Rep AccountBalances x -&gt; AccountBalances
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146400"><span id="local-6989586621679146407"><span id="local-6989586621679146411"><span class="annot"><span class="annottext">Int -&gt; AccountBalances -&gt; ShowS
+[AccountBalances] -&gt; ShowS
+AccountBalances -&gt; String
+(Int -&gt; AccountBalances -&gt; ShowS)
+-&gt; (AccountBalances -&gt; String)
+-&gt; ([AccountBalances] -&gt; ShowS)
+-&gt; Show AccountBalances
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; AccountBalances -&gt; ShowS
+showsPrec :: Int -&gt; AccountBalances -&gt; ShowS
+$cshow :: AccountBalances -&gt; String
+show :: AccountBalances -&gt; String
+$cshowList :: [AccountBalances] -&gt; ShowS
+showList :: [AccountBalances] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146415"><span id="local-6989586621679146422"><span id="local-6989586621679146425"><span id="local-6989586621679146428"><span class="annot"><span class="annottext">[AccountBalances] -&gt; Value
+[AccountBalances] -&gt; Encoding
+AccountBalances -&gt; Value
+AccountBalances -&gt; Encoding
+(AccountBalances -&gt; Value)
+-&gt; (AccountBalances -&gt; Encoding)
+-&gt; ([AccountBalances] -&gt; Value)
+-&gt; ([AccountBalances] -&gt; Encoding)
+-&gt; ToJSON AccountBalances
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: AccountBalances -&gt; Value
+toJSON :: AccountBalances -&gt; Value
+$ctoEncoding :: AccountBalances -&gt; Encoding
+toEncoding :: AccountBalances -&gt; Encoding
+$ctoJSONList :: [AccountBalances] -&gt; Value
+toJSONList :: [AccountBalances] -&gt; Value
+$ctoEncodingList :: [AccountBalances] -&gt; Encoding
+toEncodingList :: [AccountBalances] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-46"></span><span>
+</span><span id="line-47"></span><span>
+</span><span id="line-48"></span><span class="hs-keyword">newtype</span><span> </span><span id="AccountId"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountId"><span class="hs-identifier hs-var">AccountId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="AccountId"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountId"><span class="hs-identifier hs-var">AccountId</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-49"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679146494"><span id="local-6989586621679146501"><span class="annot"><span class="annottext">Value -&gt; Parser [AccountId]
+Value -&gt; Parser AccountId
+(Value -&gt; Parser AccountId)
+-&gt; (Value -&gt; Parser [AccountId]) -&gt; FromJSON AccountId
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser AccountId
+parseJSON :: Value -&gt; Parser AccountId
+$cparseJSONList :: Value -&gt; Parser [AccountId]
+parseJSONList :: Value -&gt; Parser [AccountId]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146533"><span id="local-6989586621679146535"><span class="annot"><span class="annottext">(forall x. AccountId -&gt; Rep AccountId x)
+-&gt; (forall x. Rep AccountId x -&gt; AccountId) -&gt; Generic AccountId
+forall x. Rep AccountId x -&gt; AccountId
+forall x. AccountId -&gt; Rep AccountId x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. AccountId -&gt; Rep AccountId x
+from :: forall x. AccountId -&gt; Rep AccountId x
+$cto :: forall x. Rep AccountId x -&gt; AccountId
+to :: forall x. Rep AccountId x -&gt; AccountId
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146537"><span id="local-6989586621679146542"><span id="local-6989586621679146545"><span class="annot"><span class="annottext">Int -&gt; AccountId -&gt; ShowS
+[AccountId] -&gt; ShowS
+AccountId -&gt; String
+(Int -&gt; AccountId -&gt; ShowS)
+-&gt; (AccountId -&gt; String)
+-&gt; ([AccountId] -&gt; ShowS)
+-&gt; Show AccountId
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; AccountId -&gt; ShowS
+showsPrec :: Int -&gt; AccountId -&gt; ShowS
+$cshow :: AccountId -&gt; String
+show :: AccountId -&gt; String
+$cshowList :: [AccountId] -&gt; ShowS
+showList :: [AccountId] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146548"><span id="local-6989586621679146554"><span id="local-6989586621679146557"><span id="local-6989586621679146560"><span class="annot"><span class="annottext">[AccountId] -&gt; Value
+[AccountId] -&gt; Encoding
+AccountId -&gt; Value
+AccountId -&gt; Encoding
+(AccountId -&gt; Value)
+-&gt; (AccountId -&gt; Encoding)
+-&gt; ([AccountId] -&gt; Value)
+-&gt; ([AccountId] -&gt; Encoding)
+-&gt; ToJSON AccountId
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: AccountId -&gt; Value
+toJSON :: AccountId -&gt; Value
+$ctoEncoding :: AccountId -&gt; Encoding
+toEncoding :: AccountId -&gt; Encoding
+$ctoJSONList :: [AccountId] -&gt; Value
+toJSONList :: [AccountId] -&gt; Value
+$ctoEncodingList :: [AccountId] -&gt; Encoding
+toEncodingList :: [AccountId] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-50"></span><span>
+</span><span id="line-51"></span><span class="hs-keyword">data</span><span> </span><span id="AccountNumber"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountNumber"><span class="hs-identifier hs-var">AccountNumber</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="AccountNumber"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountNumber"><span class="hs-identifier hs-var">AccountNumber</span></a></span></span><span>
+</span><span id="line-52"></span><span>                       </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Anumber%3AAccountNumber"><span class="annot"><span class="annottext">AccountNumber -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Anumber%3AAccountNumber"><span class="hs-identifier hs-var hs-var">number</span></a></span></span><span>         </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-53"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Asort_code%3AAccountNumber"><span class="annot"><span class="annottext">AccountNumber -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Asort_code%3AAccountNumber"><span class="hs-identifier hs-var hs-var">sort_code</span></a></span></span><span>      </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-54"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aswift_bic%3AAccountNumber"><span class="annot"><span class="annottext">AccountNumber -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aswift_bic%3AAccountNumber"><span class="hs-identifier hs-var hs-var">swift_bic</span></a></span></span><span>      </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-55"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aiban%3AAccountNumber"><span class="annot"><span class="annottext">AccountNumber -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aiban%3AAccountNumber"><span class="hs-identifier hs-var hs-var">iban</span></a></span></span><span>           </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-56"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Arouting_number%3AAccountNumber"><span class="annot"><span class="annottext">AccountNumber -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Arouting_number%3AAccountNumber"><span class="hs-identifier hs-var hs-var">routing_number</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-57"></span><span>                       </span><span class="hs-special">}</span><span>
+</span><span id="line-58"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679146599"><span id="local-6989586621679146606"><span class="annot"><span class="annottext">Value -&gt; Parser [AccountNumber]
+Value -&gt; Parser AccountNumber
+(Value -&gt; Parser AccountNumber)
+-&gt; (Value -&gt; Parser [AccountNumber]) -&gt; FromJSON AccountNumber
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser AccountNumber
+parseJSON :: Value -&gt; Parser AccountNumber
+$cparseJSONList :: Value -&gt; Parser [AccountNumber]
+parseJSONList :: Value -&gt; Parser [AccountNumber]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146681"><span id="local-6989586621679146683"><span class="annot"><span class="annottext">(forall x. AccountNumber -&gt; Rep AccountNumber x)
+-&gt; (forall x. Rep AccountNumber x -&gt; AccountNumber)
+-&gt; Generic AccountNumber
+forall x. Rep AccountNumber x -&gt; AccountNumber
+forall x. AccountNumber -&gt; Rep AccountNumber x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. AccountNumber -&gt; Rep AccountNumber x
+from :: forall x. AccountNumber -&gt; Rep AccountNumber x
+$cto :: forall x. Rep AccountNumber x -&gt; AccountNumber
+to :: forall x. Rep AccountNumber x -&gt; AccountNumber
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146685"><span id="local-6989586621679146694"><span id="local-6989586621679146697"><span class="annot"><span class="annottext">Int -&gt; AccountNumber -&gt; ShowS
+[AccountNumber] -&gt; ShowS
+AccountNumber -&gt; String
+(Int -&gt; AccountNumber -&gt; ShowS)
+-&gt; (AccountNumber -&gt; String)
+-&gt; ([AccountNumber] -&gt; ShowS)
+-&gt; Show AccountNumber
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; AccountNumber -&gt; ShowS
+showsPrec :: Int -&gt; AccountNumber -&gt; ShowS
+$cshow :: AccountNumber -&gt; String
+show :: AccountNumber -&gt; String
+$cshowList :: [AccountNumber] -&gt; ShowS
+showList :: [AccountNumber] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146701"><span id="local-6989586621679146707"><span id="local-6989586621679146710"><span id="local-6989586621679146713"><span class="annot"><span class="annottext">[AccountNumber] -&gt; Value
+[AccountNumber] -&gt; Encoding
+AccountNumber -&gt; Value
+AccountNumber -&gt; Encoding
+(AccountNumber -&gt; Value)
+-&gt; (AccountNumber -&gt; Encoding)
+-&gt; ([AccountNumber] -&gt; Value)
+-&gt; ([AccountNumber] -&gt; Encoding)
+-&gt; ToJSON AccountNumber
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: AccountNumber -&gt; Value
+toJSON :: AccountNumber -&gt; Value
+$ctoEncoding :: AccountNumber -&gt; Encoding
+toEncoding :: AccountNumber -&gt; Encoding
+$ctoJSONList :: [AccountNumber] -&gt; Value
+toJSONList :: [AccountNumber] -&gt; Value
+$ctoEncodingList :: [AccountNumber] -&gt; Encoding
+toEncodingList :: [AccountNumber] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-59"></span><span>
+</span><span id="line-60"></span><span class="hs-keyword">data</span><span> </span><span id="Card"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Card"><span class="hs-identifier hs-var">Card</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Card"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Card"><span class="hs-identifier hs-var">Card</span></a></span></span><span>
+</span><span id="line-61"></span><span>              </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aaccount_id%3ACard"><span class="annot"><span class="annottext">Card -&gt; AccountId
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aaccount_id%3ACard"><span class="hs-identifier hs-var hs-var">account_id</span></a></span></span><span>          </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#AccountId"><span class="hs-identifier hs-type">AccountId</span></a></span><span>
+</span><span id="line-62"></span><span>              </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acard_network%3ACard"><span class="annot"><span class="annottext">Card -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acard_network%3ACard"><span class="hs-identifier hs-var hs-var">card_network</span></a></span></span><span>        </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-63"></span><span>              </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acard_type%3ACard"><span class="annot"><span class="annottext">Card -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acard_type%3ACard"><span class="hs-identifier hs-var hs-var">card_type</span></a></span></span><span>           </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-64"></span><span>              </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acurrency%3ACard"><span class="annot"><span class="annottext">Card -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acurrency%3ACard"><span class="hs-identifier hs-var hs-var">currency</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-65"></span><span>              </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Adisplay_name%3ACard"><span class="annot"><span class="annottext">Card -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Adisplay_name%3ACard"><span class="hs-identifier hs-var hs-var">display_name</span></a></span></span><span>        </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-66"></span><span>              </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Apartial_card_number%3ACard"><span class="annot"><span class="annottext">Card -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Apartial_card_number%3ACard"><span class="hs-identifier hs-var hs-var">partial_card_number</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-67"></span><span>              </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aname_on_card%3ACard"><span class="annot"><span class="annottext">Card -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aname_on_card%3ACard"><span class="hs-identifier hs-var hs-var">name_on_card</span></a></span></span><span>        </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-68"></span><span>              </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Avalid_from%3ACard"><span class="annot"><span class="annottext">Card -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Avalid_from%3ACard"><span class="hs-identifier hs-var hs-var">valid_from</span></a></span></span><span>          </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-69"></span><span>              </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Avalid_to%3ACard"><span class="annot"><span class="annottext">Card -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Avalid_to%3ACard"><span class="hs-identifier hs-var hs-var">valid_to</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-70"></span><span>              </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aupdate_timestamp%3ACard"><span class="annot"><span class="annottext">Card -&gt; ZonedTime
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aupdate_timestamp%3ACard"><span class="hs-identifier hs-var hs-var">update_timestamp</span></a></span></span><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">ZonedTime</span></span><span>
+</span><span id="line-71"></span><span>              </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprovider%3ACard"><span class="annot"><span class="annottext">Card -&gt; Provider
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider%3ACard"><span class="hs-identifier hs-var hs-var">provider</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Provider"><span class="hs-identifier hs-type">Provider</span></a></span><span>
+</span><span id="line-72"></span><span>              </span><span class="hs-special">}</span><span>
+</span><span id="line-73"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679146828"><span id="local-6989586621679146836"><span class="annot"><span class="annottext">Value -&gt; Parser [Card]
+Value -&gt; Parser Card
+(Value -&gt; Parser Card) -&gt; (Value -&gt; Parser [Card]) -&gt; FromJSON Card
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser Card
+parseJSON :: Value -&gt; Parser Card
+$cparseJSONList :: Value -&gt; Parser [Card]
+parseJSONList :: Value -&gt; Parser [Card]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146968"><span id="local-6989586621679146970"><span class="annot"><span class="annottext">(forall x. Card -&gt; Rep Card x)
+-&gt; (forall x. Rep Card x -&gt; Card) -&gt; Generic Card
+forall x. Rep Card x -&gt; Card
+forall x. Card -&gt; Rep Card x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. Card -&gt; Rep Card x
+from :: forall x. Card -&gt; Rep Card x
+$cto :: forall x. Rep Card x -&gt; Card
+to :: forall x. Rep Card x -&gt; Card
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146972"><span id="local-6989586621679146987"><span id="local-6989586621679146991"><span class="annot"><span class="annottext">Int -&gt; Card -&gt; ShowS
+[Card] -&gt; ShowS
+Card -&gt; String
+(Int -&gt; Card -&gt; ShowS)
+-&gt; (Card -&gt; String) -&gt; ([Card] -&gt; ShowS) -&gt; Show Card
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; Card -&gt; ShowS
+showsPrec :: Int -&gt; Card -&gt; ShowS
+$cshow :: Card -&gt; String
+show :: Card -&gt; String
+$cshowList :: [Card] -&gt; ShowS
+showList :: [Card] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679146994"><span id="local-6989586621679147001"><span id="local-6989586621679147004"><span id="local-6989586621679147007"><span class="annot"><span class="annottext">[Card] -&gt; Value
+[Card] -&gt; Encoding
+Card -&gt; Value
+Card -&gt; Encoding
+(Card -&gt; Value)
+-&gt; (Card -&gt; Encoding)
+-&gt; ([Card] -&gt; Value)
+-&gt; ([Card] -&gt; Encoding)
+-&gt; ToJSON Card
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: Card -&gt; Value
+toJSON :: Card -&gt; Value
+$ctoEncoding :: Card -&gt; Encoding
+toEncoding :: Card -&gt; Encoding
+$ctoJSONList :: [Card] -&gt; Value
+toJSONList :: [Card] -&gt; Value
+$ctoEncodingList :: [Card] -&gt; Encoding
+toEncodingList :: [Card] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-74"></span><span>
+</span><span id="line-75"></span><span class="hs-keyword">newtype</span><span> </span><span id="Cards"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Cards"><span class="hs-identifier hs-var">Cards</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Cards"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Cards"><span class="hs-identifier hs-var">Cards</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aresults%3ACards"><span class="annot"><span class="annottext">Cards -&gt; [Card]
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aresults%3ACards"><span class="hs-identifier hs-var hs-var">results</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Card"><span class="hs-identifier hs-type">Card</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-special">}</span><span>
+</span><span id="line-76"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679147199"><span id="local-6989586621679147207"><span class="annot"><span class="annottext">Value -&gt; Parser [Cards]
+Value -&gt; Parser Cards
+(Value -&gt; Parser Cards)
+-&gt; (Value -&gt; Parser [Cards]) -&gt; FromJSON Cards
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser Cards
+parseJSON :: Value -&gt; Parser Cards
+$cparseJSONList :: Value -&gt; Parser [Cards]
+parseJSONList :: Value -&gt; Parser [Cards]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147247"><span id="local-6989586621679147249"><span class="annot"><span class="annottext">(forall x. Cards -&gt; Rep Cards x)
+-&gt; (forall x. Rep Cards x -&gt; Cards) -&gt; Generic Cards
+forall x. Rep Cards x -&gt; Cards
+forall x. Cards -&gt; Rep Cards x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. Cards -&gt; Rep Cards x
+from :: forall x. Cards -&gt; Rep Cards x
+$cto :: forall x. Rep Cards x -&gt; Cards
+to :: forall x. Rep Cards x -&gt; Cards
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147251"><span id="local-6989586621679147256"><span id="local-6989586621679147260"><span class="annot"><span class="annottext">Int -&gt; Cards -&gt; ShowS
+[Cards] -&gt; ShowS
+Cards -&gt; String
+(Int -&gt; Cards -&gt; ShowS)
+-&gt; (Cards -&gt; String) -&gt; ([Cards] -&gt; ShowS) -&gt; Show Cards
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; Cards -&gt; ShowS
+showsPrec :: Int -&gt; Cards -&gt; ShowS
+$cshow :: Cards -&gt; String
+show :: Cards -&gt; String
+$cshowList :: [Cards] -&gt; ShowS
+showList :: [Cards] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147263"><span id="local-6989586621679147270"><span id="local-6989586621679147273"><span id="local-6989586621679147276"><span class="annot"><span class="annottext">[Cards] -&gt; Value
+[Cards] -&gt; Encoding
+Cards -&gt; Value
+Cards -&gt; Encoding
+(Cards -&gt; Value)
+-&gt; (Cards -&gt; Encoding)
+-&gt; ([Cards] -&gt; Value)
+-&gt; ([Cards] -&gt; Encoding)
+-&gt; ToJSON Cards
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: Cards -&gt; Value
+toJSON :: Cards -&gt; Value
+$ctoEncoding :: Cards -&gt; Encoding
+toEncoding :: Cards -&gt; Encoding
+$ctoJSONList :: [Cards] -&gt; Value
+toJSONList :: [Cards] -&gt; Value
+$ctoEncodingList :: [Cards] -&gt; Encoding
+toEncodingList :: [Cards] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-77"></span><span>
+</span><span id="line-78"></span><span>
+</span><span id="line-79"></span><span class="hs-keyword">newtype</span><span> </span><span id="CardBalances"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#CardBalances"><span class="hs-identifier hs-var">CardBalances</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="CardBalances"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#CardBalances"><span class="hs-identifier hs-var">CardBalances</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aresults%3ACardBalances"><span class="annot"><span class="annottext">CardBalances -&gt; [CardBalance]
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aresults%3ACardBalances"><span class="hs-identifier hs-var hs-var">results</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#CardBalance"><span class="hs-identifier hs-type">CardBalance</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-special">}</span><span>
+</span><span id="line-80"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679147323"><span id="local-6989586621679147331"><span class="annot"><span class="annottext">Value -&gt; Parser [CardBalances]
+Value -&gt; Parser CardBalances
+(Value -&gt; Parser CardBalances)
+-&gt; (Value -&gt; Parser [CardBalances]) -&gt; FromJSON CardBalances
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser CardBalances
+parseJSON :: Value -&gt; Parser CardBalances
+$cparseJSONList :: Value -&gt; Parser [CardBalances]
+parseJSONList :: Value -&gt; Parser [CardBalances]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147372"><span id="local-6989586621679147374"><span class="annot"><span class="annottext">(forall x. CardBalances -&gt; Rep CardBalances x)
+-&gt; (forall x. Rep CardBalances x -&gt; CardBalances)
+-&gt; Generic CardBalances
+forall x. Rep CardBalances x -&gt; CardBalances
+forall x. CardBalances -&gt; Rep CardBalances x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. CardBalances -&gt; Rep CardBalances x
+from :: forall x. CardBalances -&gt; Rep CardBalances x
+$cto :: forall x. Rep CardBalances x -&gt; CardBalances
+to :: forall x. Rep CardBalances x -&gt; CardBalances
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147376"><span id="local-6989586621679147381"><span id="local-6989586621679147385"><span class="annot"><span class="annottext">Int -&gt; CardBalances -&gt; ShowS
+[CardBalances] -&gt; ShowS
+CardBalances -&gt; String
+(Int -&gt; CardBalances -&gt; ShowS)
+-&gt; (CardBalances -&gt; String)
+-&gt; ([CardBalances] -&gt; ShowS)
+-&gt; Show CardBalances
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; CardBalances -&gt; ShowS
+showsPrec :: Int -&gt; CardBalances -&gt; ShowS
+$cshow :: CardBalances -&gt; String
+show :: CardBalances -&gt; String
+$cshowList :: [CardBalances] -&gt; ShowS
+showList :: [CardBalances] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147389"><span id="local-6989586621679147396"><span id="local-6989586621679147399"><span id="local-6989586621679147402"><span class="annot"><span class="annottext">[CardBalances] -&gt; Value
+[CardBalances] -&gt; Encoding
+CardBalances -&gt; Value
+CardBalances -&gt; Encoding
+(CardBalances -&gt; Value)
+-&gt; (CardBalances -&gt; Encoding)
+-&gt; ([CardBalances] -&gt; Value)
+-&gt; ([CardBalances] -&gt; Encoding)
+-&gt; ToJSON CardBalances
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: CardBalances -&gt; Value
+toJSON :: CardBalances -&gt; Value
+$ctoEncoding :: CardBalances -&gt; Encoding
+toEncoding :: CardBalances -&gt; Encoding
+$ctoJSONList :: [CardBalances] -&gt; Value
+toJSONList :: [CardBalances] -&gt; Value
+$ctoEncodingList :: [CardBalances] -&gt; Encoding
+toEncodingList :: [CardBalances] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-81"></span><span>
+</span><span id="line-82"></span><span class="hs-keyword">data</span><span> </span><span id="CardBalance"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#CardBalance"><span class="hs-identifier hs-var">CardBalance</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="CardBalance"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#CardBalance"><span class="hs-identifier hs-var">CardBalance</span></a></span></span><span>
+</span><span id="line-83"></span><span>                     </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aavailable%3ACardBalance"><span class="annot"><span class="annottext">CardBalance -&gt; Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aavailable%3ACardBalance"><span class="hs-identifier hs-var hs-var">available</span></a></span></span><span>              </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span>
+</span><span id="line-84"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acurrency%3ACardBalance"><span class="annot"><span class="annottext">CardBalance -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acurrency%3ACardBalance"><span class="hs-identifier hs-var hs-var">currency</span></a></span></span><span>               </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-85"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acurrent%3ACardBalance"><span class="annot"><span class="annottext">CardBalance -&gt; Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acurrent%3ACardBalance"><span class="hs-identifier hs-var hs-var">current</span></a></span></span><span>                </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span>
+</span><span id="line-86"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acredit_limit%3ACardBalance"><span class="annot"><span class="annottext">CardBalance -&gt; Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acredit_limit%3ACardBalance"><span class="hs-identifier hs-var hs-var">credit_limit</span></a></span></span><span>           </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span>
+</span><span id="line-87"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Alast_statement_balance%3ACardBalance"><span class="annot"><span class="annottext">CardBalance -&gt; Maybe Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Alast_statement_balance%3ACardBalance"><span class="hs-identifier hs-var hs-var">last_statement_balance</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span class="hs-special">)</span><span>
+</span><span id="line-88"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Alast_statement_date%3ACardBalance"><span class="annot"><span class="annottext">CardBalance -&gt; Maybe Day
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Alast_statement_date%3ACardBalance"><span class="hs-identifier hs-var hs-var">last_statement_date</span></a></span></span><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Day</span></span><span class="hs-special">)</span><span>
+</span><span id="line-89"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Apayment_due%3ACardBalance"><span class="annot"><span class="annottext">CardBalance -&gt; Maybe Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Apayment_due%3ACardBalance"><span class="hs-identifier hs-var hs-var">payment_due</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span class="hs-special">)</span><span>
+</span><span id="line-90"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Apayment_due_date%3ACardBalance"><span class="annot"><span class="annottext">CardBalance -&gt; Maybe Day
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Apayment_due_date%3ACardBalance"><span class="hs-identifier hs-var hs-var">payment_due_date</span></a></span></span><span>       </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Day</span></span><span class="hs-special">)</span><span>
+</span><span id="line-91"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aupdate_timestamp%3ACardBalance"><span class="annot"><span class="annottext">CardBalance -&gt; ZonedTime
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aupdate_timestamp%3ACardBalance"><span class="hs-identifier hs-var hs-var">update_timestamp</span></a></span></span><span>       </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">ZonedTime</span></span><span>
+</span><span id="line-92"></span><span>                     </span><span class="hs-special">}</span><span>
+</span><span id="line-93"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679147458"><span id="local-6989586621679147465"><span class="annot"><span class="annottext">Value -&gt; Parser [CardBalance]
+Value -&gt; Parser CardBalance
+(Value -&gt; Parser CardBalance)
+-&gt; (Value -&gt; Parser [CardBalance]) -&gt; FromJSON CardBalance
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser CardBalance
+parseJSON :: Value -&gt; Parser CardBalance
+$cparseJSONList :: Value -&gt; Parser [CardBalance]
+parseJSONList :: Value -&gt; Parser [CardBalance]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147581"><span id="local-6989586621679147583"><span class="annot"><span class="annottext">(forall x. CardBalance -&gt; Rep CardBalance x)
+-&gt; (forall x. Rep CardBalance x -&gt; CardBalance)
+-&gt; Generic CardBalance
+forall x. Rep CardBalance x -&gt; CardBalance
+forall x. CardBalance -&gt; Rep CardBalance x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. CardBalance -&gt; Rep CardBalance x
+from :: forall x. CardBalance -&gt; Rep CardBalance x
+$cto :: forall x. Rep CardBalance x -&gt; CardBalance
+to :: forall x. Rep CardBalance x -&gt; CardBalance
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147585"><span id="local-6989586621679147599"><span id="local-6989586621679147602"><span class="annot"><span class="annottext">Int -&gt; CardBalance -&gt; ShowS
+[CardBalance] -&gt; ShowS
+CardBalance -&gt; String
+(Int -&gt; CardBalance -&gt; ShowS)
+-&gt; (CardBalance -&gt; String)
+-&gt; ([CardBalance] -&gt; ShowS)
+-&gt; Show CardBalance
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; CardBalance -&gt; ShowS
+showsPrec :: Int -&gt; CardBalance -&gt; ShowS
+$cshow :: CardBalance -&gt; String
+show :: CardBalance -&gt; String
+$cshowList :: [CardBalance] -&gt; ShowS
+showList :: [CardBalance] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147606"><span id="local-6989586621679147612"><span id="local-6989586621679147615"><span id="local-6989586621679147618"><span class="annot"><span class="annottext">[CardBalance] -&gt; Value
+[CardBalance] -&gt; Encoding
+CardBalance -&gt; Value
+CardBalance -&gt; Encoding
+(CardBalance -&gt; Value)
+-&gt; (CardBalance -&gt; Encoding)
+-&gt; ([CardBalance] -&gt; Value)
+-&gt; ([CardBalance] -&gt; Encoding)
+-&gt; ToJSON CardBalance
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: CardBalance -&gt; Value
+toJSON :: CardBalance -&gt; Value
+$ctoEncoding :: CardBalance -&gt; Encoding
+toEncoding :: CardBalance -&gt; Encoding
+$ctoJSONList :: [CardBalance] -&gt; Value
+toJSONList :: [CardBalance] -&gt; Value
+$ctoEncodingList :: [CardBalance] -&gt; Encoding
+toEncodingList :: [CardBalance] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-94"></span><span>
+</span><span id="line-95"></span><span class="hs-keyword">data</span><span> </span><span id="DirectDebit"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#DirectDebit"><span class="hs-identifier hs-var">DirectDebit</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="DirectDebit"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#DirectDebit"><span class="hs-identifier hs-var">DirectDebit</span></a></span></span><span>
+</span><span id="line-96"></span><span>                     </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Adirect_debit_id%3ADirectDebit"><span class="annot"><span class="annottext">DirectDebit -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Adirect_debit_id%3ADirectDebit"><span class="hs-identifier hs-var hs-var">direct_debit_id</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-97"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Atimestamp%3ADirectDebit"><span class="annot"><span class="annottext">DirectDebit -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Atimestamp%3ADirectDebit"><span class="hs-identifier hs-var hs-var">timestamp</span></a></span></span><span>                  </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-98"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aname%3ADirectDebit"><span class="annot"><span class="annottext">DirectDebit -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aname%3ADirectDebit"><span class="hs-identifier hs-var hs-var">name</span></a></span></span><span>                       </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-99"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Astatus%3ADirectDebit"><span class="annot"><span class="annottext">DirectDebit -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Astatus%3ADirectDebit"><span class="hs-identifier hs-var hs-var">status</span></a></span></span><span>                     </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-100"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprevious_payment_timestamp%3ADirectDebit"><span class="annot"><span class="annottext">DirectDebit -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprevious_payment_timestamp%3ADirectDebit"><span class="hs-identifier hs-var hs-var">previous_payment_timestamp</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-101"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprevious_payment_amount%3ADirectDebit"><span class="annot"><span class="annottext">DirectDebit -&gt; Maybe Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprevious_payment_amount%3ADirectDebit"><span class="hs-identifier hs-var hs-var">previous_payment_amount</span></a></span></span><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span class="hs-special">)</span><span>
+</span><span id="line-102"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acurrency%3ADirectDebit"><span class="annot"><span class="annottext">DirectDebit -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acurrency%3ADirectDebit"><span class="hs-identifier hs-var hs-var">currency</span></a></span></span><span>                   </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-103"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Ameta%3ADirectDebit"><span class="annot"><span class="annottext">DirectDebit -&gt; Maybe DirectDebitMeta
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Ameta%3ADirectDebit"><span class="hs-identifier hs-var hs-var">meta</span></a></span></span><span>                       </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#DirectDebitMeta"><span class="hs-identifier hs-type">DirectDebitMeta</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-104"></span><span>                     </span><span class="hs-special">}</span><span>
+</span><span id="line-105"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679147793"><span id="local-6989586621679147801"><span class="annot"><span class="annottext">Value -&gt; Parser [DirectDebit]
+Value -&gt; Parser DirectDebit
+(Value -&gt; Parser DirectDebit)
+-&gt; (Value -&gt; Parser [DirectDebit]) -&gt; FromJSON DirectDebit
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser DirectDebit
+parseJSON :: Value -&gt; Parser DirectDebit
+$cparseJSONList :: Value -&gt; Parser [DirectDebit]
+parseJSONList :: Value -&gt; Parser [DirectDebit]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147906"><span id="local-6989586621679147908"><span class="annot"><span class="annottext">(forall x. DirectDebit -&gt; Rep DirectDebit x)
+-&gt; (forall x. Rep DirectDebit x -&gt; DirectDebit)
+-&gt; Generic DirectDebit
+forall x. Rep DirectDebit x -&gt; DirectDebit
+forall x. DirectDebit -&gt; Rep DirectDebit x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. DirectDebit -&gt; Rep DirectDebit x
+from :: forall x. DirectDebit -&gt; Rep DirectDebit x
+$cto :: forall x. Rep DirectDebit x -&gt; DirectDebit
+to :: forall x. Rep DirectDebit x -&gt; DirectDebit
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147910"><span id="local-6989586621679147924"><span id="local-6989586621679147928"><span class="annot"><span class="annottext">Int -&gt; DirectDebit -&gt; ShowS
+[DirectDebit] -&gt; ShowS
+DirectDebit -&gt; String
+(Int -&gt; DirectDebit -&gt; ShowS)
+-&gt; (DirectDebit -&gt; String)
+-&gt; ([DirectDebit] -&gt; ShowS)
+-&gt; Show DirectDebit
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; DirectDebit -&gt; ShowS
+showsPrec :: Int -&gt; DirectDebit -&gt; ShowS
+$cshow :: DirectDebit -&gt; String
+show :: DirectDebit -&gt; String
+$cshowList :: [DirectDebit] -&gt; ShowS
+showList :: [DirectDebit] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679147932"><span id="local-6989586621679147939"><span id="local-6989586621679147942"><span id="local-6989586621679147945"><span class="annot"><span class="annottext">[DirectDebit] -&gt; Value
+[DirectDebit] -&gt; Encoding
+DirectDebit -&gt; Value
+DirectDebit -&gt; Encoding
+(DirectDebit -&gt; Value)
+-&gt; (DirectDebit -&gt; Encoding)
+-&gt; ([DirectDebit] -&gt; Value)
+-&gt; ([DirectDebit] -&gt; Encoding)
+-&gt; ToJSON DirectDebit
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: DirectDebit -&gt; Value
+toJSON :: DirectDebit -&gt; Value
+$ctoEncoding :: DirectDebit -&gt; Encoding
+toEncoding :: DirectDebit -&gt; Encoding
+$ctoJSONList :: [DirectDebit] -&gt; Value
+toJSONList :: [DirectDebit] -&gt; Value
+$ctoEncodingList :: [DirectDebit] -&gt; Encoding
+toEncodingList :: [DirectDebit] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-106"></span><span>
+</span><span id="line-107"></span><span class="hs-keyword">data</span><span> </span><span id="DirectDebitMeta"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#DirectDebitMeta"><span class="hs-identifier hs-var">DirectDebitMeta</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="DirectDebitMeta"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#DirectDebitMeta"><span class="hs-identifier hs-var">DirectDebitMeta</span></a></span></span><span>
+</span><span id="line-108"></span><span>                         </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aprovider_mandate_identification%3ADirectDebitMeta"><span class="annot"><span class="annottext">DirectDebitMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_mandate_identification%3ADirectDebitMeta"><span class="hs-identifier hs-var hs-var">provider_mandate_identification</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-109"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprovider_account_id%3ADirectDebitMeta"><span class="annot"><span class="annottext">DirectDebitMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_account_id%3ADirectDebitMeta"><span class="hs-identifier hs-var hs-var">provider_account_id</span></a></span></span><span>             </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-110"></span><span>                         </span><span class="hs-special">}</span><span>
+</span><span id="line-111"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679148100"><span id="local-6989586621679148107"><span class="annot"><span class="annottext">Value -&gt; Parser [DirectDebitMeta]
+Value -&gt; Parser DirectDebitMeta
+(Value -&gt; Parser DirectDebitMeta)
+-&gt; (Value -&gt; Parser [DirectDebitMeta]) -&gt; FromJSON DirectDebitMeta
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser DirectDebitMeta
+parseJSON :: Value -&gt; Parser DirectDebitMeta
+$cparseJSONList :: Value -&gt; Parser [DirectDebitMeta]
+parseJSONList :: Value -&gt; Parser [DirectDebitMeta]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148156"><span id="local-6989586621679148158"><span class="annot"><span class="annottext">(forall x. DirectDebitMeta -&gt; Rep DirectDebitMeta x)
+-&gt; (forall x. Rep DirectDebitMeta x -&gt; DirectDebitMeta)
+-&gt; Generic DirectDebitMeta
+forall x. Rep DirectDebitMeta x -&gt; DirectDebitMeta
+forall x. DirectDebitMeta -&gt; Rep DirectDebitMeta x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. DirectDebitMeta -&gt; Rep DirectDebitMeta x
+from :: forall x. DirectDebitMeta -&gt; Rep DirectDebitMeta x
+$cto :: forall x. Rep DirectDebitMeta x -&gt; DirectDebitMeta
+to :: forall x. Rep DirectDebitMeta x -&gt; DirectDebitMeta
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148160"><span id="local-6989586621679148166"><span id="local-6989586621679148169"><span class="annot"><span class="annottext">Int -&gt; DirectDebitMeta -&gt; ShowS
+[DirectDebitMeta] -&gt; ShowS
+DirectDebitMeta -&gt; String
+(Int -&gt; DirectDebitMeta -&gt; ShowS)
+-&gt; (DirectDebitMeta -&gt; String)
+-&gt; ([DirectDebitMeta] -&gt; ShowS)
+-&gt; Show DirectDebitMeta
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; DirectDebitMeta -&gt; ShowS
+showsPrec :: Int -&gt; DirectDebitMeta -&gt; ShowS
+$cshow :: DirectDebitMeta -&gt; String
+show :: DirectDebitMeta -&gt; String
+$cshowList :: [DirectDebitMeta] -&gt; ShowS
+showList :: [DirectDebitMeta] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148173"><span id="local-6989586621679148179"><span id="local-6989586621679148182"><span id="local-6989586621679148185"><span class="annot"><span class="annottext">[DirectDebitMeta] -&gt; Value
+[DirectDebitMeta] -&gt; Encoding
+DirectDebitMeta -&gt; Value
+DirectDebitMeta -&gt; Encoding
+(DirectDebitMeta -&gt; Value)
+-&gt; (DirectDebitMeta -&gt; Encoding)
+-&gt; ([DirectDebitMeta] -&gt; Value)
+-&gt; ([DirectDebitMeta] -&gt; Encoding)
+-&gt; ToJSON DirectDebitMeta
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: DirectDebitMeta -&gt; Value
+toJSON :: DirectDebitMeta -&gt; Value
+$ctoEncoding :: DirectDebitMeta -&gt; Encoding
+toEncoding :: DirectDebitMeta -&gt; Encoding
+$ctoJSONList :: [DirectDebitMeta] -&gt; Value
+toJSONList :: [DirectDebitMeta] -&gt; Value
+$ctoEncodingList :: [DirectDebitMeta] -&gt; Encoding
+toEncodingList :: [DirectDebitMeta] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-112"></span><span>
+</span><span id="line-113"></span><span class="hs-keyword">data</span><span> </span><span id="DirectDebits"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#DirectDebits"><span class="hs-identifier hs-var">DirectDebits</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="DirectDebits"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#DirectDebits"><span class="hs-identifier hs-var">DirectDebits</span></a></span></span><span>
+</span><span id="line-114"></span><span>                      </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aresults%3ADirectDebits"><span class="annot"><span class="annottext">DirectDebits -&gt; [DirectDebit]
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aresults%3ADirectDebits"><span class="hs-identifier hs-var hs-var">results</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">[</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#DirectDebit"><span class="hs-identifier hs-type">DirectDebit</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-115"></span><span>                      </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Astatus%3ADirectDebits"><span class="annot"><span class="annottext">DirectDebits -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Astatus%3ADirectDebits"><span class="hs-identifier hs-var hs-var">status</span></a></span></span><span>  </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-116"></span><span>                      </span><span class="hs-special">}</span><span>
+</span><span id="line-117"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679148250"><span id="local-6989586621679148258"><span class="annot"><span class="annottext">Value -&gt; Parser [DirectDebits]
+Value -&gt; Parser DirectDebits
+(Value -&gt; Parser DirectDebits)
+-&gt; (Value -&gt; Parser [DirectDebits]) -&gt; FromJSON DirectDebits
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser DirectDebits
+parseJSON :: Value -&gt; Parser DirectDebits
+$cparseJSONList :: Value -&gt; Parser [DirectDebits]
+parseJSONList :: Value -&gt; Parser [DirectDebits]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148311"><span id="local-6989586621679148313"><span class="annot"><span class="annottext">(forall x. DirectDebits -&gt; Rep DirectDebits x)
+-&gt; (forall x. Rep DirectDebits x -&gt; DirectDebits)
+-&gt; Generic DirectDebits
+forall x. Rep DirectDebits x -&gt; DirectDebits
+forall x. DirectDebits -&gt; Rep DirectDebits x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. DirectDebits -&gt; Rep DirectDebits x
+from :: forall x. DirectDebits -&gt; Rep DirectDebits x
+$cto :: forall x. Rep DirectDebits x -&gt; DirectDebits
+to :: forall x. Rep DirectDebits x -&gt; DirectDebits
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148315"><span id="local-6989586621679148322"><span id="local-6989586621679148326"><span class="annot"><span class="annottext">Int -&gt; DirectDebits -&gt; ShowS
+[DirectDebits] -&gt; ShowS
+DirectDebits -&gt; String
+(Int -&gt; DirectDebits -&gt; ShowS)
+-&gt; (DirectDebits -&gt; String)
+-&gt; ([DirectDebits] -&gt; ShowS)
+-&gt; Show DirectDebits
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; DirectDebits -&gt; ShowS
+showsPrec :: Int -&gt; DirectDebits -&gt; ShowS
+$cshow :: DirectDebits -&gt; String
+show :: DirectDebits -&gt; String
+$cshowList :: [DirectDebits] -&gt; ShowS
+showList :: [DirectDebits] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148329"><span id="local-6989586621679148336"><span id="local-6989586621679148339"><span id="local-6989586621679148342"><span class="annot"><span class="annottext">[DirectDebits] -&gt; Value
+[DirectDebits] -&gt; Encoding
+DirectDebits -&gt; Value
+DirectDebits -&gt; Encoding
+(DirectDebits -&gt; Value)
+-&gt; (DirectDebits -&gt; Encoding)
+-&gt; ([DirectDebits] -&gt; Value)
+-&gt; ([DirectDebits] -&gt; Encoding)
+-&gt; ToJSON DirectDebits
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: DirectDebits -&gt; Value
+toJSON :: DirectDebits -&gt; Value
+$ctoEncoding :: DirectDebits -&gt; Encoding
+toEncoding :: DirectDebits -&gt; Encoding
+$ctoJSONList :: [DirectDebits] -&gt; Value
+toJSONList :: [DirectDebits] -&gt; Value
+$ctoEncodingList :: [DirectDebits] -&gt; Encoding
+toEncodingList :: [DirectDebits] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-118"></span><span>
+</span><span id="line-119"></span><span>
+</span><span id="line-120"></span><span class="hs-keyword">newtype</span><span> </span><span id="Provider"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Provider"><span class="hs-identifier hs-var">Provider</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Provider"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Provider"><span class="hs-identifier hs-var">Provider</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aprovider_id%3AProvider"><span class="annot"><span class="annottext">Provider -&gt; ProviderId
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_id%3AProvider"><span class="hs-identifier hs-var hs-var">provider_id</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#ProviderId"><span class="hs-identifier hs-type">ProviderId</span></a></span><span> </span><span class="hs-special">}</span><span>
+</span><span id="line-121"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679148408"><span id="local-6989586621679148415"><span class="annot"><span class="annottext">Value -&gt; Parser [Provider]
+Value -&gt; Parser Provider
+(Value -&gt; Parser Provider)
+-&gt; (Value -&gt; Parser [Provider]) -&gt; FromJSON Provider
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser Provider
+parseJSON :: Value -&gt; Parser Provider
+$cparseJSONList :: Value -&gt; Parser [Provider]
+parseJSONList :: Value -&gt; Parser [Provider]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148455"><span id="local-6989586621679148457"><span class="annot"><span class="annottext">(forall x. Provider -&gt; Rep Provider x)
+-&gt; (forall x. Rep Provider x -&gt; Provider) -&gt; Generic Provider
+forall x. Rep Provider x -&gt; Provider
+forall x. Provider -&gt; Rep Provider x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. Provider -&gt; Rep Provider x
+from :: forall x. Provider -&gt; Rep Provider x
+$cto :: forall x. Rep Provider x -&gt; Provider
+to :: forall x. Rep Provider x -&gt; Provider
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148459"><span id="local-6989586621679148464"><span id="local-6989586621679148467"><span class="annot"><span class="annottext">Int -&gt; Provider -&gt; ShowS
+[Provider] -&gt; ShowS
+Provider -&gt; String
+(Int -&gt; Provider -&gt; ShowS)
+-&gt; (Provider -&gt; String) -&gt; ([Provider] -&gt; ShowS) -&gt; Show Provider
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; Provider -&gt; ShowS
+showsPrec :: Int -&gt; Provider -&gt; ShowS
+$cshow :: Provider -&gt; String
+show :: Provider -&gt; String
+$cshowList :: [Provider] -&gt; ShowS
+showList :: [Provider] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148470"><span id="local-6989586621679148476"><span id="local-6989586621679148479"><span id="local-6989586621679148482"><span class="annot"><span class="annottext">[Provider] -&gt; Value
+[Provider] -&gt; Encoding
+Provider -&gt; Value
+Provider -&gt; Encoding
+(Provider -&gt; Value)
+-&gt; (Provider -&gt; Encoding)
+-&gt; ([Provider] -&gt; Value)
+-&gt; ([Provider] -&gt; Encoding)
+-&gt; ToJSON Provider
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: Provider -&gt; Value
+toJSON :: Provider -&gt; Value
+$ctoEncoding :: Provider -&gt; Encoding
+toEncoding :: Provider -&gt; Encoding
+$ctoJSONList :: [Provider] -&gt; Value
+toJSONList :: [Provider] -&gt; Value
+$ctoEncodingList :: [Provider] -&gt; Encoding
+toEncodingList :: [Provider] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-122"></span><span>
+</span><span id="line-123"></span><span class="hs-keyword">newtype</span><span> </span><span id="ProviderId"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#ProviderId"><span class="hs-identifier hs-var">ProviderId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="ProviderId"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#ProviderId"><span class="hs-identifier hs-var">ProviderId</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-124"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679148528"><span id="local-6989586621679148535"><span class="annot"><span class="annottext">Value -&gt; Parser [ProviderId]
+Value -&gt; Parser ProviderId
+(Value -&gt; Parser ProviderId)
+-&gt; (Value -&gt; Parser [ProviderId]) -&gt; FromJSON ProviderId
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser ProviderId
+parseJSON :: Value -&gt; Parser ProviderId
+$cparseJSONList :: Value -&gt; Parser [ProviderId]
+parseJSONList :: Value -&gt; Parser [ProviderId]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148564"><span id="local-6989586621679148566"><span class="annot"><span class="annottext">(forall x. ProviderId -&gt; Rep ProviderId x)
+-&gt; (forall x. Rep ProviderId x -&gt; ProviderId) -&gt; Generic ProviderId
+forall x. Rep ProviderId x -&gt; ProviderId
+forall x. ProviderId -&gt; Rep ProviderId x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. ProviderId -&gt; Rep ProviderId x
+from :: forall x. ProviderId -&gt; Rep ProviderId x
+$cto :: forall x. Rep ProviderId x -&gt; ProviderId
+to :: forall x. Rep ProviderId x -&gt; ProviderId
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148568"><span id="local-6989586621679148573"><span id="local-6989586621679148576"><span class="annot"><span class="annottext">Int -&gt; ProviderId -&gt; ShowS
+[ProviderId] -&gt; ShowS
+ProviderId -&gt; String
+(Int -&gt; ProviderId -&gt; ShowS)
+-&gt; (ProviderId -&gt; String)
+-&gt; ([ProviderId] -&gt; ShowS)
+-&gt; Show ProviderId
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; ProviderId -&gt; ShowS
+showsPrec :: Int -&gt; ProviderId -&gt; ShowS
+$cshow :: ProviderId -&gt; String
+show :: ProviderId -&gt; String
+$cshowList :: [ProviderId] -&gt; ShowS
+showList :: [ProviderId] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148579"><span id="local-6989586621679148585"><span id="local-6989586621679148588"><span id="local-6989586621679148591"><span class="annot"><span class="annottext">[ProviderId] -&gt; Value
+[ProviderId] -&gt; Encoding
+ProviderId -&gt; Value
+ProviderId -&gt; Encoding
+(ProviderId -&gt; Value)
+-&gt; (ProviderId -&gt; Encoding)
+-&gt; ([ProviderId] -&gt; Value)
+-&gt; ([ProviderId] -&gt; Encoding)
+-&gt; ToJSON ProviderId
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: ProviderId -&gt; Value
+toJSON :: ProviderId -&gt; Value
+$ctoEncoding :: ProviderId -&gt; Encoding
+toEncoding :: ProviderId -&gt; Encoding
+$ctoJSONList :: [ProviderId] -&gt; Value
+toJSONList :: [ProviderId] -&gt; Value
+$ctoEncodingList :: [ProviderId] -&gt; Encoding
+toEncodingList :: [ProviderId] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-125"></span><span>
+</span><span id="line-126"></span><span class="hs-keyword">data</span><span> </span><span id="RunningBalance"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#RunningBalance"><span class="hs-identifier hs-var">RunningBalance</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="RunningBalance"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#RunningBalance"><span class="hs-identifier hs-var">RunningBalance</span></a></span></span><span>
+</span><span id="line-127"></span><span>                        </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aamoung%3ARunningBalance"><span class="annot"><span class="annottext">RunningBalance -&gt; Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aamoung%3ARunningBalance"><span class="hs-identifier hs-var hs-var">amoung</span></a></span></span><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span>
+</span><span id="line-128"></span><span>                        </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acurrency%3ARunningBalance"><span class="annot"><span class="annottext">RunningBalance -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acurrency%3ARunningBalance"><span class="hs-identifier hs-var hs-var">currency</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-129"></span><span>                        </span><span class="hs-special">}</span><span>
+</span><span id="line-130"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679148625"><span id="local-6989586621679148633"><span class="annot"><span class="annottext">Value -&gt; Parser [RunningBalance]
+Value -&gt; Parser RunningBalance
+(Value -&gt; Parser RunningBalance)
+-&gt; (Value -&gt; Parser [RunningBalance]) -&gt; FromJSON RunningBalance
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser RunningBalance
+parseJSON :: Value -&gt; Parser RunningBalance
+$cparseJSONList :: Value -&gt; Parser [RunningBalance]
+parseJSONList :: Value -&gt; Parser [RunningBalance]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148685"><span id="local-6989586621679148687"><span class="annot"><span class="annottext">(forall x. RunningBalance -&gt; Rep RunningBalance x)
+-&gt; (forall x. Rep RunningBalance x -&gt; RunningBalance)
+-&gt; Generic RunningBalance
+forall x. Rep RunningBalance x -&gt; RunningBalance
+forall x. RunningBalance -&gt; Rep RunningBalance x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. RunningBalance -&gt; Rep RunningBalance x
+from :: forall x. RunningBalance -&gt; Rep RunningBalance x
+$cto :: forall x. Rep RunningBalance x -&gt; RunningBalance
+to :: forall x. Rep RunningBalance x -&gt; RunningBalance
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148689"><span id="local-6989586621679148695"><span id="local-6989586621679148699"><span class="annot"><span class="annottext">Int -&gt; RunningBalance -&gt; ShowS
+[RunningBalance] -&gt; ShowS
+RunningBalance -&gt; String
+(Int -&gt; RunningBalance -&gt; ShowS)
+-&gt; (RunningBalance -&gt; String)
+-&gt; ([RunningBalance] -&gt; ShowS)
+-&gt; Show RunningBalance
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; RunningBalance -&gt; ShowS
+showsPrec :: Int -&gt; RunningBalance -&gt; ShowS
+$cshow :: RunningBalance -&gt; String
+show :: RunningBalance -&gt; String
+$cshowList :: [RunningBalance] -&gt; ShowS
+showList :: [RunningBalance] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148702"><span id="local-6989586621679148709"><span id="local-6989586621679148712"><span id="local-6989586621679148715"><span class="annot"><span class="annottext">[RunningBalance] -&gt; Value
+[RunningBalance] -&gt; Encoding
+RunningBalance -&gt; Value
+RunningBalance -&gt; Encoding
+(RunningBalance -&gt; Value)
+-&gt; (RunningBalance -&gt; Encoding)
+-&gt; ([RunningBalance] -&gt; Value)
+-&gt; ([RunningBalance] -&gt; Encoding)
+-&gt; ToJSON RunningBalance
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: RunningBalance -&gt; Value
+toJSON :: RunningBalance -&gt; Value
+$ctoEncoding :: RunningBalance -&gt; Encoding
+toEncoding :: RunningBalance -&gt; Encoding
+$ctoJSONList :: [RunningBalance] -&gt; Value
+toJSONList :: [RunningBalance] -&gt; Value
+$ctoEncodingList :: [RunningBalance] -&gt; Encoding
+toEncodingList :: [RunningBalance] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-131"></span><span>
+</span><span id="line-132"></span><span class="hs-keyword">data</span><span> </span><span id="StandingOrder"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#StandingOrder"><span class="hs-identifier hs-var">StandingOrder</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="StandingOrder"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#StandingOrder"><span class="hs-identifier hs-var">StandingOrder</span></a></span></span><span>
+</span><span id="line-133"></span><span>                       </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Afrequency%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Afrequency%3AStandingOrder"><span class="hs-identifier hs-var hs-var">frequency</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-134"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Astatus%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Astatus%3AStandingOrder"><span class="hs-identifier hs-var hs-var">status</span></a></span></span><span>               </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-135"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Atimestamp%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Atimestamp%3AStandingOrder"><span class="hs-identifier hs-var hs-var">timestamp</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-136"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acurrency%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acurrency%3AStandingOrder"><span class="hs-identifier hs-var hs-var">currency</span></a></span></span><span>             </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-137"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Ameta%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe StandingOrderMeta
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Ameta%3AStandingOrder"><span class="hs-identifier hs-var hs-var">meta</span></a></span></span><span>                 </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#StandingOrderMeta"><span class="hs-identifier hs-type">StandingOrderMeta</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-138"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Anext_payment_date%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Anext_payment_date%3AStandingOrder"><span class="hs-identifier hs-var hs-var">next_payment_date</span></a></span></span><span>    </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-139"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Anext_payment_amount%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Anext_payment_amount%3AStandingOrder"><span class="hs-identifier hs-var hs-var">next_payment_amount</span></a></span></span><span>  </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span class="hs-special">)</span><span>
+</span><span id="line-140"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Afirst_payment_date%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Afirst_payment_date%3AStandingOrder"><span class="hs-identifier hs-var hs-var">first_payment_date</span></a></span></span><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-141"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Afirst_payment_amount%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Afirst_payment_amount%3AStandingOrder"><span class="hs-identifier hs-var hs-var">first_payment_amount</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span class="hs-special">)</span><span>
+</span><span id="line-142"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Afinal_payment_date%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Afinal_payment_date%3AStandingOrder"><span class="hs-identifier hs-var hs-var">final_payment_date</span></a></span></span><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-143"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Afinal_payment_amount%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Afinal_payment_amount%3AStandingOrder"><span class="hs-identifier hs-var hs-var">final_payment_amount</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span class="hs-special">)</span><span>
+</span><span id="line-144"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Apayee%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Apayee%3AStandingOrder"><span class="hs-identifier hs-var hs-var">payee</span></a></span></span><span>                </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-145"></span><span>                       </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Areference%3AStandingOrder"><span class="annot"><span class="annottext">StandingOrder -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Areference%3AStandingOrder"><span class="hs-identifier hs-var hs-var">reference</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-146"></span><span>                       </span><span class="hs-special">}</span><span>
+</span><span id="line-147"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679148792"><span id="local-6989586621679148800"><span class="annot"><span class="annottext">Value -&gt; Parser [StandingOrder]
+Value -&gt; Parser StandingOrder
+(Value -&gt; Parser StandingOrder)
+-&gt; (Value -&gt; Parser [StandingOrder]) -&gt; FromJSON StandingOrder
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser StandingOrder
+parseJSON :: Value -&gt; Parser StandingOrder
+$cparseJSONList :: Value -&gt; Parser [StandingOrder]
+parseJSONList :: Value -&gt; Parser [StandingOrder]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148945"><span id="local-6989586621679148947"><span class="annot"><span class="annottext">(forall x. StandingOrder -&gt; Rep StandingOrder x)
+-&gt; (forall x. Rep StandingOrder x -&gt; StandingOrder)
+-&gt; Generic StandingOrder
+forall x. Rep StandingOrder x -&gt; StandingOrder
+forall x. StandingOrder -&gt; Rep StandingOrder x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. StandingOrder -&gt; Rep StandingOrder x
+from :: forall x. StandingOrder -&gt; Rep StandingOrder x
+$cto :: forall x. Rep StandingOrder x -&gt; StandingOrder
+to :: forall x. Rep StandingOrder x -&gt; StandingOrder
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148949"><span id="local-6989586621679148968"><span id="local-6989586621679148972"><span class="annot"><span class="annottext">Int -&gt; StandingOrder -&gt; ShowS
+[StandingOrder] -&gt; ShowS
+StandingOrder -&gt; String
+(Int -&gt; StandingOrder -&gt; ShowS)
+-&gt; (StandingOrder -&gt; String)
+-&gt; ([StandingOrder] -&gt; ShowS)
+-&gt; Show StandingOrder
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; StandingOrder -&gt; ShowS
+showsPrec :: Int -&gt; StandingOrder -&gt; ShowS
+$cshow :: StandingOrder -&gt; String
+show :: StandingOrder -&gt; String
+$cshowList :: [StandingOrder] -&gt; ShowS
+showList :: [StandingOrder] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679148976"><span id="local-6989586621679148983"><span id="local-6989586621679148986"><span id="local-6989586621679148989"><span class="annot"><span class="annottext">[StandingOrder] -&gt; Value
+[StandingOrder] -&gt; Encoding
+StandingOrder -&gt; Value
+StandingOrder -&gt; Encoding
+(StandingOrder -&gt; Value)
+-&gt; (StandingOrder -&gt; Encoding)
+-&gt; ([StandingOrder] -&gt; Value)
+-&gt; ([StandingOrder] -&gt; Encoding)
+-&gt; ToJSON StandingOrder
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: StandingOrder -&gt; Value
+toJSON :: StandingOrder -&gt; Value
+$ctoEncoding :: StandingOrder -&gt; Encoding
+toEncoding :: StandingOrder -&gt; Encoding
+$ctoJSONList :: [StandingOrder] -&gt; Value
+toJSONList :: [StandingOrder] -&gt; Value
+$ctoEncodingList :: [StandingOrder] -&gt; Encoding
+toEncodingList :: [StandingOrder] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-148"></span><span>
+</span><span id="line-149"></span><span class="hs-keyword">newtype</span><span> </span><span id="StandingOrderMeta"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#StandingOrderMeta"><span class="hs-identifier hs-var">StandingOrderMeta</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="StandingOrderMeta"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#StandingOrderMeta"><span class="hs-identifier hs-var">StandingOrderMeta</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aprovider_account_id%3AStandingOrderMeta"><span class="annot"><span class="annottext">StandingOrderMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_account_id%3AStandingOrderMeta"><span class="hs-identifier hs-var hs-var">provider_account_id</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-special">}</span><span>
+</span><span id="line-150"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679149208"><span id="local-6989586621679149215"><span class="annot"><span class="annottext">Value -&gt; Parser [StandingOrderMeta]
+Value -&gt; Parser StandingOrderMeta
+(Value -&gt; Parser StandingOrderMeta)
+-&gt; (Value -&gt; Parser [StandingOrderMeta])
+-&gt; FromJSON StandingOrderMeta
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser StandingOrderMeta
+parseJSON :: Value -&gt; Parser StandingOrderMeta
+$cparseJSONList :: Value -&gt; Parser [StandingOrderMeta]
+parseJSONList :: Value -&gt; Parser [StandingOrderMeta]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679149257"><span id="local-6989586621679149259"><span class="annot"><span class="annottext">(forall x. StandingOrderMeta -&gt; Rep StandingOrderMeta x)
+-&gt; (forall x. Rep StandingOrderMeta x -&gt; StandingOrderMeta)
+-&gt; Generic StandingOrderMeta
+forall x. Rep StandingOrderMeta x -&gt; StandingOrderMeta
+forall x. StandingOrderMeta -&gt; Rep StandingOrderMeta x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. StandingOrderMeta -&gt; Rep StandingOrderMeta x
+from :: forall x. StandingOrderMeta -&gt; Rep StandingOrderMeta x
+$cto :: forall x. Rep StandingOrderMeta x -&gt; StandingOrderMeta
+to :: forall x. Rep StandingOrderMeta x -&gt; StandingOrderMeta
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679149261"><span id="local-6989586621679149266"><span id="local-6989586621679149269"><span class="annot"><span class="annottext">Int -&gt; StandingOrderMeta -&gt; ShowS
+[StandingOrderMeta] -&gt; ShowS
+StandingOrderMeta -&gt; String
+(Int -&gt; StandingOrderMeta -&gt; ShowS)
+-&gt; (StandingOrderMeta -&gt; String)
+-&gt; ([StandingOrderMeta] -&gt; ShowS)
+-&gt; Show StandingOrderMeta
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; StandingOrderMeta -&gt; ShowS
+showsPrec :: Int -&gt; StandingOrderMeta -&gt; ShowS
+$cshow :: StandingOrderMeta -&gt; String
+show :: StandingOrderMeta -&gt; String
+$cshowList :: [StandingOrderMeta] -&gt; ShowS
+showList :: [StandingOrderMeta] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679149273"><span id="local-6989586621679149279"><span id="local-6989586621679149282"><span id="local-6989586621679149285"><span class="annot"><span class="annottext">[StandingOrderMeta] -&gt; Value
+[StandingOrderMeta] -&gt; Encoding
+StandingOrderMeta -&gt; Value
+StandingOrderMeta -&gt; Encoding
+(StandingOrderMeta -&gt; Value)
+-&gt; (StandingOrderMeta -&gt; Encoding)
+-&gt; ([StandingOrderMeta] -&gt; Value)
+-&gt; ([StandingOrderMeta] -&gt; Encoding)
+-&gt; ToJSON StandingOrderMeta
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: StandingOrderMeta -&gt; Value
+toJSON :: StandingOrderMeta -&gt; Value
+$ctoEncoding :: StandingOrderMeta -&gt; Encoding
+toEncoding :: StandingOrderMeta -&gt; Encoding
+$ctoJSONList :: [StandingOrderMeta] -&gt; Value
+toJSONList :: [StandingOrderMeta] -&gt; Value
+$ctoEncodingList :: [StandingOrderMeta] -&gt; Encoding
+toEncodingList :: [StandingOrderMeta] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-151"></span><span>
+</span><span id="line-152"></span><span class="hs-keyword">data</span><span> </span><span id="StandingOrders"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#StandingOrders"><span class="hs-identifier hs-var">StandingOrders</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="StandingOrders"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#StandingOrders"><span class="hs-identifier hs-var">StandingOrders</span></a></span></span><span>
+</span><span id="line-153"></span><span>                        </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aresults%3AStandingOrders"><span class="annot"><span class="annottext">StandingOrders -&gt; [StandingOrder]
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aresults%3AStandingOrders"><span class="hs-identifier hs-var hs-var">results</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">[</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#StandingOrder"><span class="hs-identifier hs-type">StandingOrder</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-154"></span><span>                        </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Astatus%3AStandingOrders"><span class="annot"><span class="annottext">StandingOrders -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Astatus%3AStandingOrders"><span class="hs-identifier hs-var hs-var">status</span></a></span></span><span>  </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-155"></span><span>                        </span><span class="hs-special">}</span><span>
+</span><span id="line-156"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679149336"><span id="local-6989586621679149344"><span class="annot"><span class="annottext">Value -&gt; Parser [StandingOrders]
+Value -&gt; Parser StandingOrders
+(Value -&gt; Parser StandingOrders)
+-&gt; (Value -&gt; Parser [StandingOrders]) -&gt; FromJSON StandingOrders
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser StandingOrders
+parseJSON :: Value -&gt; Parser StandingOrders
+$cparseJSONList :: Value -&gt; Parser [StandingOrders]
+parseJSONList :: Value -&gt; Parser [StandingOrders]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679149397"><span id="local-6989586621679149399"><span class="annot"><span class="annottext">(forall x. StandingOrders -&gt; Rep StandingOrders x)
+-&gt; (forall x. Rep StandingOrders x -&gt; StandingOrders)
+-&gt; Generic StandingOrders
+forall x. Rep StandingOrders x -&gt; StandingOrders
+forall x. StandingOrders -&gt; Rep StandingOrders x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. StandingOrders -&gt; Rep StandingOrders x
+from :: forall x. StandingOrders -&gt; Rep StandingOrders x
+$cto :: forall x. Rep StandingOrders x -&gt; StandingOrders
+to :: forall x. Rep StandingOrders x -&gt; StandingOrders
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679149401"><span id="local-6989586621679149408"><span id="local-6989586621679149412"><span class="annot"><span class="annottext">Int -&gt; StandingOrders -&gt; ShowS
+[StandingOrders] -&gt; ShowS
+StandingOrders -&gt; String
+(Int -&gt; StandingOrders -&gt; ShowS)
+-&gt; (StandingOrders -&gt; String)
+-&gt; ([StandingOrders] -&gt; ShowS)
+-&gt; Show StandingOrders
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; StandingOrders -&gt; ShowS
+showsPrec :: Int -&gt; StandingOrders -&gt; ShowS
+$cshow :: StandingOrders -&gt; String
+show :: StandingOrders -&gt; String
+$cshowList :: [StandingOrders] -&gt; ShowS
+showList :: [StandingOrders] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679149415"><span id="local-6989586621679149422"><span id="local-6989586621679149425"><span id="local-6989586621679149428"><span class="annot"><span class="annottext">[StandingOrders] -&gt; Value
+[StandingOrders] -&gt; Encoding
+StandingOrders -&gt; Value
+StandingOrders -&gt; Encoding
+(StandingOrders -&gt; Value)
+-&gt; (StandingOrders -&gt; Encoding)
+-&gt; ([StandingOrders] -&gt; Value)
+-&gt; ([StandingOrders] -&gt; Encoding)
+-&gt; ToJSON StandingOrders
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: StandingOrders -&gt; Value
+toJSON :: StandingOrders -&gt; Value
+$ctoEncoding :: StandingOrders -&gt; Encoding
+toEncoding :: StandingOrders -&gt; Encoding
+$ctoJSONList :: [StandingOrders] -&gt; Value
+toJSONList :: [StandingOrders] -&gt; Value
+$ctoEncodingList :: [StandingOrders] -&gt; Encoding
+toEncodingList :: [StandingOrders] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-157"></span><span>
+</span><span id="line-158"></span><span class="hs-keyword">data</span><span> </span><span id="Transaction"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Transaction"><span class="hs-identifier hs-var">Transaction</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Transaction"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Transaction"><span class="hs-identifier hs-var">Transaction</span></a></span></span><span>
+</span><span id="line-159"></span><span>                     </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Atransaction_id%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; TransactionId
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Atransaction_id%3ATransaction"><span class="hs-identifier hs-var hs-var">transaction_id</span></a></span></span><span>                     </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionId"><span class="hs-identifier hs-type">TransactionId</span></a></span><span>
+</span><span id="line-160"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Anormalised_provider_transaction_id%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; Maybe TransactionId
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Anormalised_provider_transaction_id%3ATransaction"><span class="hs-identifier hs-var hs-var">normalised_provider_transaction_id</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionId"><span class="hs-identifier hs-type">TransactionId</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-161"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprovider_transaction_id%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; Maybe TransactionId
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_transaction_id%3ATransaction"><span class="hs-identifier hs-var hs-var">provider_transaction_id</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionId"><span class="hs-identifier hs-type">TransactionId</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-162"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Atimestamp%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; ZonedTime
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Atimestamp%3ATransaction"><span class="hs-identifier hs-var hs-var">timestamp</span></a></span></span><span>                          </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">ZonedTime</span></span><span>
+</span><span id="line-163"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Adescription%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Adescription%3ATransaction"><span class="hs-identifier hs-var hs-var">description</span></a></span></span><span>                        </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-164"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aamount%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; Double
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aamount%3ATransaction"><span class="hs-identifier hs-var hs-var">amount</span></a></span></span><span>                             </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span>
+</span><span id="line-165"></span><span>                       </span><span class="hs-comment">-- pounds</span><span>
+</span><span id="line-166"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acurrency%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acurrency%3ATransaction"><span class="hs-identifier hs-var hs-var">currency</span></a></span></span><span>                           </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-167"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Atransaction_type%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Atransaction_type%3ATransaction"><span class="hs-identifier hs-var hs-var">transaction_type</span></a></span></span><span>                   </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-168"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Atransaction_category%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Atransaction_category%3ATransaction"><span class="hs-identifier hs-var hs-var">transaction_category</span></a></span></span><span>               </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-169"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Atransaction_classification%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; [String]
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Atransaction_classification%3ATransaction"><span class="hs-identifier hs-var hs-var">transaction_classification</span></a></span></span><span>         </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">]</span><span>
+</span><span id="line-170"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Amerchant_name%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Amerchant_name%3ATransaction"><span class="hs-identifier hs-var hs-var">merchant_name</span></a></span></span><span>                      </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-171"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Arunning_balance%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; Maybe RunningBalance
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Arunning_balance%3ATransaction"><span class="hs-identifier hs-var hs-var">running_balance</span></a></span></span><span>                    </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#RunningBalance"><span class="hs-identifier hs-type">RunningBalance</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-172"></span><span>                     </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Ameta%3ATransaction"><span class="annot"><span class="annottext">Transaction -&gt; Maybe TransactionMeta
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Ameta%3ATransaction"><span class="hs-identifier hs-var hs-var">meta</span></a></span></span><span>                               </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionMeta"><span class="hs-identifier hs-type">TransactionMeta</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-173"></span><span>                     </span><span class="hs-special">}</span><span>
+</span><span id="line-174"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679149506"><span id="local-6989586621679149514"><span class="annot"><span class="annottext">Value -&gt; Parser [Transaction]
+Value -&gt; Parser Transaction
+(Value -&gt; Parser Transaction)
+-&gt; (Value -&gt; Parser [Transaction]) -&gt; FromJSON Transaction
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser Transaction
+parseJSON :: Value -&gt; Parser Transaction
+$cparseJSONList :: Value -&gt; Parser [Transaction]
+parseJSONList :: Value -&gt; Parser [Transaction]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679149668"><span id="local-6989586621679149670"><span class="annot"><span class="annottext">(forall x. Transaction -&gt; Rep Transaction x)
+-&gt; (forall x. Rep Transaction x -&gt; Transaction)
+-&gt; Generic Transaction
+forall x. Rep Transaction x -&gt; Transaction
+forall x. Transaction -&gt; Rep Transaction x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. Transaction -&gt; Rep Transaction x
+from :: forall x. Transaction -&gt; Rep Transaction x
+$cto :: forall x. Rep Transaction x -&gt; Transaction
+to :: forall x. Rep Transaction x -&gt; Transaction
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679149672"><span id="local-6989586621679149692"><span id="local-6989586621679149696"><span class="annot"><span class="annottext">Int -&gt; Transaction -&gt; ShowS
+[Transaction] -&gt; ShowS
+Transaction -&gt; String
+(Int -&gt; Transaction -&gt; ShowS)
+-&gt; (Transaction -&gt; String)
+-&gt; ([Transaction] -&gt; ShowS)
+-&gt; Show Transaction
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; Transaction -&gt; ShowS
+showsPrec :: Int -&gt; Transaction -&gt; ShowS
+$cshow :: Transaction -&gt; String
+show :: Transaction -&gt; String
+$cshowList :: [Transaction] -&gt; ShowS
+showList :: [Transaction] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679149700"><span id="local-6989586621679149707"><span id="local-6989586621679149710"><span id="local-6989586621679149713"><span class="annot"><span class="annottext">[Transaction] -&gt; Value
+[Transaction] -&gt; Encoding
+Transaction -&gt; Value
+Transaction -&gt; Encoding
+(Transaction -&gt; Value)
+-&gt; (Transaction -&gt; Encoding)
+-&gt; ([Transaction] -&gt; Value)
+-&gt; ([Transaction] -&gt; Encoding)
+-&gt; ToJSON Transaction
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: Transaction -&gt; Value
+toJSON :: Transaction -&gt; Value
+$ctoEncoding :: Transaction -&gt; Encoding
+toEncoding :: Transaction -&gt; Encoding
+$ctoJSONList :: [Transaction] -&gt; Value
+toJSONList :: [Transaction] -&gt; Value
+$ctoEncodingList :: [Transaction] -&gt; Encoding
+toEncodingList :: [Transaction] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-175"></span><span>
+</span><span id="line-176"></span><span class="hs-keyword">data</span><span> </span><span id="TransactionMeta"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionMeta"><span class="hs-identifier hs-var">TransactionMeta</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="TransactionMeta"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionMeta"><span class="hs-identifier hs-var">TransactionMeta</span></a></span></span><span>
+</span><span id="line-177"></span><span>                         </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aprovider_transaction_category%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_transaction_category%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">provider_transaction_category</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-178"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprovider_reference%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_reference%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">provider_reference</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-179"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprovider_merchant_name%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_merchant_name%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">provider_merchant_name</span></a></span></span><span>        </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-180"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprovider_category%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_category%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">provider_category</span></a></span></span><span>             </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-181"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aaddress%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aaddress%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">address</span></a></span></span><span>                       </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-182"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprovider_id%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe ProviderId
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_id%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">provider_id</span></a></span></span><span>                   </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#ProviderId"><span class="hs-identifier hs-type">ProviderId</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-183"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acounter_party_preferred_name%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acounter_party_preferred_name%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">counter_party_preferred_name</span></a></span></span><span>  </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-184"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Acounter_party_iban%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Acounter_party_iban%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">counter_party_iban</span></a></span></span><span>            </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-185"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Auser_comments%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Auser_comments%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">user_comments</span></a></span></span><span>                 </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-186"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Adebtor_account_name%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Adebtor_account_name%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">debtor_account_name</span></a></span></span><span>           </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-187"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Atransaction_type%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Atransaction_type%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">transaction_type</span></a></span></span><span>              </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-188"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Aprovider_source%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aprovider_source%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">provider_source</span></a></span></span><span>               </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-189"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3AcardNumber%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3AcardNumber%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">cardNumber</span></a></span></span><span>                    </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-190"></span><span>                         </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Alocation%3ATransactionMeta"><span class="annot"><span class="annottext">TransactionMeta -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Alocation%3ATransactionMeta"><span class="hs-identifier hs-var hs-var">location</span></a></span></span><span>                      </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-191"></span><span>                         </span><span class="hs-special">}</span><span>
+</span><span id="line-192"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679149956"><span id="local-6989586621679149963"><span class="annot"><span class="annottext">Value -&gt; Parser [TransactionMeta]
+Value -&gt; Parser TransactionMeta
+(Value -&gt; Parser TransactionMeta)
+-&gt; (Value -&gt; Parser [TransactionMeta]) -&gt; FromJSON TransactionMeta
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser TransactionMeta
+parseJSON :: Value -&gt; Parser TransactionMeta
+$cparseJSONList :: Value -&gt; Parser [TransactionMeta]
+parseJSONList :: Value -&gt; Parser [TransactionMeta]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679150113"><span id="local-6989586621679150115"><span class="annot"><span class="annottext">(forall x. TransactionMeta -&gt; Rep TransactionMeta x)
+-&gt; (forall x. Rep TransactionMeta x -&gt; TransactionMeta)
+-&gt; Generic TransactionMeta
+forall x. Rep TransactionMeta x -&gt; TransactionMeta
+forall x. TransactionMeta -&gt; Rep TransactionMeta x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. TransactionMeta -&gt; Rep TransactionMeta x
+from :: forall x. TransactionMeta -&gt; Rep TransactionMeta x
+$cto :: forall x. Rep TransactionMeta x -&gt; TransactionMeta
+to :: forall x. Rep TransactionMeta x -&gt; TransactionMeta
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679150117"><span id="local-6989586621679150136"><span id="local-6989586621679150139"><span class="annot"><span class="annottext">Int -&gt; TransactionMeta -&gt; ShowS
+[TransactionMeta] -&gt; ShowS
+TransactionMeta -&gt; String
+(Int -&gt; TransactionMeta -&gt; ShowS)
+-&gt; (TransactionMeta -&gt; String)
+-&gt; ([TransactionMeta] -&gt; ShowS)
+-&gt; Show TransactionMeta
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; TransactionMeta -&gt; ShowS
+showsPrec :: Int -&gt; TransactionMeta -&gt; ShowS
+$cshow :: TransactionMeta -&gt; String
+show :: TransactionMeta -&gt; String
+$cshowList :: [TransactionMeta] -&gt; ShowS
+showList :: [TransactionMeta] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679150143"><span id="local-6989586621679150149"><span id="local-6989586621679150152"><span id="local-6989586621679150155"><span class="annot"><span class="annottext">[TransactionMeta] -&gt; Value
+[TransactionMeta] -&gt; Encoding
+TransactionMeta -&gt; Value
+TransactionMeta -&gt; Encoding
+(TransactionMeta -&gt; Value)
+-&gt; (TransactionMeta -&gt; Encoding)
+-&gt; ([TransactionMeta] -&gt; Value)
+-&gt; ([TransactionMeta] -&gt; Encoding)
+-&gt; ToJSON TransactionMeta
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: TransactionMeta -&gt; Value
+toJSON :: TransactionMeta -&gt; Value
+$ctoEncoding :: TransactionMeta -&gt; Encoding
+toEncoding :: TransactionMeta -&gt; Encoding
+$ctoJSONList :: [TransactionMeta] -&gt; Value
+toJSONList :: [TransactionMeta] -&gt; Value
+$ctoEncodingList :: [TransactionMeta] -&gt; Encoding
+toEncodingList :: [TransactionMeta] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-193"></span><span>
+</span><span id="line-194"></span><span class="hs-keyword">newtype</span><span> </span><span id="TransactionId"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionId"><span class="hs-identifier hs-var">TransactionId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="TransactionId"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionId"><span class="hs-identifier hs-var">TransactionId</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
+</span><span id="line-195"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679150381"><span id="local-6989586621679150388"><span class="annot"><span class="annottext">Value -&gt; Parser [TransactionId]
+Value -&gt; Parser TransactionId
+(Value -&gt; Parser TransactionId)
+-&gt; (Value -&gt; Parser [TransactionId]) -&gt; FromJSON TransactionId
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser TransactionId
+parseJSON :: Value -&gt; Parser TransactionId
+$cparseJSONList :: Value -&gt; Parser [TransactionId]
+parseJSONList :: Value -&gt; Parser [TransactionId]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679150417"><span id="local-6989586621679150419"><span class="annot"><span class="annottext">(forall x. TransactionId -&gt; Rep TransactionId x)
+-&gt; (forall x. Rep TransactionId x -&gt; TransactionId)
+-&gt; Generic TransactionId
+forall x. Rep TransactionId x -&gt; TransactionId
+forall x. TransactionId -&gt; Rep TransactionId x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. TransactionId -&gt; Rep TransactionId x
+from :: forall x. TransactionId -&gt; Rep TransactionId x
+$cto :: forall x. Rep TransactionId x -&gt; TransactionId
+to :: forall x. Rep TransactionId x -&gt; TransactionId
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679150421"><span id="local-6989586621679150426"><span id="local-6989586621679150429"><span class="annot"><span class="annottext">Int -&gt; TransactionId -&gt; ShowS
+[TransactionId] -&gt; ShowS
+TransactionId -&gt; String
+(Int -&gt; TransactionId -&gt; ShowS)
+-&gt; (TransactionId -&gt; String)
+-&gt; ([TransactionId] -&gt; ShowS)
+-&gt; Show TransactionId
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; TransactionId -&gt; ShowS
+showsPrec :: Int -&gt; TransactionId -&gt; ShowS
+$cshow :: TransactionId -&gt; String
+show :: TransactionId -&gt; String
+$cshowList :: [TransactionId] -&gt; ShowS
+showList :: [TransactionId] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679150432"><span id="local-6989586621679150438"><span id="local-6989586621679150441"><span id="local-6989586621679150444"><span class="annot"><span class="annottext">[TransactionId] -&gt; Value
+[TransactionId] -&gt; Encoding
+TransactionId -&gt; Value
+TransactionId -&gt; Encoding
+(TransactionId -&gt; Value)
+-&gt; (TransactionId -&gt; Encoding)
+-&gt; ([TransactionId] -&gt; Value)
+-&gt; ([TransactionId] -&gt; Encoding)
+-&gt; ToJSON TransactionId
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: TransactionId -&gt; Value
+toJSON :: TransactionId -&gt; Value
+$ctoEncoding :: TransactionId -&gt; Encoding
+toEncoding :: TransactionId -&gt; Encoding
+$ctoJSONList :: [TransactionId] -&gt; Value
+toJSONList :: [TransactionId] -&gt; Value
+$ctoEncodingList :: [TransactionId] -&gt; Encoding
+toEncodingList :: [TransactionId] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-196"></span><span>
+</span><span id="line-197"></span><span class="hs-keyword">newtype</span><span> </span><span id="Transactions"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Transactions"><span class="hs-identifier hs-var">Transactions</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Transactions"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Transactions"><span class="hs-identifier hs-var">Transactions</span></a></span></span><span> </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Aresults%3ATransactions"><span class="annot"><span class="annottext">Transactions -&gt; [Transaction]
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Aresults%3ATransactions"><span class="hs-identifier hs-var hs-var">results</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#Transaction"><span class="hs-identifier hs-type">Transaction</span></a></span><span class="hs-special">]</span><span> </span><span class="hs-special">}</span><span>
+</span><span id="line-198"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679150477"><span id="local-6989586621679150485"><span class="annot"><span class="annottext">Value -&gt; Parser [Transactions]
+Value -&gt; Parser Transactions
+(Value -&gt; Parser Transactions)
+-&gt; (Value -&gt; Parser [Transactions]) -&gt; FromJSON Transactions
+forall a.
+(Value -&gt; Parser a) -&gt; (Value -&gt; Parser [a]) -&gt; FromJSON a
+$cparseJSON :: Value -&gt; Parser Transactions
+parseJSON :: Value -&gt; Parser Transactions
+$cparseJSONList :: Value -&gt; Parser [Transactions]
+parseJSONList :: Value -&gt; Parser [Transactions]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">FromJSON</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679150525"><span id="local-6989586621679150527"><span class="annot"><span class="annottext">(forall x. Transactions -&gt; Rep Transactions x)
+-&gt; (forall x. Rep Transactions x -&gt; Transactions)
+-&gt; Generic Transactions
+forall x. Rep Transactions x -&gt; Transactions
+forall x. Transactions -&gt; Rep Transactions x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cfrom :: forall x. Transactions -&gt; Rep Transactions x
+from :: forall x. Transactions -&gt; Rep Transactions x
+$cto :: forall x. Rep Transactions x -&gt; Transactions
+to :: forall x. Rep Transactions x -&gt; Transactions
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679150529"><span id="local-6989586621679150534"><span id="local-6989586621679150538"><span class="annot"><span class="annottext">Int -&gt; Transactions -&gt; ShowS
+[Transactions] -&gt; ShowS
+Transactions -&gt; String
+(Int -&gt; Transactions -&gt; ShowS)
+-&gt; (Transactions -&gt; String)
+-&gt; ([Transactions] -&gt; ShowS)
+-&gt; Show Transactions
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; Transactions -&gt; ShowS
+showsPrec :: Int -&gt; Transactions -&gt; ShowS
+$cshow :: Transactions -&gt; String
+show :: Transactions -&gt; String
+$cshowList :: [Transactions] -&gt; ShowS
+showList :: [Transactions] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679150541"><span id="local-6989586621679150548"><span id="local-6989586621679150551"><span id="local-6989586621679150554"><span class="annot"><span class="annottext">[Transactions] -&gt; Value
+[Transactions] -&gt; Encoding
+Transactions -&gt; Value
+Transactions -&gt; Encoding
+(Transactions -&gt; Value)
+-&gt; (Transactions -&gt; Encoding)
+-&gt; ([Transactions] -&gt; Value)
+-&gt; ([Transactions] -&gt; Encoding)
+-&gt; ToJSON Transactions
+forall a.
+(a -&gt; Value)
+-&gt; (a -&gt; Encoding)
+-&gt; ([a] -&gt; Value)
+-&gt; ([a] -&gt; Encoding)
+-&gt; ToJSON a
+$ctoJSON :: Transactions -&gt; Value
+toJSON :: Transactions -&gt; Value
+$ctoEncoding :: Transactions -&gt; Encoding
+toEncoding :: Transactions -&gt; Encoding
+$ctoJSONList :: [Transactions] -&gt; Value
+toJSONList :: [Transactions] -&gt; Value
+$ctoEncodingList :: [Transactions] -&gt; Encoding
+toEncodingList :: [Transactions] -&gt; Encoding
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-199"></span><span>
+</span><span id="line-200"></span><span class="hs-keyword">data</span><span> </span><span id="TransactionParams"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionParams"><span class="hs-identifier hs-var">TransactionParams</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="TransactionParams"><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionParams"><span class="hs-identifier hs-var">TransactionParams</span></a></span></span><span>
+</span><span id="line-201"></span><span>                           </span><span class="hs-special">{</span><span> </span><span id="%24sel%3Ato%3ATransactionParams"><span class="annot"><span class="annottext">TransactionParams -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Ato%3ATransactionParams"><span class="hs-identifier hs-var hs-var">to</span></a></span></span><span>   </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-202"></span><span>                           </span><span class="hs-special">,</span><span> </span><span id="%24sel%3Afrom%3ATransactionParams"><span class="annot"><span class="annottext">TransactionParams -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Afrom%3ATransactionParams"><span class="hs-identifier hs-var hs-var">from</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">)</span><span>
+</span><span id="line-203"></span><span>                           </span><span class="hs-special">}</span><span>
+</span><span id="line-204"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679150602"><span id="local-6989586621679150608"><span id="local-6989586621679150612"><span class="annot"><span class="annottext">Int -&gt; TransactionParams -&gt; ShowS
+[TransactionParams] -&gt; ShowS
+TransactionParams -&gt; String
+(Int -&gt; TransactionParams -&gt; ShowS)
+-&gt; (TransactionParams -&gt; String)
+-&gt; ([TransactionParams] -&gt; ShowS)
+-&gt; Show TransactionParams
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; TransactionParams -&gt; ShowS
+showsPrec :: Int -&gt; TransactionParams -&gt; ShowS
+$cshow :: TransactionParams -&gt; String
+show :: TransactionParams -&gt; String
+$cshowList :: [TransactionParams] -&gt; ShowS
+showList :: [TransactionParams] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-205"></span><span>
+</span><span id="line-206"></span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#addTransactionParams"><span class="hs-identifier hs-type">addTransactionParams</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionParams"><span class="hs-identifier hs-type">TransactionParams</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Options</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Options</span></span><span>
+</span><span id="line-207"></span><span id="addTransactionParams"><span class="annot"><span class="annottext">addTransactionParams :: Maybe TransactionParams -&gt; Options -&gt; IO Options
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#addTransactionParams"><span class="hs-identifier hs-var hs-var">addTransactionParams</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#TransactionParams"><span class="hs-identifier hs-type">TransactionParams</span></a></span><span> </span><span class="hs-special">{</span><span> </span><span class="annot"><span class="annottext">$sel:from:TransactionParams :: TransactionParams -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Afrom%3ATransactionParams"><span class="hs-identifier hs-var">from</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="local-6989586621679150616"><span class="annot"><span class="annottext">Maybe String
+</span><a href="#local-6989586621679150616"><span class="hs-identifier hs-var">mFrom</span></a></span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">$sel:to:TransactionParams :: TransactionParams -&gt; Maybe String
+</span><a href="Bank.TrueLayer.DataAPI.Schema.html#%24sel%3Ato%3ATransactionParams"><span class="hs-identifier hs-var">to</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="local-6989586621679150617"><span class="annot"><span class="annottext">Maybe String
+</span><a href="#local-6989586621679150617"><span class="hs-identifier hs-var">mTo</span></a></span></span><span> </span><span class="hs-special">}</span><span class="hs-special">)</span><span> </span><span id="local-6989586621679150618"><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679150618"><span class="hs-identifier hs-var">opts</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-208"></span><span>    </span><span class="hs-keyword">do</span><span>
+</span><span id="line-209"></span><span>        </span><span id="local-6989586621679150619"><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679150619"><span class="hs-identifier hs-var">opts'</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Maybe String
+</span><a href="#local-6989586621679150617"><span class="hs-identifier hs-var">mTo</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-210"></span><span>            </span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span id="local-6989586621679150620"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679150620"><span class="hs-identifier hs-var">to'</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Options -&gt; IO Options
+forall a. a -&gt; IO a
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">(Options -&gt; IO Options) -&gt; Options -&gt; IO Options
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679150618"><span class="hs-identifier hs-var">opts</span></a></span><span> </span><span class="annot"><span class="annottext">Options -&gt; (Options -&gt; Options) -&gt; Options
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><span class="hs-operator hs-var">&amp;</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; Lens' Options [Text]
+</span><span class="hs-identifier hs-var">param</span></span><span> </span><span class="annot"><span class="annottext">Text
+</span><span class="hs-string">&quot;to&quot;</span></span><span> </span><span class="annot"><span class="annottext">(([Text] -&gt; Identity [Text]) -&gt; Options -&gt; Identity Options)
+-&gt; [Text] -&gt; Options -&gt; Options
+forall s t a b. ASetter s t a b -&gt; b -&gt; s -&gt; t
+</span><span class="hs-operator hs-var">.~</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">String -&gt; Text
+forall a. IsString a =&gt; String -&gt; a
+</span><span class="hs-identifier hs-var">fromString</span></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679150620"><span class="hs-identifier hs-var">to'</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-211"></span><span>            </span><span class="annot"><span class="annottext">Maybe String
+</span><span class="hs-identifier hs-var">Nothing</span></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Options -&gt; IO Options
+forall a. a -&gt; IO a
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679150618"><span class="hs-identifier hs-var">opts</span></a></span><span>
+</span><span id="line-212"></span><span>        </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Maybe String
+</span><a href="#local-6989586621679150616"><span class="hs-identifier hs-var">mFrom</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-213"></span><span>            </span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span id="local-6989586621679150621"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679150621"><span class="hs-identifier hs-var">from'</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Options -&gt; IO Options
+forall a. a -&gt; IO a
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">(Options -&gt; IO Options) -&gt; Options -&gt; IO Options
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679150619"><span class="hs-identifier hs-var">opts'</span></a></span><span> </span><span class="annot"><span class="annottext">Options -&gt; (Options -&gt; Options) -&gt; Options
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><span class="hs-operator hs-var">&amp;</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; Lens' Options [Text]
+</span><span class="hs-identifier hs-var">param</span></span><span> </span><span class="annot"><span class="annottext">Text
+</span><span class="hs-string">&quot;from&quot;</span></span><span> </span><span class="annot"><span class="annottext">(([Text] -&gt; Identity [Text]) -&gt; Options -&gt; Identity Options)
+-&gt; [Text] -&gt; Options -&gt; Options
+forall s t a b. ASetter s t a b -&gt; b -&gt; s -&gt; t
+</span><span class="hs-operator hs-var">.~</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">String -&gt; Text
+forall a. IsString a =&gt; String -&gt; a
+</span><span class="hs-identifier hs-var">fromString</span></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679150621"><span class="hs-identifier hs-var">from'</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-214"></span><span>            </span><span class="annot"><span class="annottext">Maybe String
+</span><span class="hs-identifier hs-var">Nothing</span></span><span>    </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Options -&gt; IO Options
+forall a. a -&gt; IO a
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679150619"><span class="hs-identifier hs-var">opts'</span></a></span><span>
+</span><span id="line-215"></span><span class="annot"><a href="Bank.TrueLayer.DataAPI.Schema.html#addTransactionParams"><span class="hs-identifier hs-var">addTransactionParams</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe TransactionParams
+</span><span class="hs-identifier hs-var">Nothing</span></span><span> </span><span id="local-6989586621679150622"><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679150622"><span class="hs-identifier hs-var">opts</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Options -&gt; IO Options
+forall a. a -&gt; IO a
+forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
+</span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="annot"><span class="annottext">Options
+</span><a href="#local-6989586621679150622"><span class="hs-identifier hs-var">opts</span></a></span><span>
+</span><span id="line-216"></span></pre></body></html>
