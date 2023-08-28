@@ -6,8 +6,8 @@ on:
 
 
 jobs:
-  release-lts-18-28:
-    name: Release into LTS 18.28
+  release-lts-21-7:
+    name: Release into LTS 21.7
     runs-on: self-hosted
     steps:
       - name: Repository Dispatch
@@ -16,4 +16,4 @@ jobs:
           repository: bank-manager/stack-snapshots
           token: ${{ secrets.SNAPSHOT_RELEASE_TOKEN }}
           event-type: bump-snapshot-package
-          client-payload: '{"lts_release": "18/28", "repo": "${{ github.repository }}", "git_hash": "${{ github.sha }}"}'
+          client-payload: '{"lts_release": "21/7", "repo": "${{ github.repository }}", "git_hash": "${{ github.sha }}"}'
