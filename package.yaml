@@ -37,6 +37,7 @@ library:
     - http-client
     - http-client-tls
     - text
+    - mtl
   source-dirs: src
   default-extensions:
     - OverloadedStrings

@@ -12,129 +12,61 @@ packages:
   original:
     hackage: persistent-migration-0.3.0
 - completed:
-    hackage: package-version-0.1.0.0@sha256:bb9fc93e905540aa8e1b32f80c2dc82756a4481c63779bd92e3796ed8085ab98,2854
+    hackage: package-version-0.3@sha256:10bc5fcdf4d34e288cf24fafc59d5ddc454d8af2a00d2ddb77e1f5fae9261ae8,2919
     pantry-tree:
-      sha256: 8e33ac2f8d2db754cf11d1439fa970dbf14c6756746426ba89f54a7183a9d2d7
-      size: 981
+      sha256: c7077c06e7b79a939d00774034a356b334fb5208878970c14ac765df9f317601
+      size: 1041
   original:
-    hackage: package-version-0.1.0.0
+    hackage: package-version-0.3
 - completed:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    name: servant
+    hackage: servant-0.20@sha256:cb4547b8a7f1346740057e376a84b37cf0cc54d6d1a1419d982c7b335b6ba205,5624
     pantry-tree:
-      sha256: 095e5d1c2e6ad2dd0827fed50eeef8c0d6b0679a610abe8a953141b676f8c4da
-      size: 2950
-    subdir: servant
-    version: '0.19'
+      sha256: 68bb5bccfa057fc513c0dc68fe20da17085c08c953efd6a92eda0820c96da11c
+      size: 2873
   original:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    subdir: servant
+    hackage: servant-0.20
 - completed:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    name: servant-swagger
+    hackage: servant-auth-server-0.4.8.0@sha256:b9137bebf5ca56e4fd20402680e71f5734a6f511f0464e8eff6577aa9947ce35,5521
     pantry-tree:
-      sha256: 6200c70f3999e4d70b79e55965b7719f914faf526924f61f0a9a5c21ed168722
-      size: 1636
-    subdir: servant-swagger
-    version: 1.1.11
+      sha256: dc2c8e68f97211e1545dae2dd922b15062481903610aa5868dc3aa5df1f8f2b6
+      size: 1376
   original:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    subdir: servant-swagger
+    hackage: servant-auth-server-0.4.8.0
 - completed:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    name: servant-server
+    hackage: servant-auth-swagger-0.2.10.2@sha256:3be316edeb4ae5c347307179cff5cf891443adc7cc311483b06ee8ee089a98ac,2909
     pantry-tree:
-      sha256: 2f0df25ed677c6f08aaf1499eec2c82830aedbbe19564d7356ed77cbd49ceeed
-      size: 2727
-    subdir: servant-server
-    version: 0.19.1
+      sha256: 5ec856db04a95512ba08117f1a8671c5f527dd16cb7aeffae55fd8e9f8a714e4
+      size: 408
   original:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    subdir: servant-server
+    hackage: servant-auth-swagger-0.2.10.2
 - completed:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    name: servant-client
+    hackage: servant-client-0.20@sha256:061397528394fdb4f5138a32623b5300966b83906992b4c08183636f6d0672af,4911
     pantry-tree:
-      sha256: c37445bd27aa2f7234b3c5ef73533b0952b979f005d38ca5ebfc8230e2712f92
-      size: 1481
-    subdir: servant-client
-    version: '0.19'
+      sha256: a8c15042337b999551ac0f2d34acdeb8df55c9dde092fd62a15a8795a59b64f4
+      size: 1435
   original:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    subdir: servant-client
+    hackage: servant-client-0.20
 - completed:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    name: servant-client-core
+    hackage: servant-client-core-0.20@sha256:740040e4c187d491332f57598a22fffa9d936ae08d9789f5d0651b2d86556f5a,3817
     pantry-tree:
-      sha256: add75436a800cf82d52d60babf18d0b3a528a72326c5fd7789a5011199dde944
+      sha256: e55bfc005777755917d1bc28346490199a71690dfc5556566c6d2d401638a513
       size: 1446
-    subdir: servant-client-core
-    version: '0.19'
   original:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    subdir: servant-client-core
+    hackage: servant-client-core-0.20
 - completed:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    name: servant-auth-swagger
+    hackage: servant-server-0.20@sha256:1bb179f028b0b2b28222f04bd589f9fbc6f855194e73a7cbc692e097f3b30574,5739
     pantry-tree:
-      sha256: 17e0e06cb3598a2870d29597fea0bd433bd59f6faa4e8632f7537c835e6d25b2
-      size: 451
-    subdir: servant-auth/servant-auth-swagger
-    version: 0.2.10.1
+      sha256: 8ae235fc825018111ecfeb74fe63753010ed4585a1fc391422b8083ce3ba3ae8
+      size: 2615
   original:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    subdir: servant-auth/servant-auth-swagger
+    hackage: servant-server-0.20
 - completed:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    name: servant-auth-server
+    hackage: servant-swagger-1.2@sha256:094dbd5179b046b68550bc1147ed350d2c3643f1d15cfc4dfa564384562a44d0,4790
     pantry-tree:
-      sha256: 50a16ff98a185db3aadfae05873996a8e7baefbc0338cb15eafa0be8f8414073
-      size: 1469
-    subdir: servant-auth/servant-auth-server
-    version: 0.4.7.0
+      sha256: d28e951da2284ca34123a7b5335102baae2e7ea4d5ad4598c23c516fc6350a02
+      size: 1636
   original:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    subdir: servant-auth/servant-auth-server
-- completed:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    name: servant-auth-client
-    pantry-tree:
-      sha256: 6b4b6ba6e9a396eddc573d707412ce7422ad22ead99f91078bc6069034016a63
-      size: 523
-    subdir: servant-auth/servant-auth-client
-    version: 0.4.1.0
-  original:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    subdir: servant-auth/servant-auth-client
-- completed:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    name: servant-auth
-    pantry-tree:
-      sha256: 1bf99e8eac26c8300a132d47dee816b7c4dbe8ef4b74213a316a61c103def651
-      size: 426
-    subdir: servant-auth/servant-auth
-    version: 0.4.1.0
-  original:
-    commit: f5ddc63199197ecf55e6f82f1465a29a1f26bc7d
-    git: https://github.com/bank-manager/servant.git
-    subdir: servant-auth/servant-auth
+    hackage: servant-swagger-1.2
 - completed:
     commit: 56841f3e43a88d899745f85bec0907c3e7dea17c
     git: ssh://git@github.com/bank-manager/servant-tools.git
@@ -147,41 +79,89 @@ packages:
     commit: 56841f3e43a88d899745f85bec0907c3e7dea17c
     git: ssh://git@github.com/bank-manager/servant-tools.git
 - completed:
-    commit: 8798aea911f7169f9a4013f94dc694b1c1f235a0
+    commit: 9463126599ffefc15c690e8f11a523c535122d64
+    git: ssh://git@github.com/bank-manager/tier-config.git
+    name: tier-config
+    pantry-tree:
+      sha256: 53fd07357ce7affa31f84e41f3a10ed05b5276b77735145f9df1991e47a22c14
+      size: 891
+    version: 0.1.0.1
+  original:
+    commit: 9463126599ffefc15c690e8f11a523c535122d64
+    git: ssh://git@github.com/bank-manager/tier-config.git
+- completed:
+    commit: bbec570dc92147ec821432dd61aa7a3f6a6133b5
     git: ssh://git@github.com/bank-manager/user-service.git
     name: user-service-client
     pantry-tree:
-      sha256: 7eb9ed9a4244317c682ccbde551ab80f77b7ef3e62b16c71152203231af5a672
+      sha256: 26e06894fe0e3a213ecd92a2d879aff5ba5a97de04efb53e796c2eb010e16bdb
       size: 277
     subdir: user-service-client
-    version: 0.2.1.5
+    version: 0.2.1.7
   original:
-    commit: 8798aea911f7169f9a4013f94dc694b1c1f235a0
+    commit: bbec570dc92147ec821432dd61aa7a3f6a6133b5
     git: ssh://git@github.com/bank-manager/user-service.git
     subdir: user-service-client
 - completed:
-    commit: 8798aea911f7169f9a4013f94dc694b1c1f235a0
+    commit: bbec570dc92147ec821432dd61aa7a3f6a6133b5
     git: ssh://git@github.com/bank-manager/user-service.git
     name: user-service-schema
     pantry-tree:
-      sha256: 0561f8a5f52860a78a264818e1064d16fff599ec67d269d5e54283c6112b2446
+      sha256: a2402d3e346b477d9af9d55fa092ba2545823d053e388bc72d69c209caf0e53a
       size: 326
     subdir: user-service-schema
-    version: 0.2.1.5
+    version: 0.2.1.7
   original:
-    commit: 8798aea911f7169f9a4013f94dc694b1c1f235a0
+    commit: bbec570dc92147ec821432dd61aa7a3f6a6133b5
     git: ssh://git@github.com/bank-manager/user-service.git
     subdir: user-service-schema
+- completed:
+    commit: 89872a5dbfc3ddd906c479452444a375d04ac39c
+    git: ssh://git@github.com/bank-manager/bank-auth-service.git
+    name: bank-auth-service-client
+    pantry-tree:
+      sha256: a3979e0f2ae3d9c6335eb0f0e7240e42fbfd0e43412d83aa50ec1b311490fa0f
+      size: 206
+    subdir: bank-auth-service-client
+    version: 0.0.1.0
+  original:
+    commit: 89872a5dbfc3ddd906c479452444a375d04ac39c
+    git: ssh://git@github.com/bank-manager/bank-auth-service.git
+    subdir: bank-auth-service-client
+- completed:
+    commit: 89872a5dbfc3ddd906c479452444a375d04ac39c
+    git: ssh://git@github.com/bank-manager/bank-auth-service.git
+    name: bank-auth-service-schema
+    pantry-tree:
+      sha256: ac591490b9a4c61f3a570c80da98ae6e4f82c65f53bed446abbe22f7a7263086
+      size: 1040
+    subdir: bank-auth-service-schema
+    version: 0.0.1.0
+  original:
+    commit: 89872a5dbfc3ddd906c479452444a375d04ac39c
+    git: ssh://git@github.com/bank-manager/bank-auth-service.git
+    subdir: bank-auth-service-schema
+- completed:
+    commit: 348ff0e99df85c4360d6ac95d1690a585f87ecbe
+    git: ssh://git@github.com/bank-manager/truelayer.git
+    name: truelayer
+    pantry-tree:
+      sha256: c0bd72612616cd16441381cc574da3e123c62586ad2eb695ebc7058822ba9845
+      size: 1136
+    version: 0.1.2.0
+  original:
+    commit: 348ff0e99df85c4360d6ac95d1690a585f87ecbe
+    git: ssh://git@github.com/bank-manager/truelayer.git
 snapshots:
 - completed:
-    sha256: adfaedc2cce86abf4102454c465fdab67bccdae35a61dec0ad341791008f50db
-    size: 825
-    url: https://raw.githubusercontent.com/bank-manager/stack-snapshots/main/lts/18/28-10.yaml
+    sha256: 1207ed83b4b29f2ed346cf329a5357aefba5ec47fe087b0583a4482da9fc4892
+    size: 1015
+    url: https://raw.githubusercontent.com/bank-manager/stack-snapshots/main/lts/21/7/3.yaml
   original:
-    url: https://raw.githubusercontent.com/bank-manager/stack-snapshots/main/lts/18/28-10.yaml
+    url: https://raw.githubusercontent.com/bank-manager/stack-snapshots/main/lts/21/7/3.yaml
 - completed:
-    sha256: 428ec8d5ce932190d3cbe266b9eb3c175cd81e984babf876b64019e2cbe4ea68
-    size: 590100
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/28.yaml
+    sha256: 23bb9bb355bfdb1635252e120a29b712f0d5e8a6c6a65c5ab5bd6692f46c438e
+    size: 640457
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/21/7.yaml
   original:
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/28.yaml
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/21/7.yaml
