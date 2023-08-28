@@ -15,28 +15,31 @@ module Bank.TrueLayer.Auth
   , ClientSecret(..)
   ) where
 
-import           Data.Bifunctor                 ( bimap )
-import           Data.Text                      ( Text )
-import           Data.Text.Encoding             ( encodeUtf8 )
-import           Network.HTTP.Client            ( newManager )
-import           Network.HTTP.Client.TLS        ( tlsManagerSettings )
-import           Network.OAuth.OAuth2           ( AccessToken(..)
-                                                , ExchangeToken
-                                                , OAuth2(..)
-                                                , OAuth2Token(..)
-                                                , RefreshToken(..)
-                                                , appendQueryParams
-                                                , authorizationUrl
-                                                , fetchAccessToken
-                                                , refreshAccessToken
-                                                )
-import           URI.ByteString                 ( URI )
-import           URI.ByteString.QQ              ( uri )
-import Control.Monad.Except (runExceptT)
+import           Control.Monad.Except    (runExceptT)
+import           Data.Bifunctor          (bimap)
+import           Data.Text               (Text)
+import           Data.Text.Encoding      (encodeUtf8)
+import           Network.HTTP.Client     (newManager)
+import           Network.HTTP.Client.TLS (tlsManagerSettings)
+import           Network.OAuth.OAuth2
+    ( AccessToken (..)
+    , ExchangeToken
+    , OAuth2 (..)
+    , OAuth2Token (..)
+    , RefreshToken (..)
+    , appendQueryParams
+    , authorizationUrl
+    , fetchAccessToken
+    , refreshAccessToken
+    )
+import           URI.ByteString          (URI)
+import           URI.ByteString.QQ       (uri)
 
 
-newtype ClientId = ClientId Text deriving Show
-newtype ClientSecret = ClientSecret Text deriving Show
+newtype ClientId = ClientId Text
+  deriving (Show)
+newtype ClientSecret = ClientSecret Text
+  deriving (Show)
 
 data Env = Sandbox | Prod
 
