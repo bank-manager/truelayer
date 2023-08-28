@@ -15,38 +15,42 @@ module Bank.TrueLayer.Auth
   , ClientSecret(..)
   ) where
 
-import           Data.Bifunctor                 ( bimap )
-import           Data.Text                      ( Text )
-import           Data.Text.Encoding             ( encodeUtf8 )
-import           Network.HTTP.Client            ( newManager )
-import           Network.HTTP.Client.TLS        ( tlsManagerSettings )
-import           Network.OAuth.OAuth2           ( AccessToken(..)
-                                                , ExchangeToken
-                                                , OAuth2(..)
-                                                , OAuth2Token(..)
-                                                , RefreshToken(..)
-                                                , appendQueryParams
-                                                , authorizationUrl
-                                                , fetchAccessToken
-                                                , refreshAccessToken
-                                                )
-import           URI.ByteString                 ( URI )
-import           URI.ByteString.QQ              ( uri )
+import           Control.Monad.Except    (runExceptT)
+import           Data.Bifunctor          (bimap)
+import           Data.Text               (Text)
+import           Data.Text.Encoding      (encodeUtf8)
+import           Network.HTTP.Client     (newManager)
+import           Network.HTTP.Client.TLS (tlsManagerSettings)
+import           Network.OAuth.OAuth2
+    ( AccessToken (..)
+    , ExchangeToken
+    , OAuth2 (..)
+    , OAuth2Token (..)
+    , RefreshToken (..)
+    , appendQueryParams
+    , authorizationUrl
+    , fetchAccessToken
+    , refreshAccessToken
+    )
+import           URI.ByteString          (URI)
+import           URI.ByteString.QQ       (uri)
 
 
-newtype ClientId = ClientId Text deriving Show
-newtype ClientSecret = ClientSecret Text deriving Show
+newtype ClientId = ClientId Text
+  deriving (Show)
+newtype ClientSecret = ClientSecret Text
+  deriving (Show)
 
 data Env = Sandbox | Prod
 
 
 buildOAuth2 :: Env -> ClientId -> ClientSecret -> URI -> OAuth2
 buildOAuth2 env (ClientId clientId) (ClientSecret clientSecret) callback =
-  OAuth2 { oauthClientId            = clientId
-         , oauthClientSecret        = Just clientSecret
-         , oauthOAuthorizeEndpoint  = getAuthorizeEndpoint env
-         , oauthAccessTokenEndpoint = getAccessTokenEndpoint env
-         , oauthCallback            = Just callback
+  OAuth2 { oauth2ClientId          = clientId
+         , oauth2ClientSecret      = clientSecret
+         , oauth2AuthorizeEndpoint = getAuthorizeEndpoint env
+         , oauth2TokenEndpoint     = getAccessTokenEndpoint env
+         , oauth2RedirectUri       = callback
          }
 
 
@@ -71,7 +75,7 @@ getAuthorizationUrl oauth2Settings params = appendQueryParams
 genAccessToken :: OAuth2 -> RefreshToken -> IO (Maybe OAuth2Token)
 genAccessToken oauthSettings token = do
   manager <- newManager tlsManagerSettings
-  eToken  <- refreshAccessToken manager oauthSettings token
+  eToken  <- runExceptT (refreshAccessToken manager oauthSettings token)
   return $ case eToken of
     Left  _ -> Nothing
     Right t -> Just t
@@ -80,7 +84,7 @@ genAccessToken oauthSettings token = do
 swapCode :: OAuth2 -> ExchangeToken -> IO (Maybe OAuth2Token)
 swapCode oauthSettings code = do
   manager <- newManager tlsManagerSettings
-  eToken  <- fetchAccessToken manager oauthSettings code
+  eToken  <- runExceptT (fetchAccessToken manager oauthSettings code)
   return $ case eToken of
     Left  _     -> Nothing
     Right token -> Just token

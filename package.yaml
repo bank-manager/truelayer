@@ -1,5 +1,5 @@
 name:                truelayer
-version:             0.1.2.2
+version:             0.1.2.3
 github:              "bank-manager/truelayer"
 license:             BSD3
 author:              "Riley Evans"
@@ -37,6 +37,7 @@ library:
     - http-client
     - http-client-tls
     - text
+    - mtl
   source-dirs: src
   default-extensions:
     - OverloadedStrings
