@@ -9,7 +9,7 @@ module Bank.TrueLayer.Auth
   , AccessToken(..)
   , OAuth2Token(..)
   , OAuth2
-  , ExchangeToken
+  , ExchangeToken(..)
   , Env(..)
   , ClientId(..)
   , ClientSecret(..)
@@ -23,7 +23,7 @@ import           Network.HTTP.Client     (newManager)
 import           Network.HTTP.Client.TLS (tlsManagerSettings)
 import           Network.OAuth.OAuth2
     ( AccessToken (..)
-    , ExchangeToken
+    , ExchangeToken (..)
     , OAuth2 (..)
     , OAuth2Token (..)
     , RefreshToken (..)
