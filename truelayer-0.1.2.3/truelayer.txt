@@ -28,7 +28,9 @@ OAuth2Token :: AccessToken -> Maybe RefreshToken -> Maybe Int -> Maybe Text -> M
 [tokenType] :: OAuth2Token -> Maybe Text
 [idToken] :: OAuth2Token -> Maybe IdToken
 data () => OAuth2
-data () => ExchangeToken
+newtype () => ExchangeToken
+ExchangeToken :: Text -> ExchangeToken
+[extoken] :: ExchangeToken -> Text
 data Env
 Sandbox :: Env
 Prod :: Env
